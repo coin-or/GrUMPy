@@ -156,19 +156,18 @@ class BAKTree(BinaryTree):
     There is only one public data member:
       last_time_stamp: Float time stamp of the most recent processing done.
     """
-    def __init__(self, filename = None, options = None, **attrs):
+    def __init__(self, **attrs):
+        attrs['layout'] = 'bak'
         BinaryTree.__init__(self, **attrs)
         # User-controlled constant values
-        self._filename = filename
-        self._options = options
-        if options != None:
-            self._image_interval = options.interval
-            self._edge_limit = options.edge_limit
-            self._sample_tree = options.sample_tree
-        else:
-            self._edge_limit = 1000
-            self._sample_tree = 1000
 
+        self._label = ''
+        self._filename = None
+        self._logscaley = False
+        self._fathom = False
+        self._edge_limit = 1000000
+        #use at most NUM nodes of each type in tree images; zero means no limit
+        self._sample_tree = 0
         # Instance-dependent constant values
         self._optimization_sense = None
         self._start_time = None
@@ -182,7 +181,6 @@ class BAKTree(BinaryTree):
         self._integer_infeasibility_upper_bound = None
 
         # Changing reference values
-        self.last_time_stamp = None  # Public for printing the final images
         self._image_counter = 0
         self._next_image_time = None
 
@@ -206,28 +204,30 @@ class BAKTree(BinaryTree):
         self._sum_subtree_gaps_scale = 1.0
         self._previous_incumbent_value = None  # Only needed for SSG
 
-
-
-        # TODO(bhunsaker): Check whether Gnuplot can be accessed early.
-        # TODO(bhunsaker): Check whether animation program can be accessed.
-
-        # Open a file for reading
-        self.input_file = open(filename, 'r')
-
-        # If requested, make an initial pass through the file to determine image
-        # bounds.
-        if options.use_common_bounds:
-            for line in self.input_file:
-                self.GetBounds(line)
-            # TODO(bhunsaker): Is there a better way to reset the file?
-            self.input_file.close()
-            self.input_file = open(filename, 'r')
-
-    def process_file(self):
+    def process_file(self, file_name):
+        self._filename = file_name
+        input_file = open(file_name, 'r')
         # Parse all the lines
-        for line in self.input_file:
+        for line in input_file:
             self.ProcessLine(line)
-        self.input_file.close()
+            if self.root is not None:
+                self.display()
+        input_file.close()
+
+    def set_label(label):
+        self._label = label
+
+    def set_logscaley(boolean):
+        self._logscaley = boolean
+
+    def set_fathom(boolean):
+        self._fathom = boolean
+
+    def set_edge_limit(limit):
+        self._edge_limit = limit
+
+    def set_sample_tree(number):
+        self._sample_tree = number
 
     def __print(self, options):
         # Print the time of the optimal solution and
@@ -320,7 +320,7 @@ class BAKTree(BinaryTree):
           value1: Float.
           value2: Float.
 
- o       Returns:
+        Returns:
           True if value1 is better than value2 as an objective value.
         """
         if self._optimization_sense == 'min':
@@ -375,7 +375,7 @@ class BAKTree(BinaryTree):
             subtree_root = self.get_node_attr(node_id, 'subtree_root')
             if status == 'candidate' or status == 'pregnant':
                 # Optional check for fathomed nodes.
-                if (self._options.fathom and
+                if (self._fathom and
                     not self.IsBetterThanIncumbent(lp_bound)):
                     continue
                 active_node_count += 1
@@ -436,45 +436,21 @@ class BAKTree(BinaryTree):
         Args:
           time: Float elapsed time in seconds.
         """
-        # Generate images only if the next time point has been reached or
-        # we have a new integer solution.
-        if (time <= self._next_image_time and
-            not self._new_integer_solution):
-            return
-
-        # Don't generate images if the optimization sense hasn't been
-        # determined.
-        if self._optimization_sense is None:
-            print('Not generating images at time %.2f because only one '
-                  'lp bound value has been observed.' % time)
-            return
 
         print('Generating image set %d at time %.2f' % (self._image_counter,
                                                         time))
 
         # Check control parameters and call each image generator.
-        if self._options.histogram:
-            self.GenerateHistogram(time)
-        if self._options.scatterplot:
-            self.GenerateScatterplot(time)
-        if self._options.tree:
-            self.GenerateTreeImage(time)
-        if self._options.fixed_tree:
-            self.GenerateTreeImage(time, fixed_horizontal_positions=True)
-        if self._options.path and self._new_integer_solution:
-            self.GenerateIncumbentPath(time)
-
-        # Update progress measures and predictions if desired.
-        if self._options.predictions:
-            self.AddProgressMeasures(time)
-
+        #self.GenerateHistogram(time)
+        #self.GenerateScatterplot(time)
+        self.GenerateTreeImage(time)
+        self.GenerateTreeImage(time, fixed_horizontal_positions=True)
+        #self.GenerateIncumbentPath(time)
+        #self.AddProgressMeasures(time)
+            
         # Update internal state.
         self._image_counter += 1
         self._new_integer_solution = False
-        if time >= self._next_image_time:
-            self._next_image_time += self._image_interval
-        else:
-            self._next_image_time = time + self._image_interval
 
     def GetImageCounterString(self):
         """Returns a string with the image counter."""
@@ -521,16 +497,16 @@ class BAKTree(BinaryTree):
         # Make settings for the scatter plot.
         script_file.write('set output "%s"\n' % output_filename)
         script_file.write('set title "Histogram of LP Bounds: %s, %s, %ds"\n'
-                          % (self._filename, self._options.label, int(time)))
+                          % (self._filename, self._label, int(time)))
         script_file.write('set xlabel "obj. value"\n')
         script_file.write('set ylabel "number of nodes"\n')
-        if self._options.logscaley:
+        if self._logscaley:
             script_file.write('set logscale y\n')
         script_file.write('set nokey\n')
         script_file.write('set tics scale 0.001\n')
 
         script_file.write('set xrange [0:%d+1]\n' % num_bins)
-        if self._options.logscaley:
+        if self._logscaley:
             script_file.write('set yrange [1:%d*1.2]\n' % max_bin_count)
         else:
             script_file.write('set yrange [0:%d*1.2]\n' % max_bin_count)
@@ -657,8 +633,7 @@ class BAKTree(BinaryTree):
             if (self.get_node_attr(n,'status') == 'candidate' or
                 self.get_node_attr(n,'status') == 'pregnant'):
                 lp_bound = self.get_node_attr(n,'lp_bound')
-                if (self._options.fathom and
-                    not self.IsBetterThanIncumbent(lp_bound)):
+                if not self.IsBetterThanIncumbent(lp_bound):
                     continue
                 objective_list.append(lp_bound)
 
@@ -782,7 +757,7 @@ class BAKTree(BinaryTree):
         # Make settings for the scatter plot.
         script_file.write('set output "%s"\n' % output_filename)
         script_file.write('set title "Scatterplot: %s, %s, %ds"\n' % (
-                self._filename, self._options.label, int(time)))
+                self._filename, self._label, int(time)))
         script_file.write('set pointsize 0.8\n')
         script_file.write('set nokey\n')
         script_file.write('set xlabel \"sum of int. infeas.\"\n')
@@ -840,7 +815,7 @@ class BAKTree(BinaryTree):
             lp_bound = self.get_node_attr(node,'lp_bound')
             if status == 'candidate' or status == 'pregnant':
                 # Optional check for fathomed nodes.
-                if (self._options.fathom and
+                if (self._fathom and
                     not self.IsBetterThanIncumbent(lp_bound)):
                     continue
                 data_file.write('%0.6f %0.6f\n' % (
@@ -887,7 +862,7 @@ class BAKTree(BinaryTree):
         # Make settings for the scatter plot.
         script_file.write('set output "%s"\n' % output_filename)
         script_file.write('set title "Incumbent path (%s %ds %s)"\n' % (
-                self._filename, int(time), self._options.label))
+                self._filename, int(time), self._label))
         script_file.write('set pointsize 0.8\n')
         script_file.write('set nokey\n')
         script_file.write('set xlabel \"sum of int. infeas.\"\n')
@@ -926,7 +901,7 @@ class BAKTree(BinaryTree):
         # Make settings for the scatter plot.
         script_file.write('set output "%s"\n' % output_filename)
         script_file.write('set title "Incumbent paths (%s %ds %s)"\n' % (
-                self._filename, int(time), self._options.label))
+                self._filename, int(time), self._label))
         script_file.write('set pointsize 0.8\n')
         script_file.write('set nokey\n')
         script_file.write('set xlabel \"sum of int. infeas.\"\n')
@@ -1023,7 +998,7 @@ class BAKTree(BinaryTree):
         data += 'set format x ""\n'
         data += 'set ylabel "obj. value"\n'
         data += 'set title "B&B tree (%s %ds %s)"\n\n' % (
-                self._filename, int(time), self._options.label)
+                self._filename, int(time), self._label)
 
         for line in additional_lines:
             data += line
@@ -1220,11 +1195,6 @@ class BAKTree(BinaryTree):
         Two files are necessary: a data file and a Gnuplot script file (which
         references the data file).
 
-        Args:
-          time: Float number of seconds since the start of optimization.
-          fixed_horizontal_position: Boolean indicating whether horizontal
-            positions should be fixed based on ancestors of a node, or whether
-            the entire set of nodes is equally spread out horizontally.
         """
         index_string = self.GetImageCounterString()
         if fixed_horizontal_positions:
@@ -1370,9 +1340,9 @@ class BAKTree(BinaryTree):
                                                           image_min_obj)
         data += 'set format x ""\n'
         data += 'set ylabel "obj. value"\n'
-        if time and self._options and self._filename:
+        if time:
             data += 'set title "B&B tree (%s %ds %s)"\n\n' % (
-                    self._filename, int(time), self._options.label)
+                    self._filename, int(time), self._label)
         else:
             data += 'set title "B&B tree"\n\n' 
             
@@ -1407,17 +1377,6 @@ class BAKTree(BinaryTree):
         time = float(tokens[0])
         line_type = tokens[1]
         remaining_tokens = tokens[2:]
-
-        # Check time limit
-        if (self._options.time_limit is not None and
-            time > self._options.time_limit):
-            return
-        # Check for first time observed
-        if self._start_time is None:
-            self._start_time = time
-            self._next_image_time = time + self._image_interval
-        # Record the current time
-        self.last_time_stamp = time
 
         # Process the line based on the type
         if line_type == 'heuristic':
@@ -1619,7 +1578,6 @@ class BAKTree(BinaryTree):
           remaining_tokens: List of string tokens. These are those that remain
             after any common tokens are processed.
         """
-        self.GenerateImagesIfAppropriate(time)
 
         # Parse remaining tokens
         if len(remaining_tokens) != 3:
@@ -1652,7 +1610,6 @@ class BAKTree(BinaryTree):
           remaining_tokens: List of string tokens. These are those that remain
             after any common tokens are processed.
         """
-        self.GenerateImagesIfAppropriate(time)
 
         # Parse remaining tokens
         if len(remaining_tokens) != 0:
@@ -1821,7 +1778,7 @@ class BAKTree(BinaryTree):
         # Make settings for the plot.
         script_file.write('set output "%s"\n' % output_filename)
         script_file.write('set title "Progress Measures: %s, %s"\n' % (
-                self._filename, self._options.label))
+                self._filename, self._label))
         script_file.write('set xlabel \"time (s)\"\n')
         script_file.write('set ylabel \"measure\"\n')
         script_file.write('set autoscale\n')
@@ -1873,7 +1830,7 @@ class BAKTree(BinaryTree):
         # Make settings for the plot.
         script_file.write('set output "%s"\n' % output_filename)
         script_file.write('set title "Forecasts: %s, %s"\n' % (
-                self._filename, self._options.label))
+                self._filename, self._label))
         script_file.write('set xlabel \"time (s)\"\n')
         script_file.write('set ylabel \"prediction of total time\"\n')
         script_file.write('set autoscale\n')
