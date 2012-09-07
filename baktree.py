@@ -89,7 +89,7 @@ import re
 import subprocess
 import sys, os
 from subprocess import Popen, PIPE, STDOUT
-sys.path.append('../../trunk')
+sys.path.append('../GIMPy')
 import optparse
 from gimpy import BinaryTree
 import time
