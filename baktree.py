@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 # BAK_visual.py
 #
 #  Copyright 2009, 2010 Google Inc.
@@ -94,57 +92,10 @@ import optparse
 from gimpy import BinaryTree
 import time
 
+from StringIO import StringIO
+from pygame import display, image, init
+
 from forecastingchainedsequences import ForecastingChainedSequences
-
-#from pydot import Node as PyDotNode
-#from graph import BinaryTree
-
-class Node(object):
-    """Key information about a node of the branch-and-bound tree.
-
-    There are no methods for this class.  All data members are accessed
-    directly.
-
-    Variables:
-      parent_id: String id of the parent node.  For the root node, gets a
-        value from the solver, which should not be an actual node.
-      branch_direction: String 'L', 'R', or integer '1', '2', etc, indicating
-        which child this node is of its parent.  For the root node, this field
-        is ignored.
-      status: String indicating the current status of the node, such as
-        'branched', 'integer', 'infeasible', 'candidate'.  See documentation
-        for the full list of acceptable statuses.
-      lp_bound: Float indicating the best LP bound currently known.  This value
-        may change as the node is processed more.
-      integer_infeasibility_count: Float indicating the number of variables
-        that are integer infeasible at this node's LP relaxation solution.
-      integer_infeasibility_sum: Float indicating the sum of integer
-        infeasibilities at this node's LP relaxation solution.
-
-      children: Dict of string index => string id of this node's children.
-        Sort order of the keys indicates the order of children from left to
-        right.
-    """
-    def __init__(self):
-        # TODO(bhunsaker): re-order these once the script is working
-        self.parent_id = None
-        self.branch_direction = None
-        self.status = None
-        self.lp_bound = None
-        self.integer_infeasibility_count = None
-        self.integer_infeasibility_sum = None
-
-        # For tree images; these change with each image
-        self.horizontal_lower_bound = 0
-        self.horizontal_upper_bound = 1
-        self.horizontal_position = None
-        self.number_descendants = 1
-
-        self.children = {}
-
-        # For sum of subtree gaps, this is the root of this node's subtree
-        self.subtree_root = None
-
 
 class BAKTree(BinaryTree):
     """Methods to process and visualize information about a b&b tree.
@@ -166,6 +117,8 @@ class BAKTree(BinaryTree):
         self._logscaley = False
         self._fathom = False
         self._edge_limit = 1000000
+        # current time, updated each time we read a new line
+        self._time = 0.0
         #use at most NUM nodes of each type in tree images; zero means no limit
         self._sample_tree = 0
         # Instance-dependent constant values
@@ -192,9 +145,6 @@ class BAKTree(BinaryTree):
         self._min_objective_value = None
         self._max_integer_infeasibility_sum = None
 
-        # List of Gnuplot filenames
-        self._gnuplot_files = []
-
         # List of incumbent path data files, for the all incumbent paths image
         self._incumbent_path_datafiles = []
 
@@ -203,6 +153,8 @@ class BAKTree(BinaryTree):
         self._sum_subtree_gaps_forecaster = ForecastingChainedSequences()
         self._sum_subtree_gaps_scale = 1.0
         self._previous_incumbent_value = None  # Only needed for SSG
+        # pygame initialize
+        init()
 
     def process_file(self, file_name):
         self._filename = file_name
@@ -213,6 +165,13 @@ class BAKTree(BinaryTree):
             if self.root is not None:
                 self.display()
         input_file.close()
+
+    def display_image(self, gnuplot):
+        im = StringIO(gnuplot)
+        picture = image.load(im, 'png')
+        screen = display.set_mode(picture.get_size())
+        screen.blit(picture, picture.get_rect())
+        display.flip()
 
     def set_label(label):
         self._label = label
@@ -441,10 +400,10 @@ class BAKTree(BinaryTree):
                                                         time))
 
         # Check control parameters and call each image generator.
-        #self.GenerateHistogram(time)
+        self.GenerateHistogram()
         #self.GenerateScatterplot(time)
-        self.GenerateTreeImage(time)
-        self.GenerateTreeImage(time, fixed_horizontal_positions=True)
+        #self.GenerateTreeImage(time)
+        #self.GenerateTreeImage(time, fixed_horizontal_positions=True)
         #self.GenerateIncumbentPath(time)
         #self.AddProgressMeasures(time)
             
@@ -456,12 +415,11 @@ class BAKTree(BinaryTree):
         """Returns a string with the image counter."""
         return '%03d' % self._image_counter
 
-    def WriteHistogramScriptFile(self, time, num_bins, bin_width, max_bin_count,
-                                 lp_bound, data_filename):
+    def WriteHistogramScript(self, num_bins, bin_width, max_bin_count,
+                                 lp_bound, data_filename, output_file):
         """Write a Gnuplot script file to generate a histogram image.
 
         Args:
-          time: Float number of seconds since optimization began.
           num_bins: Integer number of bins for the histogram.
           bin_width: Float width of the bins in terms of objective values.
           max_bin_count: Integer number of the highest bin count.
@@ -485,50 +443,48 @@ class BAKTree(BinaryTree):
         #    true location.
 
         # Output the Gnuplot script to a file.
-        index_string = self.GetImageCounterString()
-        script_filename = 'histogram.%s.gnuplot' % index_string
-        self._gnuplot_files.append(script_filename)
-        output_filename = re.sub('gnuplot', 'png', script_filename)
-        script_file = open(script_filename, 'w')
+        script = ""
 
         # Set terminal for the output files.
-        script_file.write('set terminal png notransparent large\n\n')
+        script += 'set terminal png notransparent large\n\n'
 
         # Make settings for the scatter plot.
-        script_file.write('set output "%s"\n' % output_filename)
-        script_file.write('set title "Histogram of LP Bounds: %s, %s, %ds"\n'
-                          % (self._filename, self._label, int(time)))
-        script_file.write('set xlabel "obj. value"\n')
-        script_file.write('set ylabel "number of nodes"\n')
+        index_string = self.GetImageCounterString()
+        output_filename = "histogram."+index_string+".png"
+        if output_file:
+            script += 'set output "%s"\n' % output_filename
+        script += ('set title "Histogram of LP Bounds: %s, %s, %.2fs"\n'
+                    % (self._filename, self._label, self._time))
+        script += 'set xlabel "obj. value"\n'
+        script += 'set ylabel "number of nodes"\n'
         if self._logscaley:
-            script_file.write('set logscale y\n')
-        script_file.write('set nokey\n')
-        script_file.write('set tics scale 0.001\n')
+            script += 'set logscale y\n'
+        script += 'set nokey\n'
+        script += 'set tics scale 0.001\n'
 
-        script_file.write('set xrange [0:%d+1]\n' % num_bins)
+        script += 'set xrange [0:%d+1]\n' % num_bins
         if self._logscaley:
-            script_file.write('set yrange [1:%d*1.2]\n' % max_bin_count)
+            script += 'set yrange [1:%d*1.2]\n' % max_bin_count
         else:
-            script_file.write('set yrange [0:%d*1.2]\n' % max_bin_count)
-
-        script_file.write('set xtics rotate by 90\n')
+            script += 'set yrange [0:%d*1.2]\n' % max_bin_count
+        script += 'set xtics rotate by 90\n'
 
         # Mark tics for each bin.
-        script_file.write('set xtics (')
+        script += 'set xtics ('
         # TODO(bhunsaker): Consider putting this in a loop.
         x_values = ['"%0.2f" %0.2f' %
                     (self._histogram_lower_bound + i * bin_width, i + 0.5)
                     for i in range(num_bins + 1)]
-        script_file.write(', '.join(x_values) + ')\n')
+        script += ', '.join(x_values) + ')\n'
 
         # Plot LP bound and incumbent tics.
-        script_file.write('set x2tics (')
-        script_file.write('"%0.2f" %d' % (lp_bound, lp_bound_bin))
+        script += 'set x2tics ('
+        script += '"%0.2f" %d' % (lp_bound, lp_bound_bin)
         if self._incumbent_value is not None:
-            script_file.write(', "%0.2f"%d)\n' % (self._incumbent_value,
-                                                  incumbent_bin))
+            script += ', "%0.2f"%d)\n' % (self._incumbent_value,
+                                                  incumbent_bin)
         else:
-            script_file.write(')\n')
+            script += ')\n'
 
         plot_parts = []
 
@@ -536,16 +492,17 @@ class BAKTree(BinaryTree):
         plot_parts.append('\'%s\' with boxes fill solid 0.2' % data_filename)
 
         # Draw the vertical lp_bound and incumbent lines.
-        script_file.write('set parametric\n')
-        script_file.write('set trange [0:%d*1.5]\n' % max_bin_count)
+        script += 'set parametric\n'
+        script += 'set trange [0:%d*1.5]\n' % max_bin_count
         plot_parts.append('%0.2f,t linetype 2' % lp_bound_x_coord)
         if self._incumbent_value is not None:
             plot_parts.append('%0.2f,t linetype 5' % incumbent_x_coord)
-        script_file.write('plot %s\n' % ', '.join(plot_parts))
+        script += 'plot %s\n' % ', '.join(plot_parts)
 
-        script_file.write('unset parametric\n')
-        script_file.write('show output\n')
-        script_file.close()
+        script += 'unset parametric\n'
+        script += 'show output\n'
+
+        return script
 
     def AdjustHistogramEndBins(self, objective_list, num_bins, bin_width,
                                bin_counts, bin_centers, bin_widths):
@@ -616,7 +573,7 @@ class BAKTree(BinaryTree):
             # Scale the height appropriately
             bin_counts[lowest_nonempty_bin] /= bin_widths[lowest_nonempty_bin]
 
-    def GenerateHistogram(self, time):
+    def GenerateHistogram(self, output_file = False):
         """Generate files necessary for a histogram image.
 
         Two files are necessary: a data file and a Gnuplot script file (which
@@ -637,8 +594,12 @@ class BAKTree(BinaryTree):
                     continue
                 objective_list.append(lp_bound)
 
-        if len(objective_list) == 0:
-            return
+        # aykut added the following check, we need it since we generate
+        #histograms real time
+        # we can not generate histogram if we do not have upperl and lower
+        #bounds
+        if len(objective_list)==0 or self._incumbent_value is None:
+            return None
 
         # The first time we create a histogram, set bounds for objective values.
         # TODO(bhunsaker): Consider bounds; talk to Osman.
@@ -657,7 +618,7 @@ class BAKTree(BinaryTree):
                     self._histogram_lower_bound = min(objective_list)
 
         bin_width = (self._histogram_upper_bound -
-                     self._histogram_lower_bound) / num_bins
+                     self._histogram_lower_bound) / float(num_bins)
 
         bin_counts = [0.0 for i in range(num_bins)]
         for value in objective_list:
@@ -694,14 +655,19 @@ class BAKTree(BinaryTree):
                                             bin_widths[index]))
         data_file.close()
 
-        self.WriteHistogramScriptFile(time, num_bins, bin_width, max_bin_count,
-                                      lp_bound, data_filename)
+        histogram_script = self.WriteHistogramScript(num_bins, bin_width,
+                           max_bin_count, lp_bound, data_filename, output_file)
 
         # TODO(bhunsaker): Temporary hack
         #   This allows the bounds to be reset until an incumbent is found.
         if self._incumbent_value is None:
             self._histogram_lower_bound = None
             self._histogram_upper_bound = None
+
+        gp = Popen(['gnuplot'], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
+        return gp.communicate(input=histogram_script)[0]
+
+
 
     def GetImageObjectiveBounds(self, min_value, max_value):
         """Return min and max bounds to be used for images.
@@ -734,39 +700,35 @@ class BAKTree(BinaryTree):
         return (image_min_obj, image_max_obj)
 
 
-    def WriteScatterplotScriptFile(self, time, data_filename,
-                                   connect_points=False):
+    def WriteScatterplotScript(self, data_filename, output_file):
         """Write a Gnuplot script file to generate a scatterplot image.
 
         Args:
-          time: Float number of seconds since optimization began.
           data_filename: String name of the file; used for display purposes.
         """
         image_min_obj, image_max_obj = self.GetImageObjectiveBounds(
             self._scatterplot_lower_bound, self._scatterplot_upper_bound)
 
         index_string = self.GetImageCounterString()
-        script_filename = 'scatterplot.%s.gnuplot' % index_string
-        self._gnuplot_files.append(script_filename)
-        output_filename = re.sub('gnuplot', 'png', script_filename)
-        script_file = open(script_filename, 'w')
+        output_filename = "scatterplot."+index_string+".png"
+        script = ""
 
         # Set terminal for the output files.
-        script_file.write('set terminal png notransparent large\n\n')
+        script += 'set terminal png notransparent large\n\n'
 
         # Make settings for the scatter plot.
-        script_file.write('set output "%s"\n' % output_filename)
-        script_file.write('set title "Scatterplot: %s, %s, %ds"\n' % (
-                self._filename, self._label, int(time)))
-        script_file.write('set pointsize 0.8\n')
-        script_file.write('set nokey\n')
-        script_file.write('set xlabel \"sum of int. infeas.\"\n')
-        script_file.write('set ylabel \"obj. value\"\n')
-        script_file.write('set xrange [0:%0.6f+2]\n' %
+        if output_file:
+            script += 'set output "%s"\n' % output_filename
+        script += ('set title "Scatterplot: %s, %s, %ds"\n' % (
+                self._filename, self._label, int(self._time)))
+        script += 'set pointsize 0.8\n'
+        script += 'set nokey\n'
+        script += 'set xlabel \"sum of int. infeas.\"\n'
+        script += 'set ylabel \"obj. value\"\n'
+        script += ('set xrange [0:%0.6f+2]\n' %
                           self._max_integer_infeasibility_sum)
-        script_file.write('set yrange [%0.6f:%0.6f]\n' % (image_min_obj,
+        script += ('set yrange [%0.6f:%0.6f]\n' % (image_min_obj,
                                                           image_max_obj))
-
         plot_parts = []
 
         # Plot the data points.
@@ -786,19 +748,19 @@ class BAKTree(BinaryTree):
                               (self.get_node_attr(self._incumbent_parent, 'integer_infeasibility_sum'),
                                self.get_node_attr(self._incumbent_parent, 'lp_bound')))
         
-        script_file.write('plot %s\n' % ', '.join(plot_parts))
+        script += 'plot %s\n' % ', '.join(plot_parts)
+        script += 'show output\n'
+        return script
 
-        script_file.write('show output\n')
-        script_file.close()
-
-    def GenerateScatterplot(self, time):
+    def GenerateScatterplot(self, output_file = False):
         """Generate files necessary for a scatterplot image.
 
         Two files are necessary: a data file and a Gnuplot script file (which
         references the data file).
 
         Args:
-          time: Float number of seconds since the start of optimization.
+            output_file: if not given the gnuplot image will not be written
+        to disk but returned (to be displayed in pygame window)
         """
         # Output data points.
         index_string = self.GetImageCounterString()
@@ -829,6 +791,8 @@ class BAKTree(BinaryTree):
         data_file.close()
 
         if self._scatterplot_lower_bound is None:
+            if len(bounds) <= 1:
+                return None
             self._scatterplot_lower_bound = min(bounds)
             self._scatterplot_upper_bound = max(bounds)
             # The incumbent overrides a bound if present.
@@ -838,98 +802,84 @@ class BAKTree(BinaryTree):
                 else:
                     self._scatterplot_lower_bound = self._incumbent_value
 
-        self.WriteScatterplotScriptFile(time, data_filename)
+        scatterplot_script = self.WriteScatterplotScript(data_filename,
+                                                         output_file)
 
-    def WriteIncumbentPathScriptFile(self, time, data_filename):
+        gp = Popen(['gnuplot'], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
+        return gp.communicate(input=scatterplot_script)[0]
+
+    def WriteIncumbentPathScript(self, data_filename):
         """Write a Gnuplot script file to generate an incumbent path image.
 
         Args:
-          time: Float number of seconds since optimization began.
           data_filename: String name of the file; used for display purposes.
         """
         image_min_obj, image_max_obj = self.GetImageObjectiveBounds(
             self._scatterplot_lower_bound, self._scatterplot_upper_bound)
 
-        index_string = self.GetImageCounterString()
-        script_filename = 'incumbent_path.%s.gnuplot' % index_string
-        self._gnuplot_files.append(script_filename)
-        output_filename = re.sub('gnuplot', 'png', script_filename)
-        script_file = open(script_filename, 'w')
+        script = ''
 
         # Set terminal for the output files.
-        script_file.write('set terminal png notransparent large\n\n')
-
-        # Make settings for the scatter plot.
-        script_file.write('set output "%s"\n' % output_filename)
-        script_file.write('set title "Incumbent path (%s %ds %s)"\n' % (
-                self._filename, int(time), self._label))
-        script_file.write('set pointsize 0.8\n')
-        script_file.write('set nokey\n')
-        script_file.write('set xlabel \"sum of int. infeas.\"\n')
-        script_file.write('set ylabel \"obj. value\"\n')
-        script_file.write('set xrange [0:%0.6f+2]\n' %
+        script += 'set terminal png notransparent large\n\n'
+        script += ('set title "Incumbent path (%s %.2fs %s)"\n' % (
+                self._filename, self._time, self._label))
+        script += 'set pointsize 0.8\n'
+        script += 'set nokey\n'
+        script += 'set xlabel \"sum of int. infeas.\"\n'
+        script += 'set ylabel \"obj. value\"\n'
+        script += ('set xrange [0:%0.6f+2]\n' %
                           self._max_integer_infeasibility_sum)
-        script_file.write('set yrange [%0.6f:%0.6f]\n' % (image_min_obj,
+        script += ('set yrange [%0.6f:%0.6f]\n' % (image_min_obj,
                                                           image_max_obj))
-
         # Plot the data points and connecting lines.
-        script_file.write('plot \'%s\' with points pointtype 2, '
+        script += ('plot \'%s\' with points pointtype 2, '
                           '\'%s\' with lines linetype 2\n' %
                           (data_filename, data_filename))
 
-        script_file.write('show output\n')
-        script_file.close()
+        script += 'show output\n'
+        return script
 
-    def WriteAllIncumbentPathsScriptFile(self, time, data_filenames):
-        """Write a Gnuplot script file to generate an incumbent path image.
+    def WriteAllIncumbentPathsScript(self):
+        """Return a Gnuplot script string to generate an incumbent path image.
 
         Args:
-          time: Float number of seconds since optimization began.
           data_filenames: List of string names of files.
         """
+        data_filenames = self._incumbent_path_datafiles
         image_min_obj, image_max_obj = self.GetImageObjectiveBounds(
             self._scatterplot_lower_bound, self._scatterplot_upper_bound)
 
-        script_filename = 'incumbent_paths.gnuplot'
-        self._gnuplot_files.append(script_filename)
-        output_filename = re.sub('gnuplot', 'png', script_filename)
-        script_file = open(script_filename, 'w')
-
+        script = ''
         # Set terminal for the output files.
-        script_file.write('set terminal png notransparent large\n\n')
+        script += 'set terminal png notransparent large\n\n'
 
         # Make settings for the scatter plot.
-        script_file.write('set output "%s"\n' % output_filename)
-        script_file.write('set title "Incumbent paths (%s %ds %s)"\n' % (
-                self._filename, int(time), self._label))
-        script_file.write('set pointsize 0.8\n')
-        script_file.write('set nokey\n')
-        script_file.write('set xlabel \"sum of int. infeas.\"\n')
-        script_file.write('set ylabel \"obj. value\"\n')
-        script_file.write('set xrange [0:%0.6f+2]\n' %
+        script += ('set title "Incumbent paths (%s %.2fs %s)"\n' % (
+                self._filename, self._time, self._label))
+        script += 'set pointsize 0.8\n'
+        script += 'set nokey\n'
+        script += 'set xlabel \"sum of int. infeas.\"\n'
+        script += 'set ylabel \"obj. value\"\n'
+        script += ('set xrange [0:%0.6f+2]\n' %
                           self._max_integer_infeasibility_sum)
-        script_file.write('set yrange [%0.6f:%0.6f]\n' % (image_min_obj,
+        script += ('set yrange [%0.6f:%0.6f]\n' % (image_min_obj,
                                                           image_max_obj))
-
         # Plot the data points and connecting lines.
         command_list = []
         for filename in data_filenames:
             command_list.append('\'%s\' with points pointtype 2, '
                                 '\'%s\' with lines linetype 2' %
                                 (filename, filename))
-        script_file.write('plot %s\n' % ','.join(command_list))
+        script += 'plot %s\n' % ','.join(command_list)
+        script += 'show output\n'
+        return script
 
-        script_file.write('show output\n')
-        script_file.close()
-
-    def GenerateIncumbentPath(self, time):
+    def GenerateIncumbentPath(self):
         """Generate files necessary for an incumbent scatterplot path image.
 
         Two files are necessary: a data file and a Gnuplot script file (which
         references the data file).
 
-        Args:
-          time: Float number of seconds since the start of optimization.
         """
         if self._incumbent_parent is None:
             return
@@ -958,27 +908,20 @@ class BAKTree(BinaryTree):
         self._incumbent_path_datafiles.append(data_filename)
 
         # Output the Gnuplot script to a file.
-        self.WriteIncumbentPathScriptFile(time, data_filename)
+        path_script = self.WriteIncumbentPathScript(data_filename)
 
-    def GenerateAllIncumbentPaths(self, time):
+    def GenerateAllIncumbentPaths(self):
         """Generate file for a path image with all incumbent paths.
 
         Data files were previously generated for each incumbent.  This re-uses
         those files.
-
-        Args:
-          time: Float number of seconds since the start of optimization.
         """
-        self.WriteAllIncumbentPathsScriptFile(time,
-                                              self._incumbent_path_datafiles)
+        all_path_script = self.WriteAllIncumbentPathsScript()
 
-    def WriteTreeScriptFile(self, script_file, output_file = 'tree.png', 
-                            time = None, additional_lines = None):
+    def WriteTreeScript(self, additional_lines = None):
         """Write a Gnuplot script file to generate a tree image.
 
         Args:
-          time: Float number of seconds since optimization began.
-          file: file to save scrip to
           additional_lines: String with additional lines to be added to the
             script file.
         """
@@ -997,20 +940,13 @@ class BAKTree(BinaryTree):
                                                           image_min_obj)
         data += 'set format x ""\n'
         data += 'set ylabel "obj. value"\n'
-        data += 'set title "B&B tree (%s %ds %s)"\n\n' % (
-                self._filename, int(time), self._label)
+        data += 'set title "B&B tree (%s %.2fs %s)"\n\n' % (
+                self._filename, self._time, self._label)
 
         for line in additional_lines:
             data += line
 
-        if file is not None:
-            fh=self._get_fh(script_file,'w+b')
-            fh.write("".join(data))
-            if self._is_string_like(script_file):
-                fh.close()
-            return
-        else:
-            return data
+        return data
 
     def GetTreeFixedHorizontalPositions(self):
         """Returns horizontal positions for all nodes based on fixed positions.
@@ -1189,7 +1125,7 @@ class BAKTree(BinaryTree):
             outfile.write(line)
         outfile.close()
 
-    def GenerateTreeImage(self, time = None, fixed_horizontal_positions = False, output_file = None):
+    def GenerateTreeImage(self, fixed_horizontal_positions = False):
         """Generate files necessary for a tree image.
 
         Two files are necessary: a data file and a Gnuplot script file (which
@@ -1329,8 +1265,6 @@ class BAKTree(BinaryTree):
 
         data = ''
         data += 'set terminal png notransparent large\n'
-        if output_file:
-            data += 'set output "%s"\n' % output_file
         data += 'set nokey\n'
         data += 'set autoscale\n'
         data += 'set tics scale 0.001\n'
@@ -1340,12 +1274,9 @@ class BAKTree(BinaryTree):
                                                           image_min_obj)
         data += 'set format x ""\n'
         data += 'set ylabel "obj. value"\n'
-        if time:
-            data += 'set title "B&B tree (%s %ds %s)"\n\n' % (
-                    self._filename, int(time), self._label)
-        else:
-            data += 'set title "B&B tree"\n\n' 
-            
+        data += 'set title "B&B tree (%s %.2fs %s)"\n\n' % (
+                    self._filename, self._time, self._label)
+    
         for line in additional_script_lines:
             data += line
                               
@@ -1374,14 +1305,14 @@ class BAKTree(BinaryTree):
             sys.exit(1)
 
         # Tokens shared by all line types
-        time = float(tokens[0])
+        self._time = float(tokens[0])
         line_type = tokens[1]
         remaining_tokens = tokens[2:]
 
         # Process the line based on the type
         if line_type == 'heuristic':
-            self._optimal_soln_time = time
-            self.ProcessHeuristicLine(time, remaining_tokens)
+            self._optimal_soln_time = self._time
+            self.ProcessHeuristicLine(remaining_tokens)
         else:
             # Other node types share common tokens
             node_id = tokens[2]
@@ -1395,41 +1326,40 @@ class BAKTree(BinaryTree):
                 sys.exit(1)
 
             if line_type == 'integer':
-                self._optimal_soln_time = time
-                self.ProcessIntegerLine(time, node_id, parent_id,
+                self._optimal_soln_time = self._time
+                self.ProcessIntegerLine(node_id, parent_id,
                                         branch_direction, remaining_tokens)
             elif line_type == 'fathomed':
-                self.ProcessFathomedLine(time, node_id, parent_id,
+                self.ProcessFathomedLine(node_id, parent_id,
                                          branch_direction, remaining_tokens)
             elif line_type == 'candidate':
-                self.ProcessCandidateLine(time, node_id, parent_id,
+                self.ProcessCandidateLine(node_id, parent_id,
                                           branch_direction, remaining_tokens)
             elif line_type == 'pregnant':
-                self.ProcessPregnantLine(time, node_id, parent_id,
+                self.ProcessPregnantLine(node_id, parent_id,
                                          branch_direction, remaining_tokens)
             elif line_type == 'branched':
-                self.ProcessBranchedLine(time, node_id, parent_id,
+                self.ProcessBranchedLine(node_id, parent_id,
                                          branch_direction, remaining_tokens)
             elif line_type == 'infeasible':
-                self.ProcessInfeasibleLine(time, node_id, parent_id,
+                self.ProcessInfeasibleLine(node_id, parent_id,
                                            branch_direction, remaining_tokens)
             else:
                 print('Unexpected line type "%s": %s' % (line_type,
                                                          ' '.join(tokens)))
                 sys.exit(1)
 
-    def ProcessHeuristicLine(self, time, remaining_tokens):
+    def ProcessHeuristicLine(self, remaining_tokens):
         """Core processing for a line of type 'heuristic'.
 
         Args:
-          time: Float time in seconds.
           remaining_tokens: List of string tokens. These are those that remain
             after any common tokens are processed.
         """
         # Parse remaining tokens
         if len(remaining_tokens) < 1 or len(remaining_tokens) > 2:
             print('Invalid line: %s heuristic %s' % (
-                    time, ' '.join(remaining_tokens)))
+                    self._time, ' '.join(remaining_tokens)))
             print('Should match: <time> heuristic <obj value> [<associated '
                   'node id>]')
             sys.exit(1)
@@ -1452,12 +1382,11 @@ class BAKTree(BinaryTree):
         # Set variable to generate images
         self._new_integer_solution = True
 
-    def ProcessIntegerLine(self, time, node_id, parent_id, branch_direction,
+    def ProcessIntegerLine(self, node_id, parent_id, branch_direction,
                            remaining_tokens):
         """Core processing for a line of type 'integer'.
 
         Args:
-          time: Float time in seconds.
           node_id: String node id.
           parent_id: String node id of parent.
           branch_direction: String of 'L' or 'R' indicating whether this node is
@@ -1468,7 +1397,7 @@ class BAKTree(BinaryTree):
         # Parse remaining tokens
         if len(remaining_tokens) != 1:
             print('Invalid line: %s integer %s %s %s %s' % (
-                    time, node_id, parent_id, branch_direction,
+                    self._time, node_id, parent_id, branch_direction,
                     ' '.join(remaining_tokens)))
             print('Should match: <time> integer <node id> <parent id> '
                   '<branch direction> <obj value>')
@@ -1484,12 +1413,11 @@ class BAKTree(BinaryTree):
 
         self._new_integer_solution = True
 
-    def ProcessFathomedLine(self, time, node_id, parent_id, branch_direction,
+    def ProcessFathomedLine(self, node_id, parent_id, branch_direction,
                             remaining_tokens):
         """Core processing for a line of type 'fathomed'.
 
         Args:
-          time: Float time in seconds.
           node_id: String node id.
           parent_id: String node id of parent.
           branch_direction: String of 'L' or 'R' indicating whether this node is
@@ -1505,7 +1433,7 @@ class BAKTree(BinaryTree):
         # Parse remaining tokens
         if len(remaining_tokens) > 1:
             print('Invalid line: %s fathomed %s %s %s %s' % (
-                    time, node_id, parent_id, branch_direction,
+                    self._time, node_id, parent_id, branch_direction,
                     ' '.join(remaining_tokens)))
             print('Should match: <time> fathomed <node id> <parent id> '
                   '<branch direction> [<lp bound>]')
@@ -1533,12 +1461,11 @@ class BAKTree(BinaryTree):
                              lp_bound, self.get_node_attr(parent_node, 'integer_infeasibility_count'),
                              self.get_node_attr(parent_node, 'integer_infeasibility_sum'))
 
-    def ProcessPregnantLine(self, time, node_id, parent_id, branch_direction,
+    def ProcessPregnantLine(self, node_id, parent_id, branch_direction,
                             remaining_tokens):
         """Core processing for a line of type 'pregnant'.
 
         Args:
-          time: Float time in seconds.
           node_id: String node id.
           parent_id: String node id of parent.
           branch_direction: String of 'L' or 'R' indicating whether this node is
@@ -1549,7 +1476,7 @@ class BAKTree(BinaryTree):
         # Parse remaining tokens
         if len(remaining_tokens) != 3:
             print('Invalid line: %s pregnant %s %s %s %s' % (
-                    time, node_id, parent_id, branch_direction,
+                    self._time, node_id, parent_id, branch_direction,
                     ' '.join(remaining_tokens)))
             print('Should match: <time> pregnant <node id> <parent id> '
                   '<branch direction> <lp bound> '
@@ -1565,12 +1492,11 @@ class BAKTree(BinaryTree):
                              integer_infeasibility_sum)
 
 
-    def ProcessBranchedLine(self, time, node_id, parent_id, branch_direction,
+    def ProcessBranchedLine(self, node_id, parent_id, branch_direction,
                             remaining_tokens):
         """Core processing for a line of type 'branched'.
 
         Args:
-          time: Float time in seconds.
           node_id: String node id.
           parent_id: String node id of parent.
           branch_direction: String of 'L' or 'R' indicating whether this node is
@@ -1582,7 +1508,7 @@ class BAKTree(BinaryTree):
         # Parse remaining tokens
         if len(remaining_tokens) != 3:
             print('Invalid line: %s branched %s %s %s %s' % (
-                    time, node_id, parent_id, branch_direction,
+                    self._time, node_id, parent_id, branch_direction,
                     ' '.join(remaining_tokens)))
             print('Should match: <time> branched <node id> <parent id> '
                   '<branch direction> <lp bound> '
@@ -1597,12 +1523,11 @@ class BAKTree(BinaryTree):
                              lp_bound, integer_infeasibility_count,
                              integer_infeasibility_sum)
 
-    def ProcessInfeasibleLine(self, time, node_id, parent_id, branch_direction,
+    def ProcessInfeasibleLine(self, node_id, parent_id, branch_direction,
                               remaining_tokens):
         """Core processing for a line of type 'infeasible'.
 
         Args:
-          time: Float time in seconds.
           node_id: String node id.
           parent_id: String node id of parent.
           branch_direction: String of 'L' or 'R' indicating whether this node is
@@ -1614,7 +1539,7 @@ class BAKTree(BinaryTree):
         # Parse remaining tokens
         if len(remaining_tokens) != 0:
             print('Invalid line: %s infeasible %s %s %s %s' % (
-                    time, node_id, parent_id, branch_direction,
+                    self._time, node_id, parent_id, branch_direction,
                     ' '.join(remaining_tokens)))
             print('Should match: <time> infeasible <node id> <parent id> '
                   '<branch direction>')
@@ -1641,12 +1566,11 @@ class BAKTree(BinaryTree):
                              lp_bound, ii_count, ii_sum)
 
 
-    def ProcessCandidateLine(self, time, node_id, parent_id, branch_direction,
+    def ProcessCandidateLine(self, node_id, parent_id, branch_direction,
                              remaining_tokens):
         """Core processing for a line of type 'candidate'.
 
         Args:
-          time: Float time in seconds.
           node_id: String node id.
           parent_id: String node id of parent.
           branch_direction: String of 'L' or 'R' indicating whether this node is
@@ -1657,7 +1581,7 @@ class BAKTree(BinaryTree):
         # Parse remaining tokens
         if len(remaining_tokens) == 2 or len(remaining_tokens) > 3:
             print('Invalid line: %s branched %s %s %s %s' % (
-                    time, node_id, parent_id, branch_direction,
+                    self._time, node_id, parent_id, branch_direction,
                     ' '.join(remaining_tokens)))
             print('Should match: <time> candidate <node id> <parent id> '
                   '<branch direction> [<lp bound>] '
@@ -1767,34 +1691,25 @@ class BAKTree(BinaryTree):
                                                measure.value * scale_factor))
         data_file.close()
 
-        script_filename = 'measures.gnuplot'
-        output_filename = 'measures.png'
-        script_file = open(script_filename, 'w')
-        self._gnuplot_files.append(script_filename)
-
         # Set terminal for the output files.
-        script_file.write('set terminal png notransparent large\n\n')
+        gap_script = 'set terminal png notransparent large\n\n'
 
         # Make settings for the plot.
-        script_file.write('set output "%s"\n' % output_filename)
-        script_file.write('set title "Progress Measures: %s, %s"\n' % (
+        gap_script += ('set title "Progress Measures: %s, %s"\n' % (
                 self._filename, self._label))
-        script_file.write('set xlabel \"time (s)\"\n')
-        script_file.write('set ylabel \"measure\"\n')
-        script_file.write('set autoscale\n')
+        gap_script += 'set xlabel \"time (s)\"\n'
+        gap_script += 'set ylabel \"measure\"\n'
+        gap_script += 'set autoscale\n'
 
         # Plot the data points.
-        script_file.write(
+        gap_script += (
             'plot \'%s\' with linespoints linetype 3 title \"(SSG)\", '
             '\'%s\' with linespoints linetype 4 pointtype 19 '
             'title \"(MIP gap)\"\n' %
             (ssg_data_filename, gap_data_filename))
 
-        script_file.write('show output\n')
-        script_file.close()
-
+        gap_script += 'show output\n'
         # Forecasts
-
         # Gap forecasts
         gap_forecasts = self._objective_gap_forecaster.GetAllForecasts()
         gap_data_filename = 'gap_forecasts.dat'
@@ -1819,34 +1734,28 @@ class BAKTree(BinaryTree):
             print('No forecasts made, so not creating forecast image.')
             return
 
-        script_filename = 'forecasts.gnuplot'
-        output_filename = 'forecasts.png'
-        script_file = open(script_filename, 'w')
-        self._gnuplot_files.append(script_filename)
-
         # Set terminal for the output files.
-        script_file.write('set terminal png notransparent large\n\n')
-
+        ssg_script = 'set terminal png notransparent large\n\n'
         # Make settings for the plot.
-        script_file.write('set output "%s"\n' % output_filename)
-        script_file.write('set title "Forecasts: %s, %s"\n' % (
+        ssg_script += ('set title "Forecasts: %s, %s"\n' % (
                 self._filename, self._label))
-        script_file.write('set xlabel \"time (s)\"\n')
-        script_file.write('set ylabel \"prediction of total time\"\n')
-        script_file.write('set autoscale\n')
+        ssg_script += 'set xlabel \"time (s)\"\n'
+        ssg_script += 'set ylabel \"prediction of total time\"\n'
+        ssg_script += 'set autoscale\n'
 
         # Plot the data points and the unit-slope line (to show elapsed time).
-        script_file.write('plot ')
+        ssg_script += 'plot '
         if ssg_forecasts:
-            script_file.write('\'%s\' with linespoints linetype 3 '
+            ssg_script += ('\'%s\' with linespoints linetype 3 '
                               'title \"(SSG)\", ' % ssg_data_filename)
         if gap_forecasts:
-            script_file.write('\'%s\' with linespoints linetype 4 pointtype 19 '
+            ssg_script += ('\'%s\' with linespoints linetype 4 pointtype 19 '
             'title \"(MIP gap)\", ' % gap_data_filename)
-        script_file.write('x linetype 0 title \"elapsed time\"\n')
+        ssg_script += 'x linetype 0 title \"elapsed time\"\n'
+        ssg_script += 'show output\n'
 
-        script_file.write('show output\n')
-        script_file.close()
+        # return images using gnuplot pipes for both gap_script and ssg_script
+
         
     def _get_fh(self, path, mode='r'):
         '''
