@@ -1,5 +1,4 @@
 from baktree import BAKTree
-import pdb
 import sys
 
 #
@@ -24,22 +23,21 @@ import sys
 if __name__ == '__main__':
     bt = BAKTree()
     bt.set_display_mode('pygame')
-    file_ = open('p0201_GLPK.in', 'r')
-    pdb.set_trace()
     line_number = 0
-#    while True:
-#        line = sys.stdin.readline()
-    for line in file_:
+#    file_ = open('p0201_GLPK.in', 'r')
+    while True:
+        line = sys.stdin.readline()
+#    for line in file_:
         bt.ProcessLine(line)
         print 'line', line_number, 'processed'
         line_number = line_number+1
-        if line_number%100 != 0:
-            continue
+#        if line_number%100 != 0:
+#            continue
         if bt.root is not None:
 #            gnuplot_image = bt.GenerateHistogram()
-#            gnuplot_image = bt.GenerateTreeImage()
+            gnuplot_image = bt.GenerateTreeImage()
 #            gnuplot_image = bt.GenerateScatterplot()
-            gnuplot_image = bt.GeneratePredictionImages()
+#            gnuplot_image = bt.GeneratePredictionImages()
             if gnuplot_image is not None:
                 bt.display_image(gnuplot_image)
 
