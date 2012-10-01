@@ -93,7 +93,7 @@ from gimpy import BinaryTree
 import time
 
 from StringIO import StringIO
-from pygame import display, image, init
+from pygame import display, image, init, Rect
 
 from forecastingchainedsequences import ForecastingChainedSequences
 
@@ -166,6 +166,43 @@ class BAKTree(BinaryTree):
                 self.display()
         input_file.close()
 
+    def display_all(self):
+        tree = self.GenerateTreeImage()
+        scatterplot = self.GenerateScatterplot()
+        histogram = self.GenerateHistogram()
+        prediction = self.GeneratePredictionImages()
+        if tree is not None:
+            imTree = StringIO(tree)
+            pTree = image.load(imTree, 'png')
+            sTree = pTree.get_size()
+            rTree = Rect(0,0,sTree[0],sTree[1])
+        if scatterplot is not None:
+            imScatterplot = StringIO(scatterplot)
+            pScatterplot = image.load(imScatterplot, 'png')
+            sScatterplot = pScatterplot.get_size()
+            rScatterplot = Rect(sTree[0],0,sScatterplot[0],sScatterplot[1])
+        if histogram is not None:
+            imHistogram = StringIO(histogram)
+            pHistogram = image.load(imHistogram, 'png')
+            sHistogram = pHistogram.get_size()
+            rHistogram = Rect(0,sTree[1],sHistogram[0],sHistogram[1])
+        if prediction is not None:
+            imPrediction = StringIO(prediction)
+            pPrediction = image.load(imPrediction, 'png')
+            sPrediction = pPrediction.get_size()
+            rPrediction = Rect(sTree[0],sTree[1],sPrediction[0],sPrediction[1])
+        screen = display.set_mode((sTree[0]+sScatterplot[0],
+                                  sTree[1]+sHistogram[1]))
+        if tree is not None:
+            screen.blit(pTree, rTree)
+        if scatterplot is not None:
+            screen.blit(pScatterplot, rScatterplot)
+        if histogram is not None:
+            screen.blit(pHistogram, rHistogram)
+        if prediction is not None:
+            screen.blit(pPrediction, rPrediction)
+        display.flip()
+        
     def display_image(self, gnuplot):
         im = StringIO(gnuplot)
         picture = image.load(im, 'png')

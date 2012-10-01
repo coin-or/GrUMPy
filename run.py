@@ -34,8 +34,9 @@ if __name__ == '__main__':
             continue
         if bt.root is not None:
 #            gnuplot_image = bt.GenerateHistogram()
-            gnuplot_image = bt.GenerateTreeImage()
+#            gnuplot_image = bt.GenerateTreeImage()
 #            gnuplot_image = bt.GenerateScatterplot()
 #            gnuplot_image = bt.GeneratePredictionImages()
-            if gnuplot_image is not None:
-                bt.display_image(gnuplot_image)
+#            if gnuplot_image is not None:
+#                bt.display_image(gnuplot_image)
+            bt.display_all()
