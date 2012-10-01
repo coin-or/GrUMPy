@@ -1,0 +1,405 @@
+\documentclass{beamer}
+
+\usepackage{graphics}
+
+\usetheme{Boadilla}
+
+
+\newcommand{\ignore}[1]{}
+\newcommand{\Real}{\mathbf{R}}
+
+\title[Visualization]{Visualization of Branch-and-bound Algorithms}
+
+\author[Ted]{Ted Ralphs}
+
+\institute[Lehigh University]{Lehigh University}
+\date{\today} 
+\begin{document}
+
+%=========================== Title page =======================================
+\begin{frame}
+\titlepage
+\end{frame}
+
+%=========================== Collaborators ====================================
+\begin{frame}
+\frametitle{Collaborators}
+\begin{center}
+Aykut Bulut\\
+and others
+\end{center}
+\end{frame}
+
+%=========================== slide-1 ==========================================
+\begin{frame}
+\frametitle{Outline}
+\begin{itemize}
+\item Reasons to monitor the progress of branch-and-bound
+\item Current measures
+\item Our approach
+\item Visualization tools
+\item Current and future work
+\end{itemize}
+\end{frame}
+
+%=========================== slide-2 ==========================================
+\begin{frame}
+\frametitle{Why monitor the progress of B\&B algorithms?}
+
+\uncover<+->{}
+\begin{itemize}[<+->]
+\item How good is the best solution so far?
+\item How much longer do we have to wait until the algorithm terminates?
+\item How likely is it that a better solution will be found, and how much better will it be?
+\item Should we change any algorithm strategies? (branching, node selection,...) 
+\end{itemize}
+\end{frame}
+
+%=========================== slide-3 ==========================================
+\begin{frame}
+\frametitle{How do we monitor the progress of B\&B now?}
+
+\begin{itemize}[<+->]
+\item Most commercial and open-source solvers can report:
+    \begin{itemize}
+    \item optimality gap
+    \item number of active nodes
+    \item some internal measures for guiding the algorithm
+    \end{itemize} 
+\item Each of these methods have some strengths and weaknesses 
+\end{itemize}
+\end{frame}
+
+%=========================== slide-4 ==========================================
+\begin{frame}
+\frametitle{Current methods: optimality gap}
+
+\begin{center}
+optimality gap picture
+\end{center}
+
+\begin{itemize}[<+->]
+\item Strength: guarantee on quality of solution
+\item Strength: nonincreasing
+\item \alert {Weakness: may remain constant for long periods, then drop suddenly } 
+\end{itemize}
+\end{frame}
+
+%=========================== slide-5 ==========================================
+\begin{frame}
+\frametitle{Current methods: number of active nodes}
+
+\begin{center}
+number of activenodes picture
+\end{center}
+
+\begin{itemize}[<+->]
+\item Strength: some sense of "work remaining"
+\item \alert {Weakness: may go up and down}
+\item \alert {Weakness: each active node counts equally } 
+\end{itemize}
+\end{frame}
+
+%=========================== slide-6 ==========================================
+\begin{frame}
+\frametitle{Prior work and inspiration}
+
+\begin{itemize}[<+->]
+\item VBCTool (Diehl, J\"unger, Kupke, Leipart)
+\item Images on the TSP website (www.tsp.gatech.edu)
+\item XPRESS-MP
+\item Cornu\'ejols, Karamanov, Li (2006)
+\end{itemize}
+\end{frame}
+
+
+%=========================== slide-7 ==========================================
+\begin{frame}
+\frametitle{Key Observations}
+
+\begin{enumerate}[<+->]
+\item B\&B algorithms generate lots of data during the solution procedure
+    \begin{itemize}[<+->]
+    \item Number of nodes
+    \item For each node:
+        \begin{itemize}         
+        \item LP Bound
+        \item integer infeasibility
+        \item history/position in tree (e.g. depth and parent) 
+        \end{itemize}
+    \end{itemize} 
+\item Current methods use only a small amount of this data
+\item Most prior work only considers one type of information at a time
+\item \alert {Develop tools that consider as much data as possible!} 
+\end{enumerate}
+\end{frame}
+
+%=========================== slide-8 ==========================================
+\begin{frame}
+\frametitle{Approach}
+
+\begin{itemize}[<+->]
+\item Used open-source solvers GLPK, SYMPHONY, and CBC
+\item Modified solver codes to output information when nodes are added and
+processed
+\item Wrote new code to create visual representations of the data by parsing
+the output file
+    \begin{itemize}[<+->]
+    \item Output file can be processed at any point during the solving process 
+    \item Parsing is done with Perl; images are created with Gnuplot
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+%=========================== slide-9 ==========================================
+\begin{frame}
+\frametitle{Example of output from solver}
+
+%\begin{verbatim}
+\# CBC\\
+0.040003 heuristic -28.000000\\
+2.692169 branched 0 -1 N -39.248099 16 0.169729\\
+2.692169 pregnant 2 0 R -39.248063 14 105.991922\\
+2.708170 pregnant 3 0 L -38.939929 6 0.105246\\
+2.764173 pregnant 5 2 R -39.244862 12 49.115388\\
+2.764173 branched 2 0 R -39.248063 14 105.991922\\
+%\end{verbatim}
+\end{frame}
+
+%=========================== slide-10 =========================================
+\begin{frame}
+\frametitle{Visual Representations}
+
+\begin{itemize}
+\item Visual representations:
+    \begin{itemize}[<+->]    
+    \item Histogram of active node LP bounds
+    \item Scatter plot of active node LP bounds \& integer infeasibility
+    \item Incumbent node history in scatter plot
+    \item B\&B trees showing the LP bound of each node
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+%=========================== slide-11 =========================================
+\begin{frame}
+\frametitle{Visualization tools: Histogram of active node LP bounds}
+
+\begin{center}
+histogram of active node lp bounds
+\end{center}
+
+\begin{itemize}
+\item Horizontal axis is the LP bound
+\item Vertical axis is number of active nodes
+\item Green vertical line shows the current incumbent value and the blue one
+shows the overall LP bound
+\end{itemize}
+\end{frame}
+
+%=========================== slide-12 =========================================
+\begin{frame}
+\frametitle{Example histogram series 1: l152lav (MIPLIB 2003)}
+
+\begin{center}
+%\only<+>{\includegraphics[width=10cm]{pictures/l152lav/objectives000.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/l152lav/objectives001.png}}%
+histogram series
+\end{center}
+\end{frame}
+
+%=========================== slide-13 =========================================
+\begin{frame}
+\frametitle{Example histogram series 2: swath (MIPLIB 2003)}
+
+\begin{center}
+%\only<+>{\includegraphics[width=10cm]{pictures/swath/objectives000.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/swath/objectives001.png}}%
+histogram series 2
+\end{center}
+\end{frame}
+
+%=========================== slide-14 =========================================
+\begin{frame}
+\frametitle{Visualization tools: Scatter plot of active node LP bounds \& integer infeasibility}
+
+\begin{center}
+scatterplot
+\end{center}
+
+\begin{itemize}
+\item Horizontal axis is the integer infeasibility
+\item Vertical axis is the LP bound
+\item Green horizontal line is the current incumbent value
+\end{itemize}
+\end{frame}
+
+%=========================== slide-15 =========================================
+\begin{frame}
+\frametitle{Example scatter plot series 1: swath (MIPLIB 2003)}
+
+\begin{center}
+%\only<+>{\includegraphics[width=10cm]{pictures/swath/scatter000.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/swath/scatter001.png}}%
+scatterplot series
+\end{center}
+\end{frame}
+
+%\begin{frame}
+%\frametitle{Patterns in integer infeasibility: SYMPHONY}
+%\begin{center}
+%\only<+>{\includegraphics[width=10cm]{pictures/mod008scatterplot003.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/mod008scatterplot004.png}}%
+%\end{center}
+%\end{frame}
+
+%=========================== slide-16 =========================================
+\begin{frame}
+\frametitle{Visualization tools: Incumbent node history in scatter plot}
+
+\begin{center}
+incumbent history plot
+\end{center}
+\begin{itemize}
+\item Horizontal axis is the integer infeasibility
+\item Vertical axis is the LP bound
+\item Green line shows ancestors of the incumbent node
+\end{itemize}
+\end{frame}
+
+%=========================== slide-17 =========================================
+\begin{frame}
+\frametitle{Example incumbent node history series 1: l152lav (MIPLIB 2003)}
+
+\begin{center}
+%\only<+>{\includegraphics[width=10cm]{pictures/l152lav/incdata000.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/l152lav/incdata001.png}}%
+incumbent series
+\end{center}
+\end{frame}
+
+%=========================== slide-18 =========================================
+%\begin{frame}
+%\frametitle{Example incumbent node history series 2: liu (MIPLIB 2003)}
+
+%\begin{center}
+%\includegraphics[width=10cm]{pictures/liu/incdata000.png}
+%\end{center}
+%\end{frame}
+
+%=========================== slide-19 =========================================
+\begin{frame}
+\frametitle{Visualization tools: B\&B trees}
+
+\begin{center}
+tree image
+\end{center}
+\begin{itemize}
+\item Vertical axis is the LP bound
+\item Nodes are horizontally positioned to make the pictures more readable
+\item Alternatively, horizontal positions may be fixed based on position in the
+tree
+\end{itemize}
+\end{frame}
+
+%=========================== slide-20 =========================================
+\begin{frame}
+\frametitle{Visualization tools: B\&B trees}
+
+\begin{center}
+tree image
+\end{center}
+\begin{itemize}
+\item Node color legend:
+    \begin{itemize}
+    \item green: branched
+    \item yellow: candidate or pregnant
+    \item red: fathomed
+    \item blue: infeasible
+    \end{itemize} 
+\end{itemize}
+\end{frame}
+
+%=========================== slide-21 =========================================
+\begin{frame}
+\frametitle{Example B\&B trees}
+
+\begin{center}
+%\only<+>{\includegraphics[width=10cm]{pictures/natasa/tree000.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/natasa/tree001.png}}%
+tree series
+\end{center}
+\end{frame}
+
+%=========================== slide-22 =========================================
+\begin{frame}
+\frametitle{Example B\&B tree series 1: l152lav (MIPLIB 2003)}
+
+\begin{center}
+%\only<+>{\includegraphics[width=10cm]{pictures/l152lav/tree000.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/l152lav/tree001.png}}%
+tree series
+\end{center}
+\end{frame}
+
+%\begin{frame}
+%\frametitle{Example B\&B tree series 2: liu (MIPLIB 2003)}
+%\begin{center}
+%\only<+>{\includegraphics[width=10cm]{pictures/liu/tree000.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/liu/tree001.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/liu/tree002.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/liu/tree003.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/liu/tree004.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/liu/tree005.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/liu/tree006.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/liu/tree007.png}}%
+%\end{center}
+%\end{frame}
+
+
+%\begin{frame}
+%\frametitle{Example B\&B tree series 3}
+%\begin{center}
+%\only<+>{\includegraphics[width=10cm]{pictures/natasa/tree000.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/natasa/tree001.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/natasa/tree002.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/natasa/tree003.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/natasa/tree004.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/natasa/tree005.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/natasa/tree006.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/natasa/tree007.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/natasa/tree008.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/natasa/tree009.png}}%
+%\only<+>{\includegraphics[width=10cm]{pictures/natasa/tree010.png}}%
+%\end{center}
+%\end{frame}
+
+%=========================== slide-23 =========================================
+\begin{frame}
+\frametitle{Imagined uses}
+
+\begin{itemize}[<+->]
+\item Predict time to completion (through experienced user or automated) 
+\item Quickly determine what makes an instance hard
+\item Identify key LP solutions that should be investigated
+\end{itemize}
+\end{frame}
+
+%=========================== slide-24 =========================================
+\begin{frame}
+\frametitle{Summary and Current Efforts}
+\begin{itemize}[<+->]
+\item Our code and graphs provide a variety of visual information for users of
+branch-and-bound algorithms.
+\item A paper has been submitted.  A pre-print is available at Optimization
+Online.
+\item The code has been submitted to COIN-OR.  At present, available at
+www.engr.pitt.edu/hunsaker/
+\item Future work: estimate likelihood of better integer solutions
+\item Can other information be extracted: recommended node selection strategy
+or cuts?
+\item What will other researchers do with the tools?
+\end{itemize}
+\end{frame}
+
+\end{document}
