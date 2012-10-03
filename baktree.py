@@ -170,7 +170,7 @@ class BAKTree(BinaryTree):
         tree = self.GenerateTreeImage()
         scatterplot = self.GenerateScatterplot()
         histogram = self.GenerateHistogram()
-        prediction = self.GeneratePredictionImages()
+        incumbent = self.GenerateIncumbentPath()
         if tree is not None:
             imTree = StringIO(tree)
             pTree = image.load(imTree, 'png')
@@ -186,11 +186,11 @@ class BAKTree(BinaryTree):
             pHistogram = image.load(imHistogram, 'png')
             sHistogram = pHistogram.get_size()
             rHistogram = Rect(0,sTree[1],sHistogram[0],sHistogram[1])
-        if prediction is not None:
-            imPrediction = StringIO(prediction)
-            pPrediction = image.load(imPrediction, 'png')
-            sPrediction = pPrediction.get_size()
-            rPrediction = Rect(sTree[0],sTree[1],sPrediction[0],sPrediction[1])
+        if incumbent is not None:
+            imIncumbent = StringIO(incumbent)
+            pIncumbent = image.load(imIncumbent, 'png')
+            sIncumbent = pIncumbent.get_size()
+            rIncumbent = Rect(sTree[0],sTree[1],sIncumbent[0],sIncumbent[1])
         screen = display.set_mode((sTree[0]+sScatterplot[0],
                                   sTree[1]+sHistogram[1]))
         if tree is not None:
@@ -199,8 +199,8 @@ class BAKTree(BinaryTree):
             screen.blit(pScatterplot, rScatterplot)
         if histogram is not None:
             screen.blit(pHistogram, rHistogram)
-        if prediction is not None:
-            screen.blit(pPrediction, rPrediction)
+        if incumbent is not None:
+            screen.blit(pIncumbent, rIncumbent)
         display.flip()
         
     def display_image(self, gnuplot):
@@ -946,6 +946,8 @@ class BAKTree(BinaryTree):
 
         # Output the Gnuplot script to a file.
         path_script = self.WriteIncumbentPathScript(data_filename)
+        gp = Popen(['gnuplot'], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
+        return gp.communicate(input=path_script)[0]
 
     def GenerateAllIncumbentPaths(self):
         """Generate file for a path image with all incumbent paths.
