@@ -69,17 +69,17 @@ Create only histogram images.
 """
 
 #TODO(aykut)
-# -> get rid of _nodes and _node_id_list attributes
+# done -> get rid of _nodes and _node_id_list attributes
 # -> get rid of parent_id==0 check in AddOrUpdateNode method, when adding edge
 # and when setting parent_id attribute
-# -> line 1120 and line 1121 are unnecessary, since they are already 0.0 and 1.0
+# they are necessary -> line 1120 and line 1121 are unnecessary, since they are already 0.0 and 1.0
 #        horizontal_lower_bound[self._root_id] = 0.0
 #        horizontal_upper_bound[self._root_id] = 1.0
 # -> note that this script file is for python 3 and rest of our code is in 2.7.
-# we use this file with 2.7 be carefull, especially integer division
+# we use this file with 2.7, be carefull, especially integer division
 # in python2.7 5/2=2, in python3 5/2=2.5
 # -> check subtree_root attribute of node class
-# -> get rid of self._root_id since we have self.root inherited from BinaryTree
+# done -> get rid of self._root_id since we have self.root inherited from BinaryTree
 
 import math
 import random
@@ -103,9 +103,6 @@ class BAKTree(BinaryTree):
     This is the main class of BAK.  The tree object contains information about
     the entire branch-and-bound tree.  It contains methods to process lines
     in the data file and to generate images as necessary.
-
-    There is only one public data member:
-      last_time_stamp: Float time stamp of the most recent processing done.
     """
     def __init__(self, **attrs):
         attrs['layout'] = 'bak'
@@ -236,10 +233,9 @@ class BAKTree(BinaryTree):
         
         # Make a final set of images
         if options.tree:
-            self.GenerateTreeImage(self.last_time_stamp)
+            self.GenerateTreeImage()
         if options.fixed_tree:
-            self.GenerateTreeImage(self.last_time_stamp,
-                               fixed_horizontal_positions=True)
+            self.GenerateTreeImage(fixed_horizontal_positions=True)
 
         # Do prediction images if requested
         if options.predictions:
@@ -354,7 +350,7 @@ class BAKTree(BinaryTree):
             if value < self._min_objective_value:
                 self._min_objective_value = value
 
-    def AddProgressMeasures(self, time):
+    def AddProgressMeasures(self):
         # No progress measures if there is no incumbent yet
         if self._incumbent_value is None:
             return
@@ -397,7 +393,7 @@ class BAKTree(BinaryTree):
         # Start a new sequence if a new integer solution was just found
         if self._new_integer_solution:
             if new_integer_ssg >= 1e-6:
-                scale_factor = (sum_subtree_gaps / new_integer_ssg)
+                scale_factor = (float(sum_subtree_gaps) / float(new_integer_ssg))
             else:
                 scale_factor = 1.0
             self._sum_subtree_gaps_forecaster.StartNewSequence(scale_factor)
@@ -406,7 +402,7 @@ class BAKTree(BinaryTree):
             # update it now
             sum_subtree_gaps = new_integer_ssg
 
-        self._sum_subtree_gaps_forecaster.AddMeasure(time, sum_subtree_gaps,
+        self._sum_subtree_gaps_forecaster.AddMeasure(self._time, sum_subtree_gaps,
                                                      active_node_count,
                                                      len(self.get_node_list()))
 
@@ -419,25 +415,25 @@ class BAKTree(BinaryTree):
             obj_gap = self._incumbent_value - self._min_objective_value
         else:
             obj_gap = self._max_objective_value - self._incumbent_value
-        self._objective_gap_forecaster.AddMeasure(time, obj_gap,
+        self._objective_gap_forecaster.AddMeasure(self._time, obj_gap,
                                                   active_node_count,
                                                   len(self.get_node_list()))
 
-    def GenerateImagesIfAppropriate(self, time):
-        """Generates images if appropriate based on time or integer solution.
+#    def GenerateImagesIfAppropriate(self, time):
+#        """Generates images if appropriate based on time or integer solution.
+#
+#        Triggers to generate images are either elapsed time or the presence
+#        of a new integer solution.
+#
+#        Args:
+#          time: Float elapsed time in seconds.
+#        """
 
-        Triggers to generate images are either elapsed time or the presence
-        of a new integer solution.
-
-        Args:
-          time: Float elapsed time in seconds.
-        """
-
-        print('Generating image set %d at time %.2f' % (self._image_counter,
-                                                        time))
+        #print('Generating image set %d at time %.2f' % (self._image_counter,
+#                                                        time))
 
         # Check control parameters and call each image generator.
-        self.GenerateHistogram()
+        #self.GenerateHistogram()
         #self.GenerateScatterplot(time)
         #self.GenerateTreeImage(time)
         #self.GenerateTreeImage(time, fixed_horizontal_positions=True)
@@ -445,8 +441,8 @@ class BAKTree(BinaryTree):
         #self.AddProgressMeasures(time)
             
         # Update internal state.
-        self._image_counter += 1
-        self._new_integer_solution = False
+ #       self._image_counter += 1
+ #       self._new_integer_solution = False
 
     def GetImageCounterString(self):
         """Returns a string with the image counter."""
@@ -1387,6 +1383,7 @@ class BAKTree(BinaryTree):
                 print('Unexpected line type "%s": %s' % (line_type,
                                                          ' '.join(tokens)))
                 sys.exit(1)
+        self.AddProgressMeasures()
 
     def ProcessHeuristicLine(self, remaining_tokens):
         """Core processing for a line of type 'heuristic'.
@@ -1731,23 +1728,29 @@ class BAKTree(BinaryTree):
         data_file.close()
 
         # Set terminal for the output files.
-        gap_script = 'set terminal png notransparent large\n\n'
+        measures_script = 'set terminal png notransparent large\n\n'
 
         # Make settings for the plot.
-        gap_script += ('set title "Progress Measures: %s, %s"\n' % (
+        measures_script += ('set title "Progress Measures: %s, %s"\n' % (
                 self._filename, self._label))
-        gap_script += 'set xlabel \"time (s)\"\n'
-        gap_script += 'set ylabel \"measure\"\n'
-        gap_script += 'set autoscale\n'
+        measures_script += 'set xlabel \"time (s)\"\n'
+        measures_script += 'set ylabel \"measure\"\n'
+        measures_script += 'set autoscale\n'
 
         # Plot the data points.
-        gap_script += (
+        measures_script += (
             'plot \'%s\' with linespoints linetype 3 title \"(SSG)\", '
             '\'%s\' with linespoints linetype 4 pointtype 19 '
             'title \"(MIP gap)\"\n' %
             (ssg_data_filename, gap_data_filename))
 
-        gap_script += 'show output\n'
+        measures_script += 'show output\n'
+
+        # Pipe gnuplot with measures_script
+        gp = Popen(['gnuplot'], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
+        return gp.communicate(input=measures_script)[0]
+
+    def GenerateForecastImages(self):
         # Forecasts
         # Gap forecasts
         gap_forecasts = self._objective_gap_forecaster.GetAllForecasts()
@@ -1774,26 +1777,29 @@ class BAKTree(BinaryTree):
             return
 
         # Set terminal for the output files.
-        ssg_script = 'set terminal png notransparent large\n\n'
+        forecast_script = 'set terminal png notransparent large\n\n'
         # Make settings for the plot.
-        ssg_script += ('set title "Forecasts: %s, %s"\n' % (
+        forecast_script += ('set title "Forecasts: %s, %s"\n' % (
                 self._filename, self._label))
-        ssg_script += 'set xlabel \"time (s)\"\n'
-        ssg_script += 'set ylabel \"prediction of total time\"\n'
-        ssg_script += 'set autoscale\n'
+        forecast_script += 'set xlabel \"time (s)\"\n'
+        forecast_script += 'set ylabel \"prediction of total time\"\n'
+        forecast_script += 'set autoscale\n'
 
         # Plot the data points and the unit-slope line (to show elapsed time).
-        ssg_script += 'plot '
-        if ssg_forecasts:
-            ssg_script += ('\'%s\' with linespoints linetype 3 '
+        forecast_script += 'plot '
+        if forecast_forecasts:
+            forecast_script += ('\'%s\' with linespoints linetype 3 '
                               'title \"(SSG)\", ' % ssg_data_filename)
         if gap_forecasts:
-            ssg_script += ('\'%s\' with linespoints linetype 4 pointtype 19 '
+            forecast_script += ('\'%s\' with linespoints linetype 4 pointtype 19 '
             'title \"(MIP gap)\", ' % gap_data_filename)
-        ssg_script += 'x linetype 0 title \"elapsed time\"\n'
-        ssg_script += 'show output\n'
+        forecast_script += 'x linetype 0 title \"elapsed time\"\n'
+        forecast_script += 'show output\n'
 
-        # return images using gnuplot pipes for both gap_script and ssg_script
+        # pipe gnuplot with forecast_script
+        gp = Popen(['gnuplot'], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
+        return gp.communicate(input=forecast_script)[0]
+
 
         
     def _get_fh(self, path, mode='r'):
