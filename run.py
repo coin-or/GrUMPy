@@ -30,16 +30,16 @@ if __name__ == '__main__':
         bt.ProcessLine(line)
         print 'line', line_number, 'processed.'
         line_number = line_number+1
-#        if line_number%100 != 0:
-#            continue
+        if line_number%100 != 0:
+            continue
         if line_number<=50:
             continue
         if bt.root is not None:
 #            gnuplot_image = bt.GenerateHistogram()
 #            gnuplot_image = bt.GenerateTreeImage()
 #            gnuplot_image = bt.GenerateScatterplot()
-            gnuplot_image = bt.GeneratePredictionImages()
+#            gnuplot_image = bt.GeneratePredictionImages()
 #            gnuplot_image = bt.GenerateForecastImages()
-            if gnuplot_image is not None:
-                bt.display_image(gnuplot_image)
-#            bt.display_all()
+#            if gnuplot_image is not None:
+#                bt.display_image(gnuplot_image)
+            bt.display_all()
