@@ -94,6 +94,7 @@ import time
 
 from StringIO import StringIO
 from pygame import display, image, init, Rect
+from pygame.transform import scale
 
 from forecastingchainedsequences import ForecastingChainedSequences
 
@@ -171,25 +172,30 @@ class BAKTree(BinaryTree):
         if tree is not None:
             imTree = StringIO(tree)
             pTree = image.load(imTree, 'png')
+            #pTree = scale(pTree, (500, 300))
             sTree = pTree.get_size()
             rTree = Rect(0,0,sTree[0],sTree[1])
         if scatterplot is not None:
             imScatterplot = StringIO(scatterplot)
             pScatterplot = image.load(imScatterplot, 'png')
+            #pScatterplot = scale(pScatterplot, (500, 300))
             sScatterplot = pScatterplot.get_size()
             rScatterplot = Rect(sTree[0],0,sScatterplot[0],sScatterplot[1])
         if histogram is not None:
             imHistogram = StringIO(histogram)
             pHistogram = image.load(imHistogram, 'png')
+            #pHistogram = scale(pHistogram, (500, 300))
             sHistogram = pHistogram.get_size()
             rHistogram = Rect(0,sTree[1],sHistogram[0],sHistogram[1])
+            #rHistogram = Rect(0,500,500,300)
         if incumbent is not None:
             imIncumbent = StringIO(incumbent)
             pIncumbent = image.load(imIncumbent, 'png')
+            #pIncumbent = scale(pIncumbent, (500, 300))
             sIncumbent = pIncumbent.get_size()
             rIncumbent = Rect(sTree[0],sTree[1],sIncumbent[0],sIncumbent[1])
-        screen = display.set_mode((sTree[0]+sScatterplot[0],
-                                  sTree[1]+sHistogram[1]))
+            #rIncumbent = Rect(500,300,500,300)
+        screen = display.set_mode((sTree[0]+sScatterplot[0], sTree[1]+sIncumbent[1]))
         if tree is not None:
             screen.blit(pTree, rTree)
         if scatterplot is not None:
@@ -363,9 +369,9 @@ class BAKTree(BinaryTree):
         new_integer_ssg = 0  # Only needed if this is a new integer solution
         for node_id in self.get_node_list():
             status = self.get_node_attr(node_id, 'status')
-            lp_bound = self.get_node_attr(node_id, 'lp_bound')
-            subtree_root = self.get_node_attr(node_id, 'subtree_root')
             if status == 'candidate' or status == 'pregnant':
+                lp_bound = self.get_node_attr(node_id, 'lp_bound')
+                subtree_root = self.get_node_attr(node_id, 'subtree_root')
                 # Optional check for fathomed nodes.
                 if (self._fathom and
                     not self.IsBetterThanIncumbent(lp_bound)):
@@ -479,7 +485,7 @@ class BAKTree(BinaryTree):
         script = ""
 
         # Set terminal for the output files.
-        script += 'set terminal png notransparent large\n\n'
+        script += 'set terminal png notransparent size 480,360\n\n'
 
         # Make settings for the scatter plot.
         index_string = self.GetImageCounterString()
@@ -747,7 +753,7 @@ class BAKTree(BinaryTree):
         script = ""
 
         # Set terminal for the output files.
-        script += 'set terminal png notransparent large\n\n'
+        script += 'set terminal png notransparent size 480,360\n\n'
 
         # Make settings for the scatter plot.
         if output_file:
@@ -853,7 +859,7 @@ class BAKTree(BinaryTree):
         script = ''
 
         # Set terminal for the output files.
-        script += 'set terminal png notransparent large\n\n'
+        script += 'set terminal png notransparent size 480,360\n\n'
         script += ('set title "Incumbent path (%s %.2fs %s)"\n' % (
                 self._filename, self._time, self._label))
         script += 'set pointsize 0.8\n'
@@ -884,7 +890,7 @@ class BAKTree(BinaryTree):
 
         script = ''
         # Set terminal for the output files.
-        script += 'set terminal png notransparent large\n\n'
+        script += 'set terminal png notransparent size 480,360\n\n'
 
         # Make settings for the scatter plot.
         script += ('set title "Incumbent paths (%s %.2fs %s)"\n' % (
@@ -964,7 +970,7 @@ class BAKTree(BinaryTree):
             self._min_objective_value, self._max_objective_value)
 
         data = ''
-        data += 'set terminal png notransparent large\n'
+        data += 'set terminal png notransparent size 480,360\n'
         data += 'set output "%s"\n' % output_file
         data += 'set nokey\n'
         data += 'set autoscale\n'
@@ -1299,7 +1305,7 @@ class BAKTree(BinaryTree):
             self._min_objective_value, self._max_objective_value)
 
         data = ''
-        data += 'set terminal png notransparent large\n'
+        data += 'set terminal png notransparent size 480,360\n'
         data += 'set nokey\n'
         data += 'set autoscale\n'
         data += 'set tics scale 0.001\n'
@@ -1383,7 +1389,6 @@ class BAKTree(BinaryTree):
                 print('Unexpected line type "%s": %s' % (line_type,
                                                          ' '.join(tokens)))
                 sys.exit(1)
-        self.AddProgressMeasures()
 
     def ProcessHeuristicLine(self, remaining_tokens):
         """Core processing for a line of type 'heuristic'.
@@ -1540,7 +1545,7 @@ class BAKTree(BinaryTree):
           remaining_tokens: List of string tokens. These are those that remain
             after any common tokens are processed.
         """
-
+        #self.AddProgressMeasures()
         # Parse remaining tokens
         if len(remaining_tokens) != 3:
             print('Invalid line: %s branched %s %s %s %s' % (
@@ -1571,7 +1576,7 @@ class BAKTree(BinaryTree):
           remaining_tokens: List of string tokens. These are those that remain
             after any common tokens are processed.
         """
-
+        #self.AddProgressMeasures()
         # Parse remaining tokens
         if len(remaining_tokens) != 0:
             print('Invalid line: %s infeasible %s %s %s %s' % (
@@ -1720,7 +1725,7 @@ class BAKTree(BinaryTree):
         data_file = open(ssg_data_filename, 'w')
         # We need to scale the SSG measures so that it will make sense to
         # look at them on the same plot with gap measures.
-        scale_factor = gap_measures[0].value / ssg_measures[0].value
+        scale_factor = float(gap_measures[0].value) / float(ssg_measures[0].value)
 
         for measure in ssg_measures:
             data_file.write('%0.6f %0.6f\n' % (measure.time,
@@ -1728,7 +1733,7 @@ class BAKTree(BinaryTree):
         data_file.close()
 
         # Set terminal for the output files.
-        measures_script = 'set terminal png notransparent large\n\n'
+        measures_script = 'set terminal png notransparent size 480,360\n\n'
 
         # Make settings for the plot.
         measures_script += ('set title "Progress Measures: %s, %s"\n' % (
@@ -1777,7 +1782,7 @@ class BAKTree(BinaryTree):
             return
 
         # Set terminal for the output files.
-        forecast_script = 'set terminal png notransparent large\n\n'
+        forecast_script = 'set terminal png notransparent size 480,360\n\n'
         # Make settings for the plot.
         forecast_script += ('set title "Forecasts: %s, %s"\n' % (
                 self._filename, self._label))
