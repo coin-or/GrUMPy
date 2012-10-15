@@ -165,6 +165,9 @@ class BAKTree(BinaryTree):
         input_file.close()
 
     def display_all(self):
+        '''
+        Assumes all the images have the same size.
+        '''
         tree = self.GenerateTreeImage()
         scatterplot = self.GenerateScatterplot()
         histogram = self.GenerateHistogram()
@@ -172,30 +175,25 @@ class BAKTree(BinaryTree):
         if tree is not None:
             imTree = StringIO(tree)
             pTree = image.load(imTree, 'png')
-            #pTree = scale(pTree, (500, 300))
             sTree = pTree.get_size()
             rTree = Rect(0,0,sTree[0],sTree[1])
         if scatterplot is not None:
             imScatterplot = StringIO(scatterplot)
             pScatterplot = image.load(imScatterplot, 'png')
-            #pScatterplot = scale(pScatterplot, (500, 300))
             sScatterplot = pScatterplot.get_size()
             rScatterplot = Rect(sTree[0],0,sScatterplot[0],sScatterplot[1])
         if histogram is not None:
             imHistogram = StringIO(histogram)
             pHistogram = image.load(imHistogram, 'png')
-            #pHistogram = scale(pHistogram, (500, 300))
             sHistogram = pHistogram.get_size()
             rHistogram = Rect(0,sTree[1],sHistogram[0],sHistogram[1])
-            #rHistogram = Rect(0,500,500,300)
         if incumbent is not None:
             imIncumbent = StringIO(incumbent)
             pIncumbent = image.load(imIncumbent, 'png')
-            #pIncumbent = scale(pIncumbent, (500, 300))
             sIncumbent = pIncumbent.get_size()
             rIncumbent = Rect(sTree[0],sTree[1],sIncumbent[0],sIncumbent[1])
-            #rIncumbent = Rect(500,300,500,300)
-        screen = display.set_mode((sTree[0]+sScatterplot[0], sTree[1]+sIncumbent[1]))
+        #screen = display.set_mode((sTree[0]+sScatterplot[0], sTree[1]+sIncumbent[1]))
+        screen = display.set_mode((sTree[0]+sTree[0], sTree[1]+sTree[1]))
         if tree is not None:
             screen.blit(pTree, rTree)
         if scatterplot is not None:
@@ -667,7 +665,8 @@ class BAKTree(BinaryTree):
             if (value >= self._histogram_upper_bound and
                 value < self._histogram_upper_bound + 1e-6):
                 bin = num_bins - 1
-            assert bin >= 0
+            if bin < 0:
+                return
             assert bin < num_bins, '%d (%f) !< %d (%f)' % (
                 bin, value, num_bins, self._histogram_upper_bound)
             bin_counts[bin] += 1
@@ -921,6 +920,10 @@ class BAKTree(BinaryTree):
 
         """
         if self._incumbent_parent is None:
+            return
+        if self._scatterplot_lower_bound is None:
+            return
+        if self._scatterplot_upper_bound is None:
             return
 
         index_string = self.GetImageCounterString()
@@ -1306,6 +1309,7 @@ class BAKTree(BinaryTree):
 
         data = ''
         data += 'set terminal png notransparent size 480,360\n'
+#        data += 'set terminal png notransparent size large\n'
         data += 'set nokey\n'
         data += 'set autoscale\n'
         data += 'set tics scale 0.001\n'
