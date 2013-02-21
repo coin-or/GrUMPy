@@ -24,9 +24,9 @@ if __name__ == '__main__':
     bt = BAKTree()
     bt.set_display_mode('pygame')
     line_number = 0
-#    file_ = open('aykut', 'r')
-    for line in sys.stdin:
-#    for line in file_:
+    file_ = open('p0201_GLPK.in', 'r')
+#    for line in sys.stdin:
+    for line in file_:
         bt.ProcessLine(line)
         print 'line', line_number, 'processed.'
         line_number = line_number+1

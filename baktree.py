@@ -87,9 +87,9 @@ import re
 import subprocess
 import sys, os
 from subprocess import Popen, PIPE, STDOUT
-sys.path.append('../GIMPy')
 import optparse
 from gimpy import BinaryTree
+from gimpy import quote_if_necessary as quote
 import time
 
 from StringIO import StringIO
@@ -211,19 +211,19 @@ class BAKTree(BinaryTree):
         screen.blit(picture, picture.get_rect())
         display.flip()
 
-    def set_label(label):
+    def set_label(self, label):
         self._label = label
 
-    def set_logscaley(boolean):
+    def set_logscaley(self, boolean):
         self._logscaley = boolean
 
-    def set_fathom(boolean):
+    def set_fathom(self, boolean):
         self._fathom = boolean
 
-    def set_edge_limit(limit):
+    def set_edge_limit(self, limit):
         self._edge_limit = limit
 
-    def set_sample_tree(number):
+    def set_sample_tree(self, number):
         self._sample_tree = number
 
     def __print(self, options):
@@ -253,7 +253,8 @@ class BAKTree(BinaryTree):
             self.CreateAnimatedImages()
 
     def AddOrUpdateNode(self, id, parent_id, branch_direction, status, lp_bound,
-                        integer_infeasibility_count, integer_infeasibility_sum):
+                        integer_infeasibility_count, integer_infeasibility_sum,
+                        **attrs):
         '''
         this method designed to update nodes but we use it for updating/adding
         arcs this is because of the tree data structure the authors adopted.
@@ -266,7 +267,7 @@ class BAKTree(BinaryTree):
         integer_infeasibility_sum -> id node
         parent_id -> id node
         '''
-        if parent_id is not '0':
+        if str(parent_id) != '-1':
             if id in self.get_node_list():
                 self.set_node_attr(id, 'status', status)
                 self.set_node_attr(id, 'lp_bound', lp_bound)
@@ -279,17 +280,17 @@ class BAKTree(BinaryTree):
                 self.add_left_child(id, parent_id, status = status, lp_bound = lp_bound,
                     integer_infeasibility_count = integer_infeasibility_count,
                     integer_infeasibility_sum = integer_infeasibility_sum,
-                    subtree_root = None)
+                    subtree_root = None, **attrs)
             elif branch_direction == 'R':
                 self.add_right_child(id, parent_id, status = status, lp_bound = lp_bound,
                     integer_infeasibility_count = integer_infeasibility_count,
                     integer_infeasibility_sum = integer_infeasibility_sum,
-                    subtree_root = None)
+                    subtree_root = None, **attrs)
         else:
             self.add_root(id, status = status, lp_bound = lp_bound,
                     integer_infeasibility_count = integer_infeasibility_count,
                     integer_infeasibility_sum = integer_infeasibility_sum,
-                    subtree_root = None)
+                    subtree_root = None, **attrs)
         if lp_bound is not None:
             self.UpdateObjectiveValueLimits(lp_bound)
             
@@ -1065,22 +1066,22 @@ class BAKTree(BinaryTree):
             rchild = self.get_right_child(current_node)
             is_node_added = False
             # Add the next unvisited child to the stack
-            if lchild is not None and not visited[lchild]:
+            if lchild is not None and not visited[quote(lchild)]:
                 node_stack.append(lchild)
                 is_node_added = True
-            if (rchild is not None and not visited[rchild] and
+            if (rchild is not None and not visited[quote(rchild)] and
                 is_node_added==False):
                 node_stack.append(rchild)
                 is_node_added = True
             # If all childs visited, then update number_descendants
             if not is_node_added:
                 if lchild is not None:
-                    number_descendants[current_node] += (
-                                number_descendants[lchild])
+                    number_descendants[quote(current_node)] += (
+                                number_descendants[quote(lchild)])
                 if rchild is not None:
-                    number_descendants[current_node] += (
-                                number_descendants[rchild])
-                visited[current_node] = True
+                    number_descendants[quote(current_node)] += (
+                                number_descendants[quote(rchild)])
+                visited[quote(current_node)] = True
                 del node_stack[len(node_stack) - 1]
 
         # Traverse the tree and set horizontal positions.
@@ -1111,10 +1112,10 @@ class BAKTree(BinaryTree):
                 children_list.append(rchild)
 
             # Convenience variables
-            current_lower_bound = horizontal_lower_bound[node]
-            current_range = (horizontal_upper_bound[node] -
-                             horizontal_lower_bound[node])
-            total_descendants = number_descendants[node]
+            current_lower_bound = horizontal_lower_bound[quote(node)]
+            current_range = (horizontal_upper_bound[quote(node)] -
+                             horizontal_lower_bound[quote(node)])
+            total_descendants = number_descendants[quote(node)]
 
             sorted_child_labels = sorted(children_list)
 
@@ -1134,13 +1135,13 @@ class BAKTree(BinaryTree):
                         total_descendants)
                     cumulative_descendants += 1
                 # Set bounds for this child
-                horizontal_lower_bound[label] = (
+                horizontal_lower_bound[quote(label)] = (
                     current_lower_bound + float(cumulative_descendants) /
                     total_descendants * current_range)
                 # Increment cumulative_descendants, which also lets us compute
                 # the upper bound.
-                cumulative_descendants += number_descendants[label]
-                horizontal_upper_bound[label] = (
+                cumulative_descendants += number_descendants[quote(label)]
+                horizontal_upper_bound[quote(label)] = (
                     current_lower_bound + float(cumulative_descendants) /
                     total_descendants * current_range)
             # Catch the case that the node comes after all its children.
@@ -1150,10 +1151,10 @@ class BAKTree(BinaryTree):
                     total_descendants)
 
             # Finally set the position for the current node
-            horizontal_positions[node] = (
-                horizontal_lower_bound[node] + relative_position * (
-                    horizontal_upper_bound[node] -
-                    horizontal_lower_bound[node]))
+            horizontal_positions[quote(node)] = (
+                horizontal_lower_bound[quote(node)] + relative_position * (
+                    horizontal_upper_bound[quote(node)] -
+                    horizontal_lower_bound[quote(node)]))
 
         return horizontal_positions
 
