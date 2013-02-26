@@ -1924,15 +1924,15 @@ class BBTree(BinaryTree):
                        display_interval = None):
         
         #Add key
-        #C = Cluster(graph_name = 'Key', label = 'Key', fontsize = '12')
-        #C.add_node('C', label = 'Candidate', style = 'filled', color = 'yellow', fillcolor = 'yellow')
-        #C.add_node('I', label = 'Infeasible', style = 'filled', color = 'orange', fillcolor = 'orange')
-        #C.add_node('S', label = 'Solution', style = 'filled', color = 'lightblue', fillcolor = 'lightblue')
-        #C.add_node('P', label = 'Pruned', style = 'filled', color = 'red', fillcolor = 'red')
-        #C.add_edge('C', 'I', style = 'invisible', arrowhead = 'none')
-        #C.add_edge('I', 'S', style = 'invisible', arrowhead = 'none')
-        #C.add_edge('S', 'P', style = 'invisible', arrowhead = 'none')
-        #self.add_subgraph(C)
+        C = Cluster(graph_name = 'Key', label = 'Key', fontsize = '12')
+        C.add_node('C', label = 'Candidate', style = 'filled', color = 'yellow', fillcolor = 'yellow')
+        C.add_node('I', label = 'Infeasible', style = 'filled', color = 'orange', fillcolor = 'orange')
+        C.add_node('S', label = 'Solution', style = 'filled', color = 'lightblue', fillcolor = 'lightblue')
+        C.add_node('P', label = 'Pruned', style = 'filled', color = 'red', fillcolor = 'red')
+        C.add_edge('C', 'I', style = 'invisible', arrowhead = 'none')
+        C.add_edge('I', 'S', style = 'invisible', arrowhead = 'none')
+        C.add_edge('S', 'P', style = 'invisible', arrowhead = 'none')
+        self.add_subgraph(C)
 
         INFINITY = 9999
         #The initial lower bound 
