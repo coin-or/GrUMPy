@@ -2221,12 +2221,6 @@ class BBTree(BinaryTree):
                     self.set_node_attr(cur_index, 'status', 'branched')
  
         timer = int(math.ceil((time.time()-timer)*1000))
-
-        if ((xdot_installed and self.display_mode == 'xdot' and  self.get_layout() != 'dot2tex') or
-             self.get_layout() == 'bak'):
-            self.display()
-#            if  self.get_layout() == 'dot2tex':
-#                print self.write_as_dot(filename = 'graph')
     
         print ""
         print "==========================================="
@@ -2245,6 +2239,10 @@ class BBTree(BinaryTree):
         print "Objective function value"
         print LB          
         print "==========================================="    
+
+        if ((xdot_installed and self.display_mode == 'xdot' and  self.get_layout() != 'dot2tex') or
+             self.get_layout() == 'bak'):
+            self.display()
 
         return opt, LB 
 
@@ -2382,10 +2380,9 @@ def parse_options():
 if __name__ == '__main__':
     
     T = BBTree()
-    T.set_layout('dot2tex')
-    T.set_display_mode('file')    
-#    T.set_layout('dot')
-#    T.set_display_mode('xdot')
+#    T.set_layout('dot2tex')
+#    T.set_display_mode('file')    
+    T.set_layout('dot')
+    T.set_display_mode('xdot')
     CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP()
     T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS)
-    T.display(basename='graph', format='pdf')
