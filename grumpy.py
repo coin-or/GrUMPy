@@ -1925,10 +1925,14 @@ class BBTree(BinaryTree):
         
         #Add key to tree display
         C = Cluster(graph_name = 'Key', label = 'Key', fontsize = '12')
-        C.add_node('C', label = 'Candidate', style = 'filled', color = 'yellow', fillcolor = 'yellow')
-        C.add_node('I', label = 'Infeasible', style = 'filled', color = 'orange', fillcolor = 'orange')
-        C.add_node('S', label = 'Solution', style = 'filled', color = 'lightblue', fillcolor = 'lightblue')
-        C.add_node('P', label = 'Pruned', style = 'filled', color = 'red', fillcolor = 'red')
+        C.add_node('C', label = 'Candidate', style = 'filled', 
+                   color = 'yellow', fillcolor = 'yellow')
+        C.add_node('I', label = 'Infeasible', style = 'filled', 
+                   color = 'orange', fillcolor = 'orange')
+        C.add_node('S', label = 'Solution', style = 'filled', 
+                   color = 'lightblue', fillcolor = 'lightblue')
+        C.add_node('P', label = 'Pruned', style = 'filled', 
+                   color = 'red', fillcolor = 'red')
         C.add_edge('C', 'I', style = 'invisible', arrowhead = 'none')
         C.add_edge('I', 'S', style = 'invisible', arrowhead = 'none')
         C.add_edge('S', 'P', style = 'invisible', arrowhead = 'none')
@@ -1982,11 +1986,14 @@ class BBTree(BinaryTree):
         # Timer
         timer = time.time()
 
-        Q.push((0, None, None, None, None, None), INFINITY)
+        Q.push((0, None, None, None, None, None), -INFINITY)
 
         # Branch and Bound Loop
         while not Q.isEmpty():
 
+            relax = -Q.get_priority(Q.peek())
+            infeasible = False
+            integer_solution = False
             cur_index, parent, branch_var, branch_var_value, sense, rhs = Q.pop()
             if cur_index is not 0:
                 cur_depth = self.get_node_attr(parent, 'level') + 1
@@ -1998,6 +2005,11 @@ class BBTree(BinaryTree):
             print ""
             print "Node: %s, Depth: %s, LB: %s" %(cur_index,cur_depth,LB)
 
+            if relax <= LB:
+                print "Node pruned immediately by bound"
+                self.set_node_attr(parent, 'color', 'red')
+                continue
+
             #====================================
             #    LP Relaxation
             #====================================
@@ -2007,7 +2019,7 @@ class BBTree(BinaryTree):
             for j in range(numCons):
                 prob += (lpSum([MAT[i][j]*var[i] for i in VARIABLES])<=RHS[j], \
                              CONSTRAINTS[j])
-
+                
             #Fix all prescribed variables
             branch_vars = []
             if cur_index is not 0:
@@ -2028,7 +2040,7 @@ class BBTree(BinaryTree):
                                              <= pred_rhs)
                     else:
                         prob += LpConstraint(lpSum(var[pred_branch_var]) 
-                                                 >= pred_rhs)
+                                             >= pred_rhs)
                     print pred_branch_var,
                     branch_vars.append(pred_branch_var)
                     pred = self.get_node_attr(pred, 'parent')
@@ -2039,7 +2051,7 @@ class BBTree(BinaryTree):
             prob.solve()
     
             lp_count = lp_count +1
-    
+            
             # Check infeasibility
             infeasible = LpStatus[prob.status] == "Infeasible"
  
@@ -2050,27 +2062,21 @@ class BBTree(BinaryTree):
                 print "LP Solved, status: %s, obj: %s" %(LpStatus[prob.status],
                                                          value(prob.objective))
     
- 
             if(LpStatus[prob.status] == "Optimal"):
                 relax = value(prob.objective)
                 #Update pseudocost
                 if branch_var != None:
                     if sense == '<=':
                         pseudo_d[branch_var] = ((pseudo_d[branch_var][0]*pseudo_d[branch_var][1] + 
-                                                (self.get_node_attr(parent, 'obj') - relax)/
-                                                (branch_var_value - rhs))/(pseudo_d[branch_var][1]+1),
+                                                 (self.get_node_attr(parent, 'obj') - relax)/
+                                                 (branch_var_value - rhs))/(pseudo_d[branch_var][1]+1),
                                                 pseudo_d[branch_var][1]+1)
                     else:
                         pseudo_u[branch_var] = ((pseudo_u[branch_var][0]*pseudo_d[branch_var][1] + 
-                                                (self.get_node_attr(parent, 'obj') - relax)/
-                                                (rhs - branch_var_value))/(pseudo_u[branch_var][1]+1),
+                                                 (self.get_node_attr(parent, 'obj') - relax)/
+                                                 (rhs - branch_var_value))/(pseudo_u[branch_var][1]+1),
                                                 pseudo_u[branch_var][1]+1)
-            else:
-                relax = INFINITY
-        
-            integer_solution = 0
-    
-            if (LpStatus[prob.status] == "Optimal"):        
+
                 var_values = dict([(i, var[i].varValue) for i in VARIABLES])
                 integer_solution = 1
                 for i in VARIABLES:
@@ -2101,7 +2107,9 @@ class BBTree(BinaryTree):
                 #For complete enumeration
                 if complete_enumeration:
                     relax = LB - 1
-      
+            else:
+                relax = INFINITY
+            
             if integer_solution:
                 print "Integer solution"
                 status = 'S'
@@ -2416,5 +2424,5 @@ if __name__ == '__main__':
     T.set_display_mode('xdot')
     CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP()
     T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS, 
-                     branch_strategy = 'Pseudocost', search_strategy = 'Best Estimate',
+                     branch_strategy = 'Pseudocost', search_strategy = 'Best First',
                      display_interval = None)
