@@ -1923,7 +1923,7 @@ class BBTree(BinaryTree):
                        complete_enumeration = False,
                        display_interval = None):
         
-        #Add key
+        #Add key to tree display
         C = Cluster(graph_name = 'Key', label = 'Key', fontsize = '12')
         C.add_node('C', label = 'Candidate', style = 'filled', color = 'yellow', fillcolor = 'yellow')
         C.add_node('I', label = 'Infeasible', style = 'filled', color = 'orange', fillcolor = 'orange')
@@ -1949,6 +1949,9 @@ class BBTree(BinaryTree):
 
         #List of incumbent solution variable values
         opt = dict([(i, 0) for i in VARIABLES]) 
+        
+        pseudo_u = {i : (OBJ[i], 0) for i in VARIABLES}
+        pseudo_d = {i : (OBJ[i], 0) for i in VARIABLES}
 
         print "==========================================="
         print "Starting Branch and Bound"
@@ -1979,12 +1982,12 @@ class BBTree(BinaryTree):
         # Timer
         timer = time.time()
 
-        Q.push((0, None, None, None, None), INFINITY)
+        Q.push((0, None, None, None, None, None), INFINITY)
 
         # Branch and Bound Loop
         while not Q.isEmpty():
 
-            cur_index, parent, branch_var, sense, rhs = Q.pop()
+            cur_index, parent, branch_var, branch_var_value, sense, rhs = Q.pop()
             if cur_index is not 0:
                 cur_depth = self.get_node_attr(parent, 'level') + 1
             else:
@@ -2050,6 +2053,18 @@ class BBTree(BinaryTree):
  
             if(LpStatus[prob.status] == "Optimal"):
                 relax = value(prob.objective)
+                #Update pseudocost
+                if branch_var != None:
+                    if sense == '<=':
+                        pseudo_d[branch_var] = ((pseudo_d[branch_var][0]*pseudo_d[branch_var][1] + 
+                                                (self.get_node_attr(parent, 'obj') - relax)/
+                                                (branch_var_value - rhs))/(pseudo_d[branch_var][1]+1),
+                                                pseudo_d[branch_var][1]+1)
+                    else:
+                        pseudo_u[branch_var] = ((pseudo_u[branch_var][0]*pseudo_d[branch_var][1] + 
+                                                (self.get_node_attr(parent, 'obj') - relax)/
+                                                (rhs - branch_var_value))/(pseudo_u[branch_var][1]+1),
+                                                pseudo_u[branch_var][1]+1)
             else:
                 relax = INFINITY
         
@@ -2120,33 +2135,36 @@ class BBTree(BinaryTree):
             if iter_count == 0:
                 if  self.get_layout() == 'bak':
                     self.AddOrUpdateNode(0, -1, None, BAKstatus, -relax, None, 
-                                      None)
+                                         None)
                 else:
                     self.add_root(0, label = label, status = status, obj = relax, 
-                               color = color, style = 'filled', 
-                               fillcolor = color)
+                                  color = color, style = 'filled', 
+                                  fillcolor = color)
                 if etree_installed and self.display_mode == 'svg':
                     self.write_as_svg(filename = "node%d" % iter_count, 
-                                   nextfile = "node%d" % (iter_count + 1), 
-                                   highlight = cur_index)
+                                      nextfile = "node%d" % (iter_count + 1), 
+                                      highlight = cur_index)
             else:
                 if  self.get_layout() == 'bak':
                     if sense == '<=':
                         self.AddOrUpdateNode(cur_index, parent, 'L', 'candidate', 
-                                          -relax, None, None, 
-                                          branch_var = branch_var,
-                                          sense = sense, rhs = rhs)
+                                             -relax, None, None, 
+                                             branch_var = branch_var,
+                                             branch_var_value = var_values[branch_var],
+                                             sense = sense, rhs = rhs)
                     else:
                         self.AddOrUpdateNode(cur_index, parent, 'R', 'candidate', 
-                                          -relax, None, None, 
-                                          branch_var = branch_var,
-                                          sense = sense, rhs = rhs)
+                                             -relax, None, None, 
+                                             branch_var = branch_var,
+                                             branch_var_value = var_values[branch_var],
+                                             sense = sense, rhs = rhs)
                 else:
                     self.add_child(cur_index, parent, label = label, 
-                                branch_var = branch_var,
-                                sense = sense, rhs = rhs, status = status, 
-                                obj = relax, color = color, style = 'filled', 
-                                fillcolor = color)
+                                   branch_var = branch_var,
+                                   branch_var_value = var_values[branch_var],
+                                   sense = sense, rhs = rhs, status = status, 
+                                   obj = relax, color = color, style = 'filled', 
+                                   fillcolor = color)
                     if  self.get_layout() == 'dot2tex':
                         if sense == '>=':
                             self.set_edge_attr(parent, cur_index, 'label', 
@@ -2158,12 +2176,12 @@ class BBTree(BinaryTree):
                                                str(rhs))
                     else:
                         self.set_edge_attr(parent, cur_index, 'label', 
-                                        str(branch_var) + sense + str(rhs))
+                                           str(branch_var) + sense + str(rhs))
                 if etree_installed and self.display_mode == 'svg':
                     self.write_as_svg(filename = "node%d" % iter_count, 
-                                   prevfile = "node%d" % (iter_count - 1), 
-                                   nextfile = "node%d" % (iter_count + 1), 
-                                   highlight = cur_index)
+                                      prevfile = "node%d" % (iter_count - 1), 
+                                      nextfile = "node%d" % (iter_count + 1), 
+                                      highlight = cur_index)
             iter_count += 1
 
             if ((pygame_installed and self.display_mode == 'pygame')
@@ -2198,6 +2216,15 @@ class BBTree(BinaryTree):
                             min_frac = frac
                             branching_var = i
 
+                elif branch_strategy == 'Pseudocost':
+                    scores = {}
+                    for i in VARIABLES:
+                        # find the fractional solutions
+                        if (var[i].varValue - math.floor(var[i].varValue)) != 0:
+                            scores[i] = min(pseudo_u[i][0]*(1-var[i].varValue),
+                                            pseudo_d[i][0]*var[i].varValue)
+                        # sort the dictionary by value
+                    branching_var = sorted(scores.items(),key= lambda x : x[1])[-1][0]
                 else:
                     print "Unknown branching strategy %s" %branch_strategy
                     exit()
@@ -2207,15 +2234,18 @@ class BBTree(BinaryTree):
             
                 #Create new nodes
                 if search_strategy == 'Depth First':
-                    priority = -cur_depth - 1
+                    priority = (-cur_depth - 1, -cur_depth - 1)
                 elif search_strategy == 'Best First':
-                    priority = relax
+                    priority = (relax, relax)
+                elif search_strategy == 'Best Estimate':
+                    priority = (relax + pseudo_d[branching_var][0]*(math.floor(var[branching_var].varValue) - var[branching_var].varValue),
+                                relax - pseudo_u[branching_var][0]*(math.ceil(var[branching_var].varValue) - var[branching_var].varValue))
                 node_count += 1
-                Q.push((node_count, cur_index, branching_var, '<=', 
-                        math.floor(var[branching_var].varValue)), priority)
+                Q.push((node_count, cur_index, branching_var, var_values[branching_var],
+                        '<=', math.floor(var[branching_var].varValue)), priority[0])
                 node_count += 1
-                Q.push((node_count, cur_index, branching_var, '>=', 
-                        math.ceil(var[branching_var].varValue)), priority)
+                Q.push((node_count, cur_index, branching_var, var_values[branching_var],
+                        '>=', math.ceil(var[branching_var].varValue)), priority[1])
                 self.set_node_attr(cur_index, color, 'green')
                 if  self.get_layout() == 'bak':
                     self.set_node_attr(cur_index, 'status', 'branched')
@@ -2385,4 +2415,5 @@ if __name__ == '__main__':
     T.set_layout('dot')
     T.set_display_mode('xdot')
     CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP()
-    T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS)
+    T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS, 
+                     branch_strategy = 'Pseudocost', search_strategy = 'Best First')
