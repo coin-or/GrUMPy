@@ -1986,15 +1986,14 @@ class BBTree(BinaryTree):
         # Timer
         timer = time.time()
 
-        Q.push((0, None, None, None, None, None), -INFINITY)
+        Q.push((0, None, None, None, None, None, None), -INFINITY)
 
         # Branch and Bound Loop
         while not Q.isEmpty():
 
-            relax = -Q.get_priority(Q.peek())
             infeasible = False
             integer_solution = False
-            cur_index, parent, branch_var, branch_var_value, sense, rhs = Q.pop()
+            cur_index, parent, relax, branch_var, branch_var_value, sense, rhs = Q.pop()
             if cur_index is not 0:
                 cur_depth = self.get_node_attr(parent, 'level') + 1
             else:
@@ -2005,7 +2004,7 @@ class BBTree(BinaryTree):
             print ""
             print "Node: %s, Depth: %s, LB: %s" %(cur_index,cur_depth,LB)
 
-            if relax <= LB:
+            if relax is not None and relax <= LB:
                 print "Node pruned immediately by bound"
                 self.set_node_attr(parent, 'color', 'red')
                 continue
@@ -2249,10 +2248,10 @@ class BBTree(BinaryTree):
                     priority = (-relax - pseudo_d[branching_var][0]*(math.floor(var[branching_var].varValue) - var[branching_var].varValue),
                                 -relax + pseudo_u[branching_var][0]*(math.ceil(var[branching_var].varValue) - var[branching_var].varValue))
                 node_count += 1
-                Q.push((node_count, cur_index, branching_var, var_values[branching_var],
+                Q.push((node_count, cur_index, relax, branching_var, var_values[branching_var],
                         '<=', math.floor(var[branching_var].varValue)), priority[0])
                 node_count += 1
-                Q.push((node_count, cur_index, branching_var, var_values[branching_var],
+                Q.push((node_count, cur_index, relax, branching_var, var_values[branching_var],
                         '>=', math.ceil(var[branching_var].varValue)), priority[1])
                 self.set_node_attr(cur_index, color, 'green')
                 if  self.get_layout() == 'bak':
@@ -2422,7 +2421,8 @@ if __name__ == '__main__':
 #    T.set_display_mode('file')    
     T.set_layout('dot')
     T.set_display_mode('xdot')
-    CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP()
+    CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP(rand_seed = 3)
     T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS, 
                      branch_strategy = 'Pseudocost', search_strategy = 'Best First',
                      display_interval = None)
+ 
