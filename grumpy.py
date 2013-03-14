@@ -2187,7 +2187,7 @@ class BBTree(BinaryTree):
             if ((pygame_installed and self.display_mode == 'pygame')
                 or (xdot_installed and self.display_mode == 'xdot')):
                 numNodes = len(self.get_node_list())
-                if display_interval is not None and numNodes % display_interval == 0 and not self.get_layout() != 'dot2tex':
+                if display_interval is not None and numNodes % display_interval == 0 and self.get_layout() != 'dot2tex':
                     self.display(highlight = [cur_index])
             elif gexf_installed and self.display_mode == 'gexf':
                 self.write_as_dynamic_gexf("graph")
@@ -2236,10 +2236,10 @@ class BBTree(BinaryTree):
                 if search_strategy == 'Depth First':
                     priority = (-cur_depth - 1, -cur_depth - 1)
                 elif search_strategy == 'Best First':
-                    priority = (relax, relax)
+                    priority = (-relax, -relax)
                 elif search_strategy == 'Best Estimate':
-                    priority = (relax + pseudo_d[branching_var][0]*(math.floor(var[branching_var].varValue) - var[branching_var].varValue),
-                                relax - pseudo_u[branching_var][0]*(math.ceil(var[branching_var].varValue) - var[branching_var].varValue))
+                    priority = (-relax - pseudo_d[branching_var][0]*(math.floor(var[branching_var].varValue) - var[branching_var].varValue),
+                                -relax + pseudo_u[branching_var][0]*(math.ceil(var[branching_var].varValue) - var[branching_var].varValue))
                 node_count += 1
                 Q.push((node_count, cur_index, branching_var, var_values[branching_var],
                         '<=', math.floor(var[branching_var].varValue)), priority[0])
@@ -2416,4 +2416,5 @@ if __name__ == '__main__':
     T.set_display_mode('xdot')
     CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP()
     T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS, 
-                     branch_strategy = 'Pseudocost', search_strategy = 'Best First')
+                     branch_strategy = 'Pseudocost', search_strategy = 'Best Estimate',
+                     display_interval = None)
