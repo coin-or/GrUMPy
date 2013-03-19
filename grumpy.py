@@ -2020,9 +2020,6 @@ class BBTree(BinaryTree):
             print ""
             print "Node: %s, Depth: %s, LB: %s" %(cur_index,cur_depth,LB)
 
-            if cur_index == 32:
-                pass
-            
             if relax is not None and relax <= LB:
                 print "Node pruned immediately by bound"
                 self.set_node_attr(parent, 'color', 'red')
@@ -2445,4 +2442,4 @@ if __name__ == '__main__':
     CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP(rand_seed = 3)
     T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS, 
                      branch_strategy = 'Pseudocost', search_strategy = 'Best First',
-                     display_interval = 1)
+                     display_interval = None)
