@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as lines
 from math import ceil, floor
 
-class 2DPolyhedron:
+class Polyhedron2D:
     def __init__(self, points = None, rays = None, A = None, b = None):
         have_rep = False
         if points is not None and rays is not None:
@@ -38,7 +38,7 @@ class 2DPolyhedron:
                     v.append([i, j])
         r = [p.generators[self.ray_indices[i]].tolist() 
              for i in range(len(self.ray_indices))]
-        return 2DPolyhedron(points = v, rays = r)
+        return Polyhedron2D(points = v, rays = r)
 
     def determine_hull_size(self):
         self.min_point = np.array([10000, 10000])
@@ -249,7 +249,7 @@ if __name__ == '__main__':
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax.grid()
-    p = 2DPolyhedron(A = [[4, 1], [1, 4], [1, -1], [-1, 0], [0, -1]], 
+    p = Polyhedron2D(A = [[4, 1], [1, 4], [1, -1], [-1, 0], [0, -1]], 
                    b = [28, 27, 1, 0, 0])
     p.draw(ax, color = 'blue', linestyle = 'solid')
     ax.set_xlim(p.plot_min[0], p.plot_max[0])
