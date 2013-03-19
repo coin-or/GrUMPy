@@ -1924,18 +1924,34 @@ class BBTree(BinaryTree):
                        display_interval = None):
         
         #Add key to tree display
-        C = Cluster(graph_name = 'Key', label = 'Key', fontsize = '12')
-        C.add_node('C', label = 'Candidate', style = 'filled', 
-                   color = 'yellow', fillcolor = 'yellow')
-        C.add_node('I', label = 'Infeasible', style = 'filled', 
-                   color = 'orange', fillcolor = 'orange')
-        C.add_node('S', label = 'Solution', style = 'filled', 
-                   color = 'lightblue', fillcolor = 'lightblue')
-        C.add_node('P', label = 'Pruned', style = 'filled', 
-                   color = 'red', fillcolor = 'red')
+        if self.get_layout() == 'dot2tex':
+            C = Cluster(graph_name = 'Key', label = '\text{Key}', fontsize = '12')
+            C.add_node('C', label = '\text{Candidate}', style = 'filled', 
+                       color = 'yellow', fillcolor = 'yellow')
+            C.add_node('I', label = '\text{Infeasible}', style = 'filled', 
+                       color = 'orange', fillcolor = 'orange')
+            C.add_node('S', label = '\text{Solution}', style = 'filled', 
+                       color = 'lightblue', fillcolor = 'lightblue')
+            C.add_node('P', label = '\text{Pruned}', style = 'filled', 
+                       color = 'red', fillcolor = 'red')
+            C.add_node('PC', label = '\text{Pruned\\ Candidate}', style = 'filled', 
+                       color = 'red', fillcolor = 'yellow')
+        else:
+            C = Cluster(graph_name = 'Key', label = 'Key', fontsize = '12')
+            C.add_node('C', label = 'Candidate', style = 'filled', 
+                       color = 'yellow', fillcolor = 'yellow')
+            C.add_node('I', label = 'Infeasible', style = 'filled', 
+                       color = 'orange', fillcolor = 'orange')
+            C.add_node('S', label = 'Solution', style = 'filled', 
+                       color = 'lightblue', fillcolor = 'lightblue')
+            C.add_node('P', label = 'Pruned', style = 'filled', 
+                       color = 'red', fillcolor = 'red')
+            C.add_node('PC', label = 'Pruned \n Candidate', style = 'filled', 
+                       color = 'red', fillcolor = 'yellow')
         C.add_edge('C', 'I', style = 'invisible', arrowhead = 'none')
         C.add_edge('I', 'S', style = 'invisible', arrowhead = 'none')
         C.add_edge('S', 'P', style = 'invisible', arrowhead = 'none')
+        C.add_edge('P', 'PC', style = 'invisible', arrowhead = 'none')
         self.add_subgraph(C)
 
         INFINITY = 9999
@@ -2004,6 +2020,9 @@ class BBTree(BinaryTree):
             print ""
             print "Node: %s, Depth: %s, LB: %s" %(cur_index,cur_depth,LB)
 
+            if cur_index == 32:
+                pass
+            
             if relax is not None and relax <= LB:
                 print "Node pruned immediately by bound"
                 self.set_node_attr(parent, 'color', 'red')
@@ -2136,8 +2155,10 @@ class BBTree(BinaryTree):
             if status is not 'I':
 #               label = status + ": " + "%.1f"%relax
                 label = "%.1f"%relax
+            elif self.get_layout() == 'dot2tex':
+                label = '\text{I}'
             else:
-                label = 'I'
+                label = 'I'  
 
             if iter_count == 0:
                 if  self.get_layout() == 'bak':
@@ -2424,5 +2445,4 @@ if __name__ == '__main__':
     CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP(rand_seed = 3)
     T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS, 
                      branch_strategy = 'Pseudocost', search_strategy = 'Best First',
-                     display_interval = None)
- 
+                     display_interval = 1)
