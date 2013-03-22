@@ -88,10 +88,11 @@ import subprocess
 import sys, os
 from subprocess import Popen, PIPE, STDOUT
 import optparse
-from gimpy import BinaryTree, Cluster, etree_installed, pygame_installed, xdot_installed
+from gimpy import BinaryTree, Cluster, etree_installed, pygame_installed
+from gimpy import xdot_installed, Queues
+#from Queues import PriorityQueue
 from gimpy import quote_if_necessary as quote
 import time
-from Queues import PriorityQueue
 
 from StringIO import StringIO
 from pygame import display, image, init, Rect
@@ -1908,9 +1909,10 @@ class BBTree(BinaryTree):
             VARIABLES = ["x_{"+str(i)+"}" for i in range(numVars)]
         else:
             VARIABLES = ["x"+str(i) for i in range(numVars)]
-        OBJ = {i : random.randint(1, maxObjCoeff) for i in VARIABLES}
-        MAT = {i : [random.randint(1, maxConsCoeff) if random.random() <= density else 0
-                    for j in CONSTRAINTS] for i in VARIABLES}
+        OBJ = dict((i, random.randint(1, maxObjCoeff)) for i in VARIABLES)
+        MAT = dict((i ,[random.randint(1, maxConsCoeff) 
+                        if random.random() <= density else 0
+                        for j in CONSTRAINTS]) for i in VARIABLES)
         RHS = [random.randint(int(numVars*density*maxConsCoeff/2), 
                        int(numVars*density*maxConsCoeff/1.5)) 
                for i in CONSTRAINTS]
@@ -1993,7 +1995,7 @@ class BBTree(BinaryTree):
             print "==========================================="
 
         # List of candidate nodes
-        Q = PriorityQueue()
+        Q = Queues.PriorityQueue()
 
         # The current tree depth
         cur_depth = 0
@@ -2441,5 +2443,6 @@ if __name__ == '__main__':
     T.set_display_mode('xdot')
     CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP(rand_seed = 3)
     T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS, 
-                     branch_strategy = 'Pseudocost', search_strategy = 'Best First',
+                     branch_strategy = 'Pseudocost', 
+                     search_strategy = 'Best First',
                      display_interval = None)
