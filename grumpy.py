@@ -88,11 +88,10 @@ import subprocess
 import sys, os
 from subprocess import Popen, PIPE, STDOUT
 import optparse
-from gimpy import BinaryTree, Cluster, etree_installed, pygame_installed
-from gimpy import xdot_installed, Queues
-#from Queues import PriorityQueue
+from gimpy import BinaryTree, ETREE_INSTALLED, PYGAME_INSTALLED, XDOT_INSTALLED
 from gimpy import quote_if_necessary as quote
 import time
+from Queues import PriorityQueue
 
 from StringIO import StringIO
 from pygame import display, image, init, Rect
@@ -102,10 +101,10 @@ from pulp import LpVariable, lpSum, LpProblem, LpMaximize, LpConstraint, LpStatu
 try:
     from gexf import Gexf
 except ImportError:
-    gexf_installed = False
+    GEXF_INSTALLED = False
     print 'Gexf not installed'
 else:
-    gexf_installed = True
+    GEXF_INSTALLED = True
     print 'Found gexf installation'
 
 from forecastingchainedsequences import ForecastingChainedSequences
@@ -177,7 +176,7 @@ class BBTree(BinaryTree):
         input_file.close()
 
     def write_as_dynamic_gexf(self, filename, mode = "Dot"):
-        if not gexf_installed:
+        if not GEXF_INSTALLED:
             print 'Gexf not installed. Exiting.'
             return
         if mode == 'Dot':
@@ -1909,10 +1908,9 @@ class BBTree(BinaryTree):
             VARIABLES = ["x_{"+str(i)+"}" for i in range(numVars)]
         else:
             VARIABLES = ["x"+str(i) for i in range(numVars)]
-        OBJ = dict((i, random.randint(1, maxObjCoeff)) for i in VARIABLES)
-        MAT = dict((i ,[random.randint(1, maxConsCoeff) 
-                        if random.random() <= density else 0
-                        for j in CONSTRAINTS]) for i in VARIABLES)
+        OBJ = {i : random.randint(1, maxObjCoeff) for i in VARIABLES}
+        MAT = {i : [random.randint(1, maxConsCoeff) if random.random() <= density else 0
+                    for j in CONSTRAINTS] for i in VARIABLES}
         RHS = [random.randint(int(numVars*density*maxConsCoeff/2), 
                        int(numVars*density*maxConsCoeff/1.5)) 
                for i in CONSTRAINTS]
@@ -1926,6 +1924,7 @@ class BBTree(BinaryTree):
                        display_interval = None):
         
         #Add key to tree display
+        '''
         if self.get_layout() == 'dot2tex':
             C = Cluster(graph_name = 'Key', label = '\text{Key}', fontsize = '12')
             C.add_node('C', label = '\text{Candidate}', style = 'filled', 
@@ -1955,6 +1954,7 @@ class BBTree(BinaryTree):
         C.add_edge('S', 'P', style = 'invisible', arrowhead = 'none')
         C.add_edge('P', 'PC', style = 'invisible', arrowhead = 'none')
         self.add_subgraph(C)
+        '''
 
         INFINITY = 9999
         #The initial lower bound 
@@ -1972,8 +1972,8 @@ class BBTree(BinaryTree):
         #List of incumbent solution variable values
         opt = dict([(i, 0) for i in VARIABLES]) 
         
-        pseudo_u = dict((i, (OBJ[i], 0)) for i in VARIABLES)
-        pseudo_d = dict((i, (OBJ[i], 0)) for i in VARIABLES)
+        pseudo_u = {i : (OBJ[i], 0) for i in VARIABLES}
+        pseudo_d = {i : (OBJ[i], 0) for i in VARIABLES}
 
         print "==========================================="
         print "Starting Branch and Bound"
@@ -1995,7 +1995,7 @@ class BBTree(BinaryTree):
             print "==========================================="
 
         # List of candidate nodes
-        Q = Queues.PriorityQueue()
+        Q = PriorityQueue()
 
         # The current tree depth
         cur_depth = 0
@@ -2167,7 +2167,7 @@ class BBTree(BinaryTree):
                     self.add_root(0, label = label, status = status, obj = relax, 
                                   color = color, style = 'filled', 
                                   fillcolor = color)
-                if etree_installed and self.display_mode == 'svg':
+                if ETREE_INSTALLED and self.display_mode == 'svg':
                     self.write_as_svg(filename = "node%d" % iter_count, 
                                       nextfile = "node%d" % (iter_count + 1), 
                                       highlight = cur_index)
@@ -2204,19 +2204,19 @@ class BBTree(BinaryTree):
                     else:
                         self.set_edge_attr(parent, cur_index, 'label', 
                                            str(branch_var) + sense + str(rhs))
-                if etree_installed and self.display_mode == 'svg':
+                if ETREE_INSTALLED and self.display_mode == 'svg':
                     self.write_as_svg(filename = "node%d" % iter_count, 
                                       prevfile = "node%d" % (iter_count - 1), 
                                       nextfile = "node%d" % (iter_count + 1), 
                                       highlight = cur_index)
             iter_count += 1
 
-            if ((pygame_installed and self.display_mode == 'pygame')
-                or (xdot_installed and self.display_mode == 'xdot')):
+            if ((PYGAME_INSTALLED and self.display_mode == 'pygame')
+                or (XDOT_INSTALLED and self.display_mode == 'xdot')):
                 numNodes = len(self.get_node_list())
                 if display_interval is not None and numNodes % display_interval == 0 and self.get_layout() != 'dot2tex':
                     self.display(highlight = [cur_index])
-            elif gexf_installed and self.display_mode == 'gexf':
+            elif GEXF_INSTALLED and self.display_mode == 'gexf':
                 self.write_as_dynamic_gexf("graph")
 
             if status == 'C':
@@ -2297,7 +2297,7 @@ class BBTree(BinaryTree):
         print LB          
         print "==========================================="    
 
-        if ((xdot_installed and self.display_mode == 'xdot' and  self.get_layout() != 'dot2tex') or
+        if ((XDOT_INSTALLED and self.display_mode == 'xdot' and  self.get_layout() != 'dot2tex') or
              self.get_layout() == 'bak'):
             self.display()
 
@@ -2443,6 +2443,5 @@ if __name__ == '__main__':
     T.set_display_mode('xdot')
     CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP(rand_seed = 3)
     T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS, 
-                     branch_strategy = 'Pseudocost', 
-                     search_strategy = 'Best First',
+                     branch_strategy = 'Pseudocost', search_strategy = 'Best First',
                      display_interval = None)
