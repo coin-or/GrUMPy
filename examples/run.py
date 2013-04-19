@@ -1,4 +1,4 @@
-from baktree import BAKTree
+from grumpy import BBTree
 import sys
 
 #
@@ -21,7 +21,7 @@ import sys
 #
 
 if __name__ == '__main__':
-    bt = BAKTree()
+    bt = BBTree()
     bt.set_display_mode('pygame')
     line_number = 0
     file_ = open('p0201_GLPK.in', 'r')
