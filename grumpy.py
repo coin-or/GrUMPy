@@ -91,7 +91,7 @@ import optparse
 from gimpy import BinaryTree, ETREE_INSTALLED, PYGAME_INSTALLED, XDOT_INSTALLED
 from gimpy import quote_if_necessary as quote
 import time
-from Queues import PriorityQueue
+from gimpy.list import PriorityQueue
 
 from StringIO import StringIO
 from pygame import display, image, init, Rect
@@ -184,23 +184,23 @@ class BBTree(BinaryTree):
                 gexf = Gexf("Mike O'Sullivan", "Dynamic graph file")
                 graph = gexf.addGraph("directed", "dynamic", "Dynamic graph")
                 objAtt = graph.addNodeAttribute("obj", "0.0", "float")
-                currAtt = graph.addNodeAttribute("current", "1.0", 
-                                                 "integer", "dynamic") 
-                
+                currAtt = graph.addNodeAttribute("current", "1.0",
+                                                 "integer", "dynamic")
+
                 node_names = self.get_node_list()
                 for name in node_names:
                     node = self.get_node(name)
                     if node.get("step") is None:
-                        raise Exception("Node without step in BBTree", 
+                        raise Exception("Node without step in BBTree",
                                         "node =", node)
                     curr_step = '%s' % node.get("step")
                     next_step = "%s" % (node.get("step") + 1)
                     n = graph.addNode(name, node.get_label(), start=curr_step)
 
                     if node.get("obj") is None:
-                        raise Exception("Node without objective in BBTree", 
+                        raise Exception("Node without objective in BBTree",
                                         "node =", node)
-                    
+
                     n.addAttribute(objAtt, "%s" % node.get("obj"))
                     n.addAttribute(currAtt, "1", start=curr_step, end=next_step)
                     n.addAttribute(currAtt, "0", start=next_step)
@@ -208,13 +208,13 @@ class BBTree(BinaryTree):
                 for i, (m_name, n_name) in enumerate(edge_names):
                     edge = self.get_edge(m_name, n_name)
                     if edge.get("step") is None:
-                        raise Exception("Edge without step in BBTree", 
+                        raise Exception("Edge without step in BBTree",
                                         "edge =", (m_name, n_name))
                     curr_step = "%s" % edge.get("step")
                     graph.addEdge(i, m_name, n_name, start=curr_step)
                 output_file = open(filename + ".gexf", "w")
                 gexf.write(output_file)
-                
+
             except Exception as e:
                 print e
                 print "No .gexf file created"
@@ -260,7 +260,7 @@ class BBTree(BinaryTree):
         if incumbent is not None:
             screen.blit(pIncumbent, rIncumbent)
         display.flip()
-        
+
     def display_image(self, gnuplot):
         im = StringIO(gnuplot)
         picture = image.load(im, 'png')
@@ -291,7 +291,7 @@ class BBTree(BinaryTree):
         #timesummary_file.write('%ls\n' % self._max_active_time)
         #timesummary_file.write('%ls\n' % self._decrease_active_time)
         #timesummary_file.close()
-        
+
         # Make a final set of images
         if options.tree:
             self.GenerateTreeImage()
@@ -324,7 +324,8 @@ class BBTree(BinaryTree):
         integer_infeasibility_sum -> id node
         parent_id -> id node
         '''
-        if str(parent_id) != '-1':
+        print id, parent_id
+        if parent_id is not '0':
             if id in self.get_node_list():
                 self.set_node_attr(id, 'status', status)
                 self.set_node_attr(id, 'lp_bound', lp_bound)
@@ -350,7 +351,7 @@ class BBTree(BinaryTree):
                     subtree_root = None, **attrs)
         if lp_bound is not None:
             self.UpdateObjectiveValueLimits(lp_bound)
-            
+
             # Set optimization sense if not yet set
             if self._optimization_sense is None:
                 if lp_bound < self.get_node_attr(self.root, 'lp_bound'):
@@ -501,7 +502,7 @@ class BBTree(BinaryTree):
         #self.GenerateTreeImage(time, fixed_horizontal_positions=True)
         #self.GenerateIncumbentPath(time)
         #self.AddProgressMeasures(time)
-            
+
         # Update internal state.
  #       self._image_counter += 1
  #       self._new_integer_solution = False
@@ -843,7 +844,7 @@ class BBTree(BinaryTree):
                               'with points pointtype 9 pointsize 1.2' %
                               (self.get_node_attr(self._incumbent_parent, 'integer_infeasibility_sum'),
                                self.get_node_attr(self._incumbent_parent, 'lp_bound')))
-        
+
         script += 'plot %s\n' % ', '.join(plot_parts)
         script += 'show output\n'
         return script
@@ -1143,7 +1144,7 @@ class BBTree(BinaryTree):
 
         # Traverse the tree and set horizontal positions.
         # Do a pre-order traversal of the tree.
-        
+
         node_stack = []
         node_stack.append(self.root)
         horizontal_lower_bound[self.root] = 0.0
@@ -1379,14 +1380,14 @@ class BBTree(BinaryTree):
         data += 'set ylabel "obj. value"\n'
         data += 'set title "B&B tree (%s %.2fs %s)"\n\n' % (
                     self._filename, self._time, self._label)
-    
+
         for line in additional_script_lines:
             data += line
-                              
+
         gp = Popen(['gnuplot'], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-        
+
         return gp.communicate(input=data)[0]
-        
+
     def ProcessLine(self, line):
         """Process a line of the input file, generating images if appropriate.
 
@@ -1561,8 +1562,8 @@ class BBTree(BinaryTree):
         parent_node = self.get_node(parent_id)
 
         self.AddOrUpdateNode(node_id, parent_id, branch_direction, 'fathomed',
-                             lp_bound, self.get_node_attr(parent_node, 'integer_infeasibility_count'),
-                             self.get_node_attr(parent_node, 'integer_infeasibility_sum'))
+                             lp_bound, self.get_node_attr(parent_id, 'integer_infeasibility_count'),
+                             self.get_node_attr(parent_id, 'integer_infeasibility_sum'))
 
     def ProcessPregnantLine(self, node_id, parent_id, branch_direction,
                             remaining_tokens):
@@ -1694,22 +1695,21 @@ class BBTree(BinaryTree):
         if parent_id not in self.get_node_list():
             print('Error: node %s not in set' % parent_id)
             sys.exit(1)
-        parent_node = self.get_node(parent_id)
 
         # TODO(bhunsaker): Check that we handle the cases of updating a candidate.
 
         if len(remaining_tokens) > 0:
             lp_bound = float(remaining_tokens[0])
         else:
-            lp_bound = self.get_node_attr(parent_node, 'lp_bound')
+            lp_bound = self.get_node_attr(parent_id, 'lp_bound')
 
         if len(remaining_tokens) == 3:
             integer_infeasibility_sum = float(remaining_tokens[1])
             integer_infeasibility_count = int(remaining_tokens[2])
         else:
-            integer_infeasibility_sum = self.get_node_attr(parent_node,
+            integer_infeasibility_sum = self.get_node_attr(parent_id,
                                                   'integer_infeasibility_sum')
-            integer_infeasibility_count = self.get_node_attr(parent_node,
+            integer_infeasibility_count = self.get_node_attr(parent_id,
                                                 'integer_infeasibility_count')
 
         self.AddOrUpdateNode(node_id, parent_id, branch_direction, 'candidate',
@@ -1868,7 +1868,7 @@ class BBTree(BinaryTree):
         return gp.communicate(input=forecast_script)[0]
 
 
-        
+
     def _get_fh(self, path, mode='r'):
         '''
         Return a file handle for given path.
@@ -1892,7 +1892,7 @@ class BBTree(BinaryTree):
         else:
             raise TypeError('path must be a string or file handle.')
         return fh
-    
+
     def _is_string_like(self, obj): # from John Hunter, types-free version
         try:
             obj + ''
@@ -1900,7 +1900,7 @@ class BBTree(BinaryTree):
             return False
         return True
 
-    def GenerateRandomMIP(self, numVars = 40, numCons = 20, density = 0.2, 
+    def GenerateRandomMIP(self, numVars = 40, numCons = 20, density = 0.2,
                             maxObjCoeff = 10, maxConsCoeff = 10, rand_seed = 2):
         random.seed(rand_seed)
         CONSTRAINTS = ["C"+str(i) for i in range(numCons)]
@@ -1911,43 +1911,43 @@ class BBTree(BinaryTree):
         OBJ = {i : random.randint(1, maxObjCoeff) for i in VARIABLES}
         MAT = {i : [random.randint(1, maxConsCoeff) if random.random() <= density else 0
                     for j in CONSTRAINTS] for i in VARIABLES}
-        RHS = [random.randint(int(numVars*density*maxConsCoeff/2), 
-                       int(numVars*density*maxConsCoeff/1.5)) 
+        RHS = [random.randint(int(numVars*density*maxConsCoeff/2),
+                       int(numVars*density*maxConsCoeff/1.5))
                for i in CONSTRAINTS]
 
         return CONSTRAINTS, VARIABLES, OBJ, MAT, RHS
-    
+
     def BranchAndBound(self, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                        branch_strategy = 'Most Fractional',
                        search_strategy = 'Depth First',
                        complete_enumeration = False,
                        display_interval = None):
-        
+
         #Add key to tree display
         '''
         if self.get_layout() == 'dot2tex':
             C = Cluster(graph_name = 'Key', label = '\text{Key}', fontsize = '12')
-            C.add_node('C', label = '\text{Candidate}', style = 'filled', 
+            C.add_node('C', label = '\text{Candidate}', style = 'filled',
                        color = 'yellow', fillcolor = 'yellow')
-            C.add_node('I', label = '\text{Infeasible}', style = 'filled', 
+            C.add_node('I', label = '\text{Infeasible}', style = 'filled',
                        color = 'orange', fillcolor = 'orange')
-            C.add_node('S', label = '\text{Solution}', style = 'filled', 
+            C.add_node('S', label = '\text{Solution}', style = 'filled',
                        color = 'lightblue', fillcolor = 'lightblue')
-            C.add_node('P', label = '\text{Pruned}', style = 'filled', 
+            C.add_node('P', label = '\text{Pruned}', style = 'filled',
                        color = 'red', fillcolor = 'red')
-            C.add_node('PC', label = '\text{Pruned\\ Candidate}', style = 'filled', 
+            C.add_node('PC', label = '\text{Pruned\\ Candidate}', style = 'filled',
                        color = 'red', fillcolor = 'yellow')
         else:
             C = Cluster(graph_name = 'Key', label = 'Key', fontsize = '12')
-            C.add_node('C', label = 'Candidate', style = 'filled', 
+            C.add_node('C', label = 'Candidate', style = 'filled',
                        color = 'yellow', fillcolor = 'yellow')
-            C.add_node('I', label = 'Infeasible', style = 'filled', 
+            C.add_node('I', label = 'Infeasible', style = 'filled',
                        color = 'orange', fillcolor = 'orange')
-            C.add_node('S', label = 'Solution', style = 'filled', 
+            C.add_node('S', label = 'Solution', style = 'filled',
                        color = 'lightblue', fillcolor = 'lightblue')
-            C.add_node('P', label = 'Pruned', style = 'filled', 
+            C.add_node('P', label = 'Pruned', style = 'filled',
                        color = 'red', fillcolor = 'red')
-            C.add_node('PC', label = 'Pruned \n Candidate', style = 'filled', 
+            C.add_node('PC', label = 'Pruned \n Candidate', style = 'filled',
                        color = 'red', fillcolor = 'yellow')
         C.add_edge('C', 'I', style = 'invisible', arrowhead = 'none')
         C.add_edge('I', 'S', style = 'invisible', arrowhead = 'none')
@@ -1957,7 +1957,7 @@ class BBTree(BinaryTree):
         '''
 
         INFINITY = 9999
-        #The initial lower bound 
+        #The initial lower bound
         LB = -INFINITY
 
         #The number of LP's solved, and the number of nodes solved
@@ -1970,14 +1970,14 @@ class BBTree(BinaryTree):
         numVars = len(VARIABLES)
 
         #List of incumbent solution variable values
-        opt = dict([(i, 0) for i in VARIABLES]) 
-        
+        opt = dict([(i, 0) for i in VARIABLES])
+
         pseudo_u = {i : (OBJ[i], 0) for i in VARIABLES}
         pseudo_d = {i : (OBJ[i], 0) for i in VARIABLES}
 
         print "==========================================="
         print "Starting Branch and Bound"
- 
+
         if branch_strategy == 'Most Fraction':
             print "Most fractional variable"
         elif branch_strategy == 'Fixed':
@@ -2036,7 +2036,7 @@ class BBTree(BinaryTree):
             for j in range(numCons):
                 prob += (lpSum([MAT[i][j]*var[i] for i in VARIABLES])<=RHS[j], \
                              CONSTRAINTS[j])
-                
+
             #Fix all prescribed variables
             branch_vars = []
             if cur_index is not 0:
@@ -2045,7 +2045,7 @@ class BBTree(BinaryTree):
                 if sense == '>=':
                     prob += LpConstraint(lpSum(var[branch_var]) >= rhs)
                 else:
-                    prob += LpConstraint(lpSum(var[branch_var]) <= rhs)   
+                    prob += LpConstraint(lpSum(var[branch_var]) <= rhs)
                 print branch_var,
                 pred = parent
                 while str(pred) is not '0':
@@ -2053,43 +2053,43 @@ class BBTree(BinaryTree):
                     pred_rhs = self.get_node_attr(pred, 'rhs')
                     pred_sense = self.get_node_attr(pred, 'sense')
                     if pred_sense == '<=':
-                        prob += LpConstraint(lpSum(var[pred_branch_var]) 
+                        prob += LpConstraint(lpSum(var[pred_branch_var])
                                              <= pred_rhs)
                     else:
-                        prob += LpConstraint(lpSum(var[pred_branch_var]) 
+                        prob += LpConstraint(lpSum(var[pred_branch_var])
                                              >= pred_rhs)
                     print pred_branch_var,
                     branch_vars.append(pred_branch_var)
                     pred = self.get_node_attr(pred, 'parent')
-        
+
                 print ""
 
-            # Solve the LP relaxation    
+            # Solve the LP relaxation
             prob.solve()
-    
+
             lp_count = lp_count +1
-            
+
             # Check infeasibility
             infeasible = LpStatus[prob.status] == "Infeasible"
- 
+
             # Print status
             if infeasible:
                 print "LP Solved, status: Infeasible"
             else:
                 print "LP Solved, status: %s, obj: %s" %(LpStatus[prob.status],
                                                          value(prob.objective))
-    
+
             if(LpStatus[prob.status] == "Optimal"):
                 relax = value(prob.objective)
                 #Update pseudocost
                 if branch_var != None:
                     if sense == '<=':
-                        pseudo_d[branch_var] = ((pseudo_d[branch_var][0]*pseudo_d[branch_var][1] + 
+                        pseudo_d[branch_var] = ((pseudo_d[branch_var][0]*pseudo_d[branch_var][1] +
                                                  (self.get_node_attr(parent, 'obj') - relax)/
                                                  (branch_var_value - rhs))/(pseudo_d[branch_var][1]+1),
                                                 pseudo_d[branch_var][1]+1)
                     else:
-                        pseudo_u[branch_var] = ((pseudo_u[branch_var][0]*pseudo_d[branch_var][1] + 
+                        pseudo_u[branch_var] = ((pseudo_u[branch_var][0]*pseudo_d[branch_var][1] +
                                                  (self.get_node_attr(parent, 'obj') - relax)/
                                                  (rhs - branch_var_value))/(pseudo_u[branch_var][1]+1),
                                                 pseudo_u[branch_var][1]+1)
@@ -2103,15 +2103,15 @@ class BBTree(BinaryTree):
                 if (integer_solution and relax>LB):
                     LB = relax
                     for i in VARIABLES:
-                        #these two have different data structures first one 
+                        #these two have different data structures first one
                         #list, second one dictionary
-                        opt[i] = var_values[i] 
-                    print "New best solution found, objective: %s" %relax 
+                        opt[i] = var_values[i]
+                    print "New best solution found, objective: %s" %relax
                     for i in VARIABLES:
                         if var_values[i] > 0:
                             print "%s = %s" %(i, var_values[i])
                 elif (integer_solution and relax<=LB):
-                    print "New integer solution found, objective: %s" %relax 
+                    print "New integer solution found, objective: %s" %relax
                     for i in VARIABLES:
                         if var_values[i] > 0:
                             print "%s = %s" %(i, var_values[i])
@@ -2126,7 +2126,7 @@ class BBTree(BinaryTree):
                     relax = LB - 1
             else:
                 relax = INFINITY
-            
+
             if integer_solution:
                 print "Integer solution"
                 status = 'S'
@@ -2157,57 +2157,57 @@ class BBTree(BinaryTree):
             elif self.get_layout() == 'dot2tex':
                 label = '\text{I}'
             else:
-                label = 'I'  
+                label = 'I'
 
             if iter_count == 0:
                 if  self.get_layout() == 'bak':
-                    self.AddOrUpdateNode(0, -1, None, BAKstatus, -relax, None, 
+                    self.AddOrUpdateNode(0, -1, None, BAKstatus, -relax, None,
                                          None)
                 else:
-                    self.add_root(0, label = label, status = status, obj = relax, 
-                                  color = color, style = 'filled', 
+                    self.add_root(0, label = label, status = status, obj = relax,
+                                  color = color, style = 'filled',
                                   fillcolor = color)
                 if ETREE_INSTALLED and self.display_mode == 'svg':
-                    self.write_as_svg(filename = "node%d" % iter_count, 
-                                      nextfile = "node%d" % (iter_count + 1), 
+                    self.write_as_svg(filename = "node%d" % iter_count,
+                                      nextfile = "node%d" % (iter_count + 1),
                                       highlight = cur_index)
             else:
                 if  self.get_layout() == 'bak':
                     if sense == '<=':
-                        self.AddOrUpdateNode(cur_index, parent, 'L', 'candidate', 
-                                             -relax, None, None, 
+                        self.AddOrUpdateNode(cur_index, parent, 'L', 'candidate',
+                                             -relax, None, None,
                                              branch_var = branch_var,
                                              branch_var_value = var_values[branch_var],
                                              sense = sense, rhs = rhs)
                     else:
-                        self.AddOrUpdateNode(cur_index, parent, 'R', 'candidate', 
-                                             -relax, None, None, 
+                        self.AddOrUpdateNode(cur_index, parent, 'R', 'candidate',
+                                             -relax, None, None,
                                              branch_var = branch_var,
                                              branch_var_value = var_values[branch_var],
                                              sense = sense, rhs = rhs)
                 else:
-                    self.add_child(cur_index, parent, label = label, 
+                    self.add_child(cur_index, parent, label = label,
                                    branch_var = branch_var,
                                    branch_var_value = var_values[branch_var],
-                                   sense = sense, rhs = rhs, status = status, 
-                                   obj = relax, color = color, style = 'filled', 
+                                   sense = sense, rhs = rhs, status = status,
+                                   obj = relax, color = color, style = 'filled',
                                    fillcolor = color)
                     if  self.get_layout() == 'dot2tex':
                         if sense == '>=':
-                            self.set_edge_attr(parent, cur_index, 'label', 
-                                               str(branch_var) + " \geq " + 
+                            self.set_edge_attr(parent, cur_index, 'label',
+                                               str(branch_var) + " \geq " +
                                                str(rhs))
                         else:
-                            self.set_edge_attr(parent, cur_index, 'label', 
-                                               str(branch_var) + " \leq " + 
+                            self.set_edge_attr(parent, cur_index, 'label',
+                                               str(branch_var) + " \leq " +
                                                str(rhs))
                     else:
-                        self.set_edge_attr(parent, cur_index, 'label', 
+                        self.set_edge_attr(parent, cur_index, 'label',
                                            str(branch_var) + sense + str(rhs))
                 if ETREE_INSTALLED and self.display_mode == 'svg':
-                    self.write_as_svg(filename = "node%d" % iter_count, 
-                                      prevfile = "node%d" % (iter_count - 1), 
-                                      nextfile = "node%d" % (iter_count + 1), 
+                    self.write_as_svg(filename = "node%d" % iter_count,
+                                      prevfile = "node%d" % (iter_count - 1),
+                                      nextfile = "node%d" % (iter_count + 1),
                                       highlight = cur_index)
             iter_count += 1
 
@@ -2220,14 +2220,14 @@ class BBTree(BinaryTree):
                 self.write_as_dynamic_gexf("graph")
 
             if status == 'C':
-  
+
                 # Branching:
                 # Choose a variable for branching
                 branching_var = -1
                 if branch_strategy == 'Fixed':
                     #fixed order
                     for i in VARIABLES:
-                        frac = min(var[i].varValue-math.floor(var[i].varValue), 
+                        frac = min(var[i].varValue-math.floor(var[i].varValue),
                                    math.ceil(var[i].varValue) - var[i].varValue)
                         if (frac > 0):
                             min_frac = frac
@@ -2237,7 +2237,7 @@ class BBTree(BinaryTree):
                     #most fractional variable
                     min_frac = -1
                     for i in VARIABLES:
-                        frac = min(var[i].varValue-math.floor(var[i].varValue), 
+                        frac = min(var[i].varValue-math.floor(var[i].varValue),
                                    math.ceil(var[i].varValue)- var[i].varValue )
                         if (frac> min_frac):
                             min_frac = frac
@@ -2255,10 +2255,10 @@ class BBTree(BinaryTree):
                 else:
                     print "Unknown branching strategy %s" %branch_strategy
                     exit()
-    
+
                 if branching_var >= 0:
                     print "Branching on variable %s" %branching_var
-            
+
                 #Create new nodes
                 if search_strategy == 'Depth First':
                     priority = (-cur_depth - 1, -cur_depth - 1)
@@ -2276,9 +2276,9 @@ class BBTree(BinaryTree):
                 self.set_node_attr(cur_index, color, 'green')
                 if  self.get_layout() == 'bak':
                     self.set_node_attr(cur_index, 'status', 'branched')
- 
+
         timer = int(math.ceil((time.time()-timer)*1000))
-    
+
         print ""
         print "==========================================="
         print "Branch and bound completed in %sms" %timer
@@ -2286,7 +2286,7 @@ class BBTree(BinaryTree):
         if complete_enumeration:
             print "Complete enumeration"
         print "%s nodes visited " %node_count
-        print "%s LP's solved" %lp_count     
+        print "%s LP's solved" %lp_count
         print "==========================================="
         print "Optimal solution"
         #print optimal solution
@@ -2294,14 +2294,14 @@ class BBTree(BinaryTree):
             if opt[i] > 0:
                 print "%s = %s" %(i, opt[i])
         print "Objective function value"
-        print LB          
-        print "==========================================="    
+        print LB
+        print "==========================================="
 
         if ((XDOT_INSTALLED and self.display_mode == 'xdot' and  self.get_layout() != 'dot2tex') or
              self.get_layout() == 'bak'):
             self.display()
 
-        return opt, LB 
+        return opt, LB
 
 def CreatePerlStyleBooleanFlag(parser, flag_text, variable_name, help_text):
     """Add two options to an optparse.OptionParser, one with a 'no' prefix.
@@ -2433,15 +2433,15 @@ def parse_options():
 
     return (input_filename, options)
 
-    
+
 if __name__ == '__main__':
-    
+
     T = BBTree()
 #    T.set_layout('dot2tex')
-#    T.set_display_mode('file')    
+#    T.set_display_mode('file')
     T.set_layout('dot')
     T.set_display_mode('xdot')
     CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP(rand_seed = 3)
-    T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS, 
+    T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                      branch_strategy = 'Pseudocost', search_strategy = 'Best First',
                      display_interval = None)
