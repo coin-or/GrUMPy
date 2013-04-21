@@ -1,25 +1,6 @@
 from baktree import BAKTree
 import sys
 
-#
-# tree
-# histogramuare
-# scatterplot
-# imcumbentpath
-#
-
-#
-# GenerateTreeImage done
-# GenerateHistogram done
-# GenerateScatterplot (we have very few nodes to draw) done
-# GenerateIncumbentPath
-# GenerateAllIncumbentPaths
-# CreateAnimatedImages (not relevant)
-#
-# GeneratePredictionImages
-# measures.png irrelevant, drawn at the end of the run.
-#
-
 if __name__ == '__main__':
     bt = BAKTree()
     bt.set_display_mode('pygame')
@@ -32,7 +13,8 @@ if __name__ == '__main__':
         line_number = line_number+1
         if line_number%200 != 0:
             continue
-        bt.write_image(bt.GenerateTreeImage(), filename = "image"+str(line_number)+".png")
+        bt.write_image(bt.GenerateTreeImage(), 
+                       filename = "image"+str(line_number)+".png")
 #        if bt.root is not None:
 #            gnuplot_image = bt.GenerateHistogram()
 #            gnuplot_image = bt.GenerateTreeImage()
