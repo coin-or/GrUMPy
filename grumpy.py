@@ -322,9 +322,9 @@ class BBTree(BinaryTree):
             self.UpdateObjectiveValueLimits(lp_bound)
             # Set optimization sense if not yet set
             if self._optimization_sense is None:
-                if lp_bound < self.get_node_attr(self.root, 'lp_bound'):
+                if lp_bound < self.root.get_attr('lp_bound'):
                     self._optimization_sense = 'max'
-                elif lp_bound > self.get_node_attr(self.root, 'lp_bound'):
+                elif lp_bound > self.root.get_attr('lp_bound'):
                     self._optimization_sense = 'min'
         if integer_infeasibility_sum is not None:
             if (self._max_integer_infeasibility_sum is None or
@@ -938,14 +938,14 @@ class BBTree(BinaryTree):
         horizontal_lower_bound = dict.fromkeys(self.get_node_list(), 0.0)
         horizontal_upper_bound = dict.fromkeys(self.get_node_list(), 1.0)
         horizontal_positions = dict.fromkeys(self.get_node_list())
-        horizontal_positions[self.root] = 0.5
+        horizontal_positions[self.root.name] = 0.5
         # sort node list
         node_id_list = sorted(self.get_node_list())
         node_id_list_int = list(int(n) for n in node_id_list)
         node_id_list_int = sorted(node_id_list_int)
         node_id_list = list(str(n) for n in node_id_list_int)
         for node_id in node_id_list:
-            if node_id == self.root:
+            if node_id == self.root.name:
                 continue
             parent_id = self.get_node_attr(node_id, 'parent')
             branch_direction = self.get_node_attr(node_id, 'direction')
@@ -986,7 +986,7 @@ class BBTree(BinaryTree):
         # Count the number of descendants for each node.
         # Do a post-order traversal of the tree.
         node_stack = []
-        node_stack.append(self.root)
+        node_stack.append(self.root.name)
         while node_stack:
             current_node = node_stack[len(node_stack) - 1]
             lchild = self.get_left_child(current_node)
@@ -1013,9 +1013,9 @@ class BBTree(BinaryTree):
         # Traverse the tree and set horizontal positions.
         # Do a pre-order traversal of the tree.
         node_stack = []
-        node_stack.append(self.root)
-        horizontal_lower_bound[self.root] = 0.0
-        horizontal_upper_bound[self.root] = 1.0
+        node_stack.append(self.root.name)
+        horizontal_lower_bound[self.root.name] = 0.0
+        horizontal_upper_bound[self.root.name] = 1.0
         while node_stack:
             node = node_stack.pop()
             lchild = self.get_left_child(node)
@@ -1134,7 +1134,7 @@ class BBTree(BinaryTree):
             elif self.get_node_attr(node, 'status') == 'integer':
                 integer_lines.append('%0.6f %0.6f\n' % (
                         horizontal_positions[node], node_lp_bound))
-            if print_edges and node != self.root:
+            if print_edges and node != self.root.name:
                 if True:
                     _parent_id = self.get_node_attr(node, 'parent')
                     additional_script_lines.append(
@@ -1146,8 +1146,8 @@ class BBTree(BinaryTree):
         plot_parts = []
         # Plot root node.
         plot_parts.append('"< echo %0.6f %0.6f" w p lt 2 pt 7' %
-                          (horizontal_positions[self.root],
-                           self.get_node_attr(self.root, 'lp_bound')))
+                          (horizontal_positions[self.root.name],
+                           self.root.get_attr('lp_bound')))
         # If desired, sample from the set of nodes rather than plotting all.
         if self._sample_tree:
             sample_size = self._sample_tree
@@ -2179,8 +2179,9 @@ if __name__ == '__main__':
     T = BBTree()
 #    T.set_layout('dot2tex')
 #    T.set_display_mode('file')
-    T.set_layout('dot')
+    T.set_layout('bak')
     T.set_display_mode('xdot')
+    T.set_display_mode('pygame')
     CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP(rand_seed = 3)
     T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                      branch_strategy = 'Pseudocost', search_strategy = 'Best First',
