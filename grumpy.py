@@ -294,7 +294,7 @@ class BBTree(BinaryTree):
         integer_infeasibility_sum -> id node
         parent_id -> id node
         '''
-        if parent_id is not '0':
+        if parent_id is not -1:
             if id in self.get_node_list():
                 self.set_node_attr(id, 'status', status)
                 self.set_node_attr(id, 'lp_bound', lp_bound)
@@ -960,9 +960,9 @@ class BBTree(BinaryTree):
                 horizontal_upper_bound[node_id] = horizontal_positions[
                     parent_id]
             else:
-                print('Error: node %s has unsupported branching direction.\n'
-                      'Fixed-position tree images only support L and R '
-                      'branching.' % node_id)
+                print 'Error: node %s has unsupported branching direction.' %node_id
+                print 'Fixed-position tree images only support L and R '
+                print 'branching.'
                 sys.exit(1)
             horizontal_positions[node_id] = (
                 horizontal_upper_bound[node_id] +
@@ -1242,7 +1242,7 @@ class BBTree(BinaryTree):
             return
         tokens = line.split()
         if len(tokens) < 3:
-            print('Incomplete or invalid line: %s' % ' '.join(tokens))
+            print 'Incomplete or invalid line: %s' %' '.join(tokens)
             sys.exit(1)
         # Tokens shared by all line types
         self._time = float(tokens[0])
@@ -1260,7 +1260,7 @@ class BBTree(BinaryTree):
             remaining_tokens = tokens[5:]
             # Check that the parent node id is valid
             if parent_id not in self.get_node_list() and self.root is not None:
-                print('Parent id does not exist: %s' % line)
+                print 'Parent id does not exist: %s' % line
                 sys.exit(1)
             if line_type == 'integer':
                 self._optimal_soln_time = self._time
@@ -1282,8 +1282,8 @@ class BBTree(BinaryTree):
                 self.ProcessInfeasibleLine(node_id, parent_id,
                                            branch_direction, remaining_tokens)
             else:
-                print('Unexpected line type "%s": %s' % (line_type,
-                                                         ' '.join(tokens)))
+                print 'Unexpected line type "%s": %s' % (line_type,
+                                                         ' '.join(tokens))
                 sys.exit(1)
 
     def ProcessHeuristicLine(self, remaining_tokens):
@@ -1295,10 +1295,9 @@ class BBTree(BinaryTree):
         """
         # Parse remaining tokens
         if len(remaining_tokens) < 1 or len(remaining_tokens) > 2:
-            print('Invalid line: %s heuristic %s' % (
-                    self._time, ' '.join(remaining_tokens)))
-            print('Should match: <time> heuristic <obj value> [<associated '
-                  'node id>]')
+            print 'Invalid line: %s heuristic %s' % (
+                    self._time, ' '.join(remaining_tokens))
+            print 'Should match: <time> heuristic <obj value> [<associated node id>]'
             sys.exit(1)
         objective_value = float(remaining_tokens[0])
         if len(remaining_tokens) == 2:
@@ -1329,11 +1328,10 @@ class BBTree(BinaryTree):
         """
         # Parse remaining tokens
         if len(remaining_tokens) != 1:
-            print('Invalid line: %s integer %s %s %s %s' % (
+            print 'Invalid line: %s integer %s %s %s %s' % (
                     self._time, node_id, parent_id, branch_direction,
-                    ' '.join(remaining_tokens)))
-            print('Should match: <time> integer <node id> <parent id> '
-                  '<branch direction> <obj value>')
+                    ' '.join(remaining_tokens))
+            print 'Should match: <time> integer <node id> <parent id> <branch direction> <obj value>'
             sys.exit(1)
         objective_value = float(remaining_tokens[0])
         self.AddOrUpdateNode(node_id, parent_id, branch_direction, 'integer',
@@ -1357,15 +1355,14 @@ class BBTree(BinaryTree):
         """
         # Print a warning if there is no current incumbent.
         if self._incumbent_value is None:
-            print('WARNING: Encountered "fathom" line before first incumbent.\n'
-                  '  This may indicate an error in the input file.')
+            print 'WARNING: Encountered "fathom" line before first incumbent.'
+            print '  This may indicate an error in the input file.'
         # Parse remaining tokens
         if len(remaining_tokens) > 1:
-            print('Invalid line: %s fathomed %s %s %s %s' % (
+            print 'Invalid line: %s fathomed %s %s %s %s' % (
                     self._time, node_id, parent_id, branch_direction,
-                    ' '.join(remaining_tokens)))
-            print('Should match: <time> fathomed <node id> <parent id> '
-                  '<branch direction> [<lp bound>]')
+                    ' '.join(remaining_tokens))
+            print 'Should match: <time> fathomed <node id> <parent id> <branch direction> [<lp bound>]'
             sys.exit(1)
         if len(remaining_tokens) == 1:
             lp_bound = float(remaining_tokens[0])
@@ -1402,13 +1399,13 @@ class BBTree(BinaryTree):
         """
         # Parse remaining tokens
         if len(remaining_tokens) != 3:
-            print('Invalid line: %s pregnant %s %s %s %s' % (
+            print 'Invalid line: %s pregnant %s %s %s %s' % (
                     self._time, node_id, parent_id, branch_direction,
-                    ' '.join(remaining_tokens)))
-            print('Should match: <time> pregnant <node id> <parent id> '
-                  '<branch direction> <lp bound> '
-                  '<sum of integer infeasibilities> <number of integer '
-                  'infeasibilities>')
+                    ' '.join(remaining_tokens))
+            print 'Should match: <time> pregnant <node id> <parent id> '
+            print '<branch direction> <lp bound> '
+            print '<sum of integer infeasibilities> <number of integer '
+            print 'infeasibilities>'
             sys.exit(1)
         lp_bound = float(remaining_tokens[0])
         integer_infeasibility_sum = float(remaining_tokens[1])
@@ -1433,13 +1430,13 @@ class BBTree(BinaryTree):
         #self.AddProgressMeasures()
         # Parse remaining tokens
         if len(remaining_tokens) != 3:
-            print('Invalid line: %s branched %s %s %s %s' % (
+            print 'Invalid line: %s branched %s %s %s %s' % (
                     self._time, node_id, parent_id, branch_direction,
-                    ' '.join(remaining_tokens)))
-            print('Should match: <time> branched <node id> <parent id> '
-                  '<branch direction> <lp bound> '
-                  '<sum of integer infeasibilities> <number of integer '
-                  'infeasibilities>')
+                    ' '.join(remaining_tokens))
+            print 'Should match: <time> branched <node id> <parent id> '
+            print '<branch direction> <lp bound> '
+            print '<sum of integer infeasibilities> <number of integer '
+            print 'infeasibilities>'
             sys.exit(1)
         lp_bound = float(remaining_tokens[0])
         integer_infeasibility_sum = float(remaining_tokens[1])
@@ -1463,11 +1460,11 @@ class BBTree(BinaryTree):
         #self.AddProgressMeasures()
         # Parse remaining tokens
         if len(remaining_tokens) != 0:
-            print('Invalid line: %s infeasible %s %s %s %s' % (
+            print 'Invalid line: %s infeasible %s %s %s %s' % (
                     self._time, node_id, parent_id, branch_direction,
-                    ' '.join(remaining_tokens)))
-            print('Should match: <time> infeasible <node id> <parent id> '
-                  '<branch direction>')
+                    ' '.join(remaining_tokens))
+            print 'Should match: <time> infeasible <node id> <parent id> '
+            print '<branch direction>'
             sys.exit(1)
         #parent_node = self._nodes[parent_id]
         # Use parent values if the node does not have its own
@@ -1501,16 +1498,16 @@ class BBTree(BinaryTree):
         """
         # Parse remaining tokens
         if len(remaining_tokens) == 2 or len(remaining_tokens) > 3:
-            print('Invalid line: %s branched %s %s %s %s' % (
+            print 'Invalid line: %s branched %s %s %s %s' % (
                     self._time, node_id, parent_id, branch_direction,
-                    ' '.join(remaining_tokens)))
-            print('Should match: <time> candidate <node id> <parent id> '
-                  '<branch direction> [<lp bound>] '
-                  '[<sum of integer infeasibilities> <number of integer '
-                  'infeasibilities>]')
+                    ' '.join(remaining_tokens))
+            print 'Should match: <time> candidate <node id> <parent id> '
+            print '<branch direction> [<lp bound>] '
+            print '[<sum of integer infeasibilities> <number of integer '
+            print 'infeasibilities>]'
             sys.exit(1)
         if parent_id not in self.get_node_list():
-            print('Error: node %s not in set' % parent_id)
+            print 'Error: node %s not in set' % parent_id
             sys.exit(1)
         # TODO(bhunsaker): Check that we handle the cases of updating a candidate.
         if len(remaining_tokens) > 0:
@@ -1578,10 +1575,9 @@ class BBTree(BinaryTree):
         ssg_measures = self._sum_subtree_gaps_forecaster.GetAllMeasures()
         # Check that there are values to process.
         if len(gap_measures) == 0 or len(ssg_measures) == 0:
-            print('WARNING: Not printing prediction images because at '
-                  'least one measure set is empty.')
-            print('  Gap measures: %d' % len(gap_measures))
-            print('  SSG measures: %d' % len(ssg_measures))
+            print 'WARNING: Not printing prediction images because at least one measure set is empty.'
+            print '  Gap measures: %d' % len(gap_measures)
+            print '  SSG measures: %d' % len(ssg_measures)
             return
         # Gap measures
         gap_data_filename = 'gap_measures.dat'
@@ -1639,7 +1635,7 @@ class BBTree(BinaryTree):
                                                    forecast.forecast))
             data_file.close()
         if not gap_forecasts and not ssg_forecasts:
-            print('No forecasts made, so not creating forecast image.')
+            print 'No forecasts made, so not creating forecast image.'
             return
         # Set terminal for the output files.
         forecast_script = 'set terminal png notransparent size 480,360\n\n'
@@ -1867,6 +1863,14 @@ class BBTree(BinaryTree):
                     if (var_values[i] not in set([0,1])):
                         integer_solution = 0
                         break
+                # Determine integer_infeasibility_count and
+                #integer_infeasibility_sum for scatterplot and such
+                integer_infeasibility_count = 0
+                integer_infeasibility_sum = 0.0
+                for i in VARIABLES:
+                    if (var_values[i] not in set([0,1])):
+                        integer_infeasibility_count += 1
+                        integer_infeasibility_sum += min([var_values[i], 1.0-var_values[i]])
                 if (integer_solution and relax>LB):
                     LB = relax
                     for i in VARIABLES:
@@ -1924,8 +1928,46 @@ class BBTree(BinaryTree):
                 label = 'I'
             if iter_count == 0:
                 if  self.get_layout() == 'bak':
-                    self.AddOrUpdateNode(0, -1, None, BAKstatus, -relax, None,
-                                         None)
+                    #(self, id, parent_id, branch_direction, status, lp_bound,
+                    #    integer_infeasibility_count, integer_infeasibility_sum,
+                    #    **attrs):
+                    if BAKstatus is 'integer':
+                        self.AddOrUpdateNode(0, -1, None, 'integer', -relax,
+                                         None,
+                                         None,
+                                         label = label,
+                                         obj = relax, color = color,
+                                         style = 'filled', fillcolor = color)
+                        self._previous_incumbent_value = self._incumbent_value
+                        self._incumbent_value = -relax
+                        self._incumbent_parent = -1
+                        self._new_integer_solution = True
+                    elif BAKstatus is 'infeasible':
+                        # use parent values if the node does not have its own
+                        self.AddOrUpdateNode(0, -1, None, 'infeasible', INFINITY,
+                                         None,
+                                         None,
+                                         label = label,
+                                         obj = relax, color = color,
+                                         style = 'filled', fillcolor = color)
+                    elif BAKstatus is 'candidate':
+                        self.AddOrUpdateNode(0, -1, None, 'candidate', -relax,
+                                         integer_infeasibility_count,
+                                         integer_infeasibility_sum,
+                                         label = label,
+                                         obj = relax, color = color,
+                                         style = 'filled', fillcolor = color)
+                    elif BAKstatus is 'fathomed':
+                        if self._incumbent_value is None:
+                            print 'WARNING: Encountered "fathom" line before first incumbent.'
+                        self.AddOrUpdateNode(0, -1, None, 'fathomed', -relax,
+                                         None,
+                                         None,
+                                         label = label,
+                                         obj = relax, color = color,
+                                         style = 'filled', fillcolor = color)
+                    else:
+                        raise Exception('Unknown BAKstatus %s!' %BAKstatus)
                 else:
                     self.add_root(0, label = label, status = status, obj = relax,
                                   color = color, style = 'filled',
@@ -1937,17 +1979,117 @@ class BBTree(BinaryTree):
             else:
                 if  self.get_layout() == 'bak':
                     if sense == '<=':
-                        self.AddOrUpdateNode(cur_index, parent, 'L', 'candidate',
-                                             -relax, None, None,
+                        if BAKstatus is 'candidate':
+                            self.AddOrUpdateNode(cur_index, parent, 'L', 'candidate',
+                                             -relax,
+                                             integer_infeasibility_count,
+                                             integer_infeasibility_sum,
                                              branch_var = branch_var,
                                              branch_var_value = var_values[branch_var],
-                                             sense = sense, rhs = rhs)
+                                             sense = sense, rhs = rhs, obj = relax,
+                                             color = color, style = 'filled',
+                                             fillcolor = color)
+                        elif BAKstatus is 'infeasible':
+                            # use parent values if the node does not have its own
+                            ii_count = self.get_node_attr(parent,
+                                                 'integer_infeasibility_count')
+                            ii_sum = self.get_node_attr(parent,
+                                                 'integer_infeasibility_sum')
+                            relax = self.get_node_attr(parent, 'lp_bound')
+                            self.AddOrUpdateNode(cur_index, parent, 'L', 'infeasible',
+                                             -relax,
+                                             ii_count,
+                                             ii_sum,
+                                             branch_var = branch_var,
+                                             branch_var_value = var_values[branch_var],
+                                             sense = sense, rhs = rhs, obj = relax,
+                                             color = color, style = 'filled',
+                                             fillcolor = color)
+                        elif BAKstatus is 'integer':
+                            self.AddOrUpdateNode(cur_index, parent, 'L', 'integer',
+                                             -relax,
+                                             None,
+                                             None,
+                                             branch_var = branch_var,
+                                             branch_var_value = var_values[branch_var],
+                                             sense = sense, rhs = rhs, obj = relax,
+                                             color = color, style = 'filled',
+                                             fillcolor = color)
+                            self._previous_incumbent_value = self._incumbent_value
+                            self._incumbent_value = -relax
+                            self._incumbent_parent = parent
+                            self._new_integer_solution = True
+                        elif BAKstatus is 'fathomed':
+                            if self._incumbent_value is None:
+                                print 'WARNING: Encountered "fathom" line before first incumbent.'
+                                print '  This may indicate an error in the input file.'
+                                self.AddOrUpdateNode(cur_index, parent, 'L', 'fathomed',
+                                             -relax,
+                                             integer_infeasibility_count,
+                                             integer_infeasibility_sum,
+                                             branch_var = branch_var,
+                                             branch_var_value = var_values[branch_var],
+                                             sense = sense, rhs = rhs, obj = relax,
+                                             color = color, style = 'filled',
+                                             fillcolor = color)
+                        else:
+                            raise Exception('Unknown BAKstatus %s!' %BAKstatus)
                     else:
-                        self.AddOrUpdateNode(cur_index, parent, 'R', 'candidate',
-                                             -relax, None, None,
+                        if BAKstatus is 'candidate':
+                            self.AddOrUpdateNode(cur_index, parent, 'R', 'candidate',
+                                             -relax,
+                                             integer_infeasibility_count,
+                                             integer_infeasibility_sum,
                                              branch_var = branch_var,
                                              branch_var_value = var_values[branch_var],
-                                             sense = sense, rhs = rhs)
+                                             sense = sense, rhs = rhs, obj = relax,
+                                             color = color, style = 'filled',
+                                             fillcolor = color)
+                        elif BAKstatus is 'infeasible':
+                            # use parent values if the node does not have its own
+                            ii_count = self.get_node_attr(parent,
+                                                 'integer_infeasibility_count')
+                            ii_sum = self.get_node_attr(parent,
+                                                 'integer_infeasibility_sum')
+                            relax = self.get_node_attr(parent, 'lp_bound')
+                            self.AddOrUpdateNode(cur_index, parent, 'R', 'infeasible',
+                                             -relax,
+                                             ii_count,
+                                             ii_sum,
+                                             branch_var = branch_var,
+                                             branch_var_value = var_values[branch_var],
+                                             sense = sense, rhs = rhs, obj = relax,
+                                             color = color, style = 'filled',
+                                             fillcolor = color)
+                        elif BAKstatus is 'integer':
+                            self.AddOrUpdateNode(cur_index, parent, 'R', 'integer',
+                                             -relax,
+                                             None,
+                                             None,
+                                             branch_var = branch_var,
+                                             branch_var_value = var_values[branch_var],
+                                             sense = sense, rhs = rhs, obj = relax,
+                                             color = color, style = 'filled',
+                                             fillcolor = color)
+                            self._previous_incumbent_value = self._incumbent_value
+                            self._incumbent_value = -relax
+                            self._incumbent_parent = parent
+                            self._new_integer_solution = True
+                        elif BAKstatus is 'fathomed':
+                            if self._incumbent_value is None:
+                                print 'WARNING: Encountered "fathom" line before first incumbent.'
+                                print '  This may indicate an error in the input file.'
+                                self.AddOrUpdateNode(cur_index, parent, 'R', 'fathomed',
+                                             -relax,
+                                             integer_infeasibility_count,
+                                             integer_infeasibility_sum,
+                                             branch_var = branch_var,
+                                             branch_var_value = var_values[branch_var],
+                                             sense = sense, rhs = rhs, obj = relax,
+                                             color = color, style = 'filled',
+                                             fillcolor = color)
+                        else:
+                            raise Exception('Unknown BAKstatus %s!' %BAKstatus)
                 else:
                     self.add_child(cur_index, parent, label = label,
                                    branch_var = branch_var,
@@ -2033,6 +2175,8 @@ class BBTree(BinaryTree):
                 self.set_node_attr(cur_index, color, 'green')
                 if  self.get_layout() == 'bak':
                     self.set_node_attr(cur_index, 'status', 'branched')
+            if self.root is not None and self.attr['display'] is 'pygame':
+                self.display_all()
         timer = int(math.ceil((time.time()-timer)*1000))
         print ""
         print "==========================================="
@@ -2145,7 +2289,7 @@ def parse_options():
     if (not options.histogram and not options.scatterplot and
         not options.path and not options.tree and not options.fixed_tree and
         not options.predictions):
-        print('No image types specified so not processing.')
+        print 'No image types specified so not processing.'
         parser.print_usage()
         sys.exit(1)
     # Bounds for incumbent paths will be undefined without scatterplots.
@@ -2167,7 +2311,7 @@ def parse_options():
     if (not options.histogram and not options.scatterplot and
         not options.path and not options.tree and not options.fixed_tree and
         not options.predictions):
-        print('No image types specified so not processing.')
+        print 'No image types specified so not processing.'
         sys.exit(1)
     # Bounds for incumbent paths will be undefined without scatterplots.
     if options.path:
