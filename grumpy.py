@@ -103,10 +103,8 @@ try:
     from gexf import Gexf
 except ImportError:
     gexf_installed = False
-    print 'Gexf not installed'
 else:
     gexf_installed = True
-    print 'Found gexf installation'
 
 from forecastingchainedsequences import ForecastingChainedSequences
 
