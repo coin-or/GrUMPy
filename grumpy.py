@@ -220,6 +220,26 @@ class BBTree(BinaryTree):
         else:
             raise Exception("Only Dot mode supported in write_as_dynamic_gexf")
 
+    def display(self, item = 'all'):
+        '''
+        This the display method that users should use. It calls display_all and
+        other display methods according to the arguments.
+        Input:
+        Post: Pops up a display screen or writes the visuals to disk.
+        '''
+        if item=='all':
+            self.display_all()
+        elif item=='tree':
+            pass
+        elif item=='scatterplot':
+            pass
+        elif item=='histogram':
+            pass
+        elif item=='incumbent':
+            pass
+        else:
+            raise Exception('Unknown display() method argument %s' %item)
+
     def display_all(self):
         '''
         Assumes all the images have the same size.
