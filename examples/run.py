@@ -41,3 +41,4 @@ if __name__ == '__main__':
 #            if gnuplot_image is not None:
 #                bt.display_image(gnuplot_image)
             bt.display_all()
+
