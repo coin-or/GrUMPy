@@ -201,6 +201,7 @@ class BBTree(BinaryTree):
 
     def display(self, item = 'all'):
         '''
+        TODO(aykut): support pygame, xdot and dot2tree display modes
         This the display method that users should use. It calls display_all and
         other display methods according to the arguments.
         Input:
@@ -208,16 +209,21 @@ class BBTree(BinaryTree):
         '''
         if item=='all':
             self.display_all()
+            return
         elif item=='tree':
-            pass
+            gnuplot_image = self.GenerateTreeImage()
         elif item=='scatterplot':
-            pass
+            gnuplot_image = self.GenerateScatterplot()
         elif item=='histogram':
-            pass
+            gnuplot_image = self.GenerateHistogram()
         elif item=='incumbent':
-            pass
+            gnuplot_image = self.GenerateIncumbentPath()
+        elif item=='forecast':
+            gnuplot_image = self.GenerateForecastImages()
         else:
             raise Exception('Unknown display() method argument %s' %item)
+        if gnuplot_image is not None:
+            self.display_image(gnuplot_image)
 
     def display_all(self):
         '''
@@ -2195,8 +2201,8 @@ class BBTree(BinaryTree):
                 self.set_node_attr(cur_index, color, 'green')
                 if  self.get_layout() == 'bak':
                     self.set_node_attr(cur_index, 'status', 'branched')
-            if self.root is not None and self.attr['display'] is 'pygame':
-                self.display_all()
+            if self.root is not None and self.attr['display'] is 'pygame' and display_interval is not None:
+                self.display('all')
         timer = int(math.ceil((time.time()-timer)*1000))
         print ""
         print "==========================================="
@@ -2215,9 +2221,6 @@ class BBTree(BinaryTree):
         print "Objective function value"
         print LB
         print "==========================================="
-        if ((XDOT_INSTALLED and self.display_mode == 'xdot' and  self.get_layout() != 'dot2tex') or
-             self.get_layout() == 'bak'):
-            self.display()
         return opt, LB
 
 def CreatePerlStyleBooleanFlag(parser, flag_text, variable_name, help_text):
