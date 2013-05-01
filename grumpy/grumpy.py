@@ -1924,26 +1924,26 @@ class BBTree(BinaryTree):
                 relax = INFINITY
             if integer_solution:
                 print "Integer solution"
-                status = 'S'
-                BAKstatus = 'integer'
+                BBstatus = 'S'
+                status = 'integer'
                 color = 'lightblue'
             elif infeasible:
                 print "Infeasible node"
-                status = 'I'
-                BAKstatus = 'infeasible'
+                BBstatus = 'I'
+                status = 'infeasible'
                 color = 'orange'
             elif not complete_enumeration and relax <= LB:
                 print "Node pruned by bound (obj: %s, UB: %s)" %(relax,LB)
-                status = 'P'
-                BAKstatus = 'fathomed'
+                BBstatus = 'P'
+                status = 'fathomed'
                 color = 'red'
             elif cur_depth >= numVars :
                 print "Reached a leaf"
-                BAKstatus = 'fathomed'
+                BBstatus = 'fathomed'
                 status = 'L'
             else:
-                status = 'C'
-                BAKstatus = 'candidate'
+                BBstatus = 'C'
+                status = 'candidate'
                 color = 'yellow'
             if status is not 'I':
 #               label = status + ": " + "%.1f"%relax
@@ -1957,7 +1957,7 @@ class BBTree(BinaryTree):
                     #(self, id, parent_id, branch_direction, status, lp_bound,
                     #    integer_infeasibility_count, integer_infeasibility_sum,
                     #    **attrs):
-                    if BAKstatus is 'integer':
+                    if status is 'integer':
                         self.AddOrUpdateNode(0, -1, None, 'integer', -relax,
                                          None,
                                          None,
@@ -1968,7 +1968,7 @@ class BBTree(BinaryTree):
                         self._incumbent_value = -relax
                         self._incumbent_parent = -1
                         self._new_integer_solution = True
-                    elif BAKstatus is 'infeasible':
+                    elif status is 'infeasible':
                         # use parent values if the node does not have its own
                         self.AddOrUpdateNode(0, -1, None, 'infeasible', INFINITY,
                                          None,
@@ -1976,14 +1976,14 @@ class BBTree(BinaryTree):
                                          label = label,
                                          obj = relax, color = color,
                                          style = 'filled', fillcolor = color)
-                    elif BAKstatus is 'candidate':
+                    elif status is 'candidate':
                         self.AddOrUpdateNode(0, -1, None, 'candidate', -relax,
                                          integer_infeasibility_count,
                                          integer_infeasibility_sum,
                                          label = label,
                                          obj = relax, color = color,
                                          style = 'filled', fillcolor = color)
-                    elif BAKstatus is 'fathomed':
+                    elif status is 'fathomed':
                         if self._incumbent_value is None:
                             print 'WARNING: Encountered "fathom" line before first incumbent.'
                         self.AddOrUpdateNode(0, -1, None, 'fathomed', -relax,
@@ -2005,7 +2005,7 @@ class BBTree(BinaryTree):
             else:
                 if  self.get_layout() == 'bak':
                     if sense == '<=':
-                        if BAKstatus is 'candidate':
+                        if status is 'candidate':
                             self.AddOrUpdateNode(cur_index, parent, 'L', 'candidate',
                                              -relax,
                                              integer_infeasibility_count,
@@ -2015,7 +2015,7 @@ class BBTree(BinaryTree):
                                              sense = sense, rhs = rhs, obj = relax,
                                              color = color, style = 'filled',
                                              fillcolor = color)
-                        elif BAKstatus is 'infeasible':
+                        elif status is 'infeasible':
                             # use parent values if the node does not have its own
                             ii_count = self.get_node_attr(parent,
                                                  'integer_infeasibility_count')
@@ -2031,7 +2031,7 @@ class BBTree(BinaryTree):
                                              sense = sense, rhs = rhs, obj = relax,
                                              color = color, style = 'filled',
                                              fillcolor = color)
-                        elif BAKstatus is 'integer':
+                        elif status is 'integer':
                             self.AddOrUpdateNode(cur_index, parent, 'L', 'integer',
                                              -relax,
                                              None,
@@ -2045,23 +2045,23 @@ class BBTree(BinaryTree):
                             self._incumbent_value = -relax
                             self._incumbent_parent = parent
                             self._new_integer_solution = True
-                        elif BAKstatus is 'fathomed':
+                        elif status is 'fathomed':
                             if self._incumbent_value is None:
                                 print 'WARNING: Encountered "fathom" line before first incumbent.'
                                 print '  This may indicate an error in the input file.'
-                                self.AddOrUpdateNode(cur_index, parent, 'L', 'fathomed',
-                                             -relax,
-                                             integer_infeasibility_count,
-                                             integer_infeasibility_sum,
-                                             branch_var = branch_var,
-                                             branch_var_value = var_values[branch_var],
-                                             sense = sense, rhs = rhs, obj = relax,
-                                             color = color, style = 'filled',
-                                             fillcolor = color)
+                            self.AddOrUpdateNode(cur_index, parent, 'L', 'fathomed',
+                                                 -relax,
+                                                 integer_infeasibility_count,
+                                                 integer_infeasibility_sum,
+                                                 branch_var = branch_var,
+                                                 branch_var_value = var_values[branch_var],
+                                                 sense = sense, rhs = rhs, obj = relax,
+                                                 color = color, style = 'filled',
+                                                 fillcolor = color)
                         else:
                             raise Exception('Unknown BAKstatus %s!' %BAKstatus)
                     else:
-                        if BAKstatus is 'candidate':
+                        if status is 'candidate':
                             self.AddOrUpdateNode(cur_index, parent, 'R', 'candidate',
                                              -relax,
                                              integer_infeasibility_count,
@@ -2071,7 +2071,7 @@ class BBTree(BinaryTree):
                                              sense = sense, rhs = rhs, obj = relax,
                                              color = color, style = 'filled',
                                              fillcolor = color)
-                        elif BAKstatus is 'infeasible':
+                        elif status is 'infeasible':
                             # use parent values if the node does not have its own
                             ii_count = self.get_node_attr(parent,
                                                  'integer_infeasibility_count')
@@ -2079,7 +2079,7 @@ class BBTree(BinaryTree):
                                                  'integer_infeasibility_sum')
                             relax = self.get_node_attr(parent, 'lp_bound')
                             self.AddOrUpdateNode(cur_index, parent, 'R', 'infeasible',
-                                             -relax,
+                                             relax,
                                              ii_count,
                                              ii_sum,
                                              branch_var = branch_var,
@@ -2087,7 +2087,7 @@ class BBTree(BinaryTree):
                                              sense = sense, rhs = rhs, obj = relax,
                                              color = color, style = 'filled',
                                              fillcolor = color)
-                        elif BAKstatus is 'integer':
+                        elif status is 'integer':
                             self.AddOrUpdateNode(cur_index, parent, 'R', 'integer',
                                              -relax,
                                              None,
@@ -2101,7 +2101,7 @@ class BBTree(BinaryTree):
                             self._incumbent_value = -relax
                             self._incumbent_parent = parent
                             self._new_integer_solution = True
-                        elif BAKstatus is 'fathomed':
+                        elif status is 'fathomed':
                             if self._incumbent_value is None:
                                 print 'WARNING: Encountered "fathom" line before first incumbent.'
                                 print '  This may indicate an error in the input file.'
@@ -2148,7 +2148,7 @@ class BBTree(BinaryTree):
                     self.display(highlight = [cur_index])
             elif GEXF_INSTALLED and self.display_mode == 'gexf':
                 self.write_as_dynamic_gexf("graph")
-            if status == 'C':
+            if BBstatus == 'C':
                 # Branching:
                 # Choose a variable for branching
                 branching_var = -1
@@ -2160,6 +2160,7 @@ class BBTree(BinaryTree):
                         if (frac > 0):
                             min_frac = frac
                             branching_var = i
+                            # TODO(aykut): understand this break
                             break
                 elif branch_strategy == 'Most Fractional':
                     #most fractional variable
@@ -2200,7 +2201,7 @@ class BBTree(BinaryTree):
                         '>=', math.ceil(var[branching_var].varValue)), priority[1])
                 self.set_node_attr(cur_index, color, 'green')
                 if  self.get_layout() == 'bak':
-                    self.set_node_attr(cur_index, 'status', 'branched')
+                    self.set_node_attr(cur_index, 'BBstatus', 'branched')
             if self.root is not None and self.attr['display'] is 'pygame' and display_interval is not None:
                 self.display('all')
         timer = int(math.ceil((time.time()-timer)*1000))
