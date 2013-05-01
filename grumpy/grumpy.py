@@ -1945,7 +1945,7 @@ class BBTree(BinaryTree):
                 BBstatus = 'C'
                 status = 'candidate'
                 color = 'yellow'
-            if status is not 'I':
+            if BBstatus is not 'I':
 #               label = status + ": " + "%.1f"%relax
                 label = "%.1f"%relax
             elif self.get_layout() == 'dot2tex':
@@ -1953,201 +1953,70 @@ class BBTree(BinaryTree):
             else:
                 label = 'I'
             if iter_count == 0:
-                if  self.get_layout() == 'bak':
-                    #(self, id, parent_id, branch_direction, status, lp_bound,
-                    #    integer_infeasibility_count, integer_infeasibility_sum,
-                    #    **attrs):
-                    if status is 'integer':
-                        self.AddOrUpdateNode(0, -1, None, 'integer', relax,
-                                         None,
-                                         None,
-                                         label = label,
-                                         obj = relax, color = color,
-                                         style = 'filled', fillcolor = color)
-                        self._previous_incumbent_value = self._incumbent_value
-                        self._incumbent_value = relax
-                        self._incumbent_parent = -1
-                        self._new_integer_solution = True
-                    elif status is 'infeasible':
-                        # use parent values if the node does not have its own
-                        self.AddOrUpdateNode(0, -1, None, 'infeasible', INFINITY,
-                                         None,
-                                         None,
-                                         label = label,
-                                         obj = relax, color = color,
-                                         style = 'filled', fillcolor = color)
-                    elif status is 'candidate':
-                        self.AddOrUpdateNode(0, -1, None, 'candidate', relax,
-                                         integer_infeasibility_count,
-                                         integer_infeasibility_sum,
-                                         label = label,
-                                         obj = relax, color = color,
-                                         style = 'filled', fillcolor = color)
-                    elif status is 'fathomed':
-                        if self._incumbent_value is None:
-                            print 'WARNING: Encountered "fathom" line before first incumbent.'
-                        self.AddOrUpdateNode(0, -1, None, 'fathomed', relax,
-                                         None,
-                                         None,
-                                         label = label,
-                                         obj = relax, color = color,
-                                         style = 'filled', fillcolor = color)
-                    else:
-                        raise Exception('Unknown BAKstatus %s!' %status)
-                else:
-                    self.add_root(0, label = label, status = status, obj = relax,
-                                  color = color, style = 'filled',
-                                  fillcolor = color)
+                if status is not 'candidate':
+                    integer_infeasibility_count = None
+                    integer_infeasibility_sum = None
+                if status is 'fathomed':
+                    if self._incumbent_value is None:
+                        print 'WARNING: Encountered "fathom" line before first incumbent.'
+                self.AddOrUpdateNode(0, -1, None, 'candidate', relax,
+                                 integer_infeasibility_count,
+                                 integer_infeasibility_sum,
+                                 label = label,
+                                 obj = relax, color = color,
+                                 style = 'filled', fillcolor = color)
+                if status is 'integer':
+                    self._previous_incumbent_value = self._incumbent_value
+                    self._incumbent_value = relax
+                    self._incumbent_parent = -1
+                    self._new_integer_solution = True
                 if ETREE_INSTALLED and self.display_mode == 'svg':
                     self.write_as_svg(filename = "node%d" % iter_count,
                                       nextfile = "node%d" % (iter_count + 1),
                                       highlight = cur_index)
             else:
-                if  self.get_layout() == 'bak':
-                    if sense == '<=':
-                        if status is 'candidate':
-                            self.AddOrUpdateNode(cur_index, parent, 'L', 'candidate',
-                                             relax,
-                                             integer_infeasibility_count,
-                                             integer_infeasibility_sum,
-                                             branch_var = branch_var,
-                                             branch_var_value = var_values[branch_var],
-                                             sense = sense, rhs = rhs, obj = relax,
-                                             color = color, style = 'filled',
-                                             fillcolor = color)
-                        elif status is 'infeasible':
-                            # use parent values if the node does not have its own
-                            ii_count = self.get_node_attr(parent,
-                                                 'integer_infeasibility_count')
-                            ii_sum = self.get_node_attr(parent,
-                                                 'integer_infeasibility_sum')
-                            relax = self.get_node_attr(parent, 'lp_bound')
-                            self.AddOrUpdateNode(cur_index, parent, 'L', 'infeasible',
-                                             relax,
-                                             ii_count,
-                                             ii_sum,
-                                             branch_var = branch_var,
-                                             branch_var_value = var_values[branch_var],
-                                             sense = sense, rhs = rhs, obj = relax,
-                                             color = color, style = 'filled',
-                                             fillcolor = color)
-                        elif status is 'integer':
-                            self.AddOrUpdateNode(cur_index, parent, 'L', 'integer',
-                                             relax,
-                                             None,
-                                             None,
-                                             branch_var = branch_var,
-                                             branch_var_value = var_values[branch_var],
-                                             sense = sense, rhs = rhs, obj = relax,
-                                             color = color, style = 'filled',
-                                             fillcolor = color)
-                            self._previous_incumbent_value = self._incumbent_value
-                            self._incumbent_value = relax
-                            self._incumbent_parent = parent
-                            self._new_integer_solution = True
-                        elif status is 'fathomed':
-                            if self._incumbent_value is None:
-                                print 'WARNING: Encountered "fathom" line before first incumbent.'
-                                print '  This may indicate an error in the input file.'
-                            self.AddOrUpdateNode(cur_index, parent, 'L', 'fathomed',
-                                                 relax,
-                                                 integer_infeasibility_count,
-                                                 integer_infeasibility_sum,
-                                                 branch_var = branch_var,
-                                                 branch_var_value = var_values[branch_var],
-                                                 sense = sense, rhs = rhs, obj = relax,
-                                                 color = color, style = 'filled',
-                                                 fillcolor = color)
-                        else:
-                            raise Exception('Unknown BAKstatus %s!' %BAKstatus)
-                    else:
-                        if status is 'candidate':
-                            self.AddOrUpdateNode(cur_index, parent, 'R', 'candidate',
-                                             relax,
-                                             integer_infeasibility_count,
-                                             integer_infeasibility_sum,
-                                             branch_var = branch_var,
-                                             branch_var_value = var_values[branch_var],
-                                             sense = sense, rhs = rhs, obj = relax,
-                                             color = color, style = 'filled',
-                                             fillcolor = color)
-                        elif status is 'infeasible':
-                            # use parent values if the node does not have its own
-                            ii_count = self.get_node_attr(parent,
-                                                 'integer_infeasibility_count')
-                            ii_sum = self.get_node_attr(parent,
-                                                 'integer_infeasibility_sum')
-                            relax = self.get_node_attr(parent, 'lp_bound')
-                            self.AddOrUpdateNode(cur_index, parent, 'R', 'infeasible',
-                                             relax,
-                                             ii_count,
-                                             ii_sum,
-                                             branch_var = branch_var,
-                                             branch_var_value = var_values[branch_var],
-                                             sense = sense, rhs = rhs, obj = relax,
-                                             color = color, style = 'filled',
-                                             fillcolor = color)
-                        elif status is 'integer':
-                            self.AddOrUpdateNode(cur_index, parent, 'R', 'integer',
-                                             relax,
-                                             None,
-                                             None,
-                                             branch_var = branch_var,
-                                             branch_var_value = var_values[branch_var],
-                                             sense = sense, rhs = rhs, obj = relax,
-                                             color = color, style = 'filled',
-                                             fillcolor = color)
-                            self._previous_incumbent_value = self._incumbent_value
-                            self._incumbent_value = relax
-                            self._incumbent_parent = parent
-                            self._new_integer_solution = True
-                        elif status is 'fathomed':
-                            if self._incumbent_value is None:
-                                print 'WARNING: Encountered "fathom" line before first incumbent.'
-                                print '  This may indicate an error in the input file.'
-                                self.AddOrUpdateNode(cur_index, parent, 'R', 'fathomed',
-                                             relax,
-                                             integer_infeasibility_count,
-                                             integer_infeasibility_sum,
-                                             branch_var = branch_var,
-                                             branch_var_value = var_values[branch_var],
-                                             sense = sense, rhs = rhs, obj = relax,
-                                             color = color, style = 'filled',
-                                             fillcolor = color)
-                        else:
-                            raise Exception('Unknown BAKstatus %s!' %status)
-                else:
-                    self.add_child(cur_index, parent, label = label,
-                                   branch_var = branch_var,
-                                   branch_var_value = var_values[branch_var],
-                                   sense = sense, rhs = rhs, status = status,
-                                   obj = relax, color = color, style = 'filled',
-                                   fillcolor = color)
-                    if  self.get_layout() == 'dot2tex':
-                        if sense == '>=':
-                            self.set_edge_attr(parent, cur_index, 'label',
-                                               str(branch_var) + " \geq " +
-                                               str(rhs))
-                        else:
-                            self.set_edge_attr(parent, cur_index, 'label',
-                                               str(branch_var) + " \leq " +
-                                               str(rhs))
-                    else:
-                        self.set_edge_attr(parent, cur_index, 'label',
-                                           str(branch_var) + sense + str(rhs))
+                _direction = {'<=':'L', '>=':'R'}
+                if status is 'infeasible':
+                    integer_infeasibility_count = self.get_node_attr(parent,
+                                         'integer_infeasibility_count')
+                    integer_infeasibility_sum = self.get_node_attr(parent,
+                                         'integer_infeasibility_sum')
+                    relax = self.get_node_attr(parent, 'lp_bound')
+                elif status is 'fathomed':
+                    if self._incumbent_value is None:
+                        print 'WARNING: Encountered "fathom" line before first incumbent.'
+                        print '  This may indicate an error in the input file.'
+                elif status is 'integer':
+                    integer_infeasibility_count = None
+                    integer_infeasibility_sum = None
+                self.AddOrUpdateNode(cur_index, parent, _direction[sense], status,
+                                     relax,
+                                     integer_infeasibility_count,
+                                     integer_infeasibility_sum,
+                                     branch_var = branch_var,
+                                     branch_var_value = var_values[branch_var],
+                                     sense = sense, rhs = rhs, obj = relax,
+                                     color = color, style = 'filled',
+                                     fillcolor = color)
+                if status is 'integer':
+                    self._previous_incumbent_value = self._incumbent_value
+                    self._incumbent_value = relax
+                    self._incumbent_parent = parent
+                    self._new_integer_solution = True
                 if ETREE_INSTALLED and self.display_mode == 'svg':
                     self.write_as_svg(filename = "node%d" % iter_count,
                                       prevfile = "node%d" % (iter_count - 1),
                                       nextfile = "node%d" % (iter_count + 1),
                                       highlight = cur_index)
+                if self.get_layout() == 'dot2tex':
+                    _dot2tex_label = {'>=':' \geq ', '<=':' \leq '}
+                    self.set_edge_attr(parent, cur_index, 'label',
+                                       str(branch_var) + _dot2tex_label[sense] +
+                                       str(rhs))
+                else:
+                    self.set_edge_attr(parent, cur_index, 'label',
+                                       str(branch_var) + sense + str(rhs))
             iter_count += 1
-            if ((PYGAME_INSTALLED and self.display_mode == 'pygame')
-                or (XDOT_INSTALLED and self.display_mode == 'xdot')):
-                numNodes = len(self.get_node_list())
-                if display_interval is not None and numNodes % display_interval == 0 and self.get_layout() != 'dot2tex':
-                    self.display(highlight = [cur_index])
-            elif GEXF_INSTALLED and self.display_mode == 'gexf':
-                self.write_as_dynamic_gexf("graph")
             if BBstatus == 'C':
                 # Branching:
                 # Choose a variable for branching
