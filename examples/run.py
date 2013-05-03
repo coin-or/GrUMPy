@@ -1,25 +1,6 @@
 from grumpy import BBTree
 import sys
 
-#
-# tree
-# histogram
-# scatterplot
-# imcumbentpath
-#
-
-#
-# GenerateTreeImage done
-# GenerateHistogram done
-# GenerateScatterplot (we have very few nodes to draw) done
-# GenerateIncumbentPath
-# GenerateAllIncumbentPaths
-# CreateAnimatedImages (not relevant)
-#
-# GeneratePredictionImages
-# measures.png irrelevant, drawn at the end of the run.
-#
-
 if __name__ == '__main__':
     bt = BBTree()
     bt.set_display_mode('pygame')
@@ -32,9 +13,12 @@ if __name__ == '__main__':
         line_number = line_number+1
         if line_number%200 != 0:
             continue
+#        imagefile = open('tree-'+str(line_number)+'.png','w')
+#        imagefile.write(bt.GenerateTreeImage())
+#        imagefile.close()
         if bt.root is not None:
 #            gnuplot_image = bt.GenerateHistogram()
-#            gnuplot_image = bt.GenerateTreeImage()
+            gnuplot_image = bt.GenerateTreeImage()
 #            gnuplot_image = bt.GenerateScatterplot()
 #            gnuplot_image = bt.GenerateIncumbentPath()
 #            gnuplot_image = bt.GenerateForecastImages()
