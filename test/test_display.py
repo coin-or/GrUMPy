@@ -1,9 +1,21 @@
+'''
+How to control display sequence on xdot:
+1. Give a valid display_interval. Display interval represents the number of
+nodes that will be added before next display call, ie. next tree display on
+your gtk window. When display method is called BB stops. It will resume when
+you close the gtk window. Gtk window will pop up again when the required number
+of nodes (display_interval many) is added to the tree.
+2. If you want to get only the final tree give sys.maxiter as input.
+
+How to use 
+'''
 from grumpy import BBTree
+import sys
 
 if __name__=='__main__':
-    bt = BBTree(display='pygame')
-    CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = bt.GenerateRandomMIP(rand_seed = 3)
+    bt = BBTree(display='xdot')
+    CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = bt.GenerateRandomMIP(numVars=30, numCons=10, rand_seed = 0)
     bt.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                      branch_strategy = 'Pseudocost', search_strategy = 'Best First',
-                     display_interval = 0.1)
+                     display_interval = 4)
 
