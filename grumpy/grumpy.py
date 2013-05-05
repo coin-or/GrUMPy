@@ -78,25 +78,63 @@ import subprocess
 import sys, os
 from subprocess import Popen, PIPE, STDOUT
 import optparse
-from gimpy import BinaryTree, ETREE_INSTALLED, PYGAME_INSTALLED, XDOT_INSTALLED
+from gimpy import BinaryTree
 from gimpy import quote_if_necessary as quote
 import time
 from gimpy.list import PriorityQueue
 from StringIO import StringIO
-from pygame import display, image, init, Rect
-from pygame.transform import scale
+#from pygame.transform import scale
 from pulp import LpVariable, lpSum, LpProblem, LpMaximize, LpConstraint
 from pulp import LpStatus, value
 from forecastingchainedsequences import ForecastingChainedSequences
 
+
 try:
-    from gexf import Gexf
+    import pygame # for locals.QUIT, locals.KEYDOWN,display,image,event,init
 except ImportError:
-    GEXF_INSTALLED = False
-    print 'Gexf not installed'
+    PYGAME_INSTALLED = False
+    print 'Pygame not installed'
 else:
-    GEXF_INSTALLED = True
-    print 'Found gexf installation'
+    PYGAME_INSTALLED = True
+    print 'Found pygame installation'
+
+try:
+    import dot2tex # for dot2tex method
+except ImportError:
+    DOT2TEX_INSTALLED = False
+    print 'dot2tex not installed'
+else:
+    DOT2TEX_INSTALLED = True
+    print 'Found dot2tex'
+
+try:
+    from PIL import Image as PIL_Image
+except ImportError:
+    PIL_INSTALLED = False
+    print 'Python Image Library not installed'
+else:
+    PIL_INSTALLED = True
+    print 'Found Python Image Library'
+
+try:
+    import pygtk
+    import gtk
+    import xdot
+except ImportError:
+    XDOT_INSTALLED = False
+    print 'Xdot not installed'
+else:
+    XDOT_INSTALLED = True
+    print 'Found xdot installation'
+
+try:
+    import lxml # for etree
+except ImportError:
+    ETREE_INSTALLED = False
+    print 'Etree could not be imported from lxml'
+else:
+    ETREE_INSTALLED = True
+    print 'Found etree in lxml'
 
 
 class BBTree(BinaryTree):
@@ -107,7 +145,7 @@ class BBTree(BinaryTree):
     in the data file and to generate images as necessary.
     """
     def __init__(self, **attrs):
-        attrs['layout'] = 'bak'
+        #attrs['layout'] = 'bak'
         BinaryTree.__init__(self, **attrs)
         # User-controlled constant values
         self._label = ''
@@ -145,7 +183,11 @@ class BBTree(BinaryTree):
         self._sum_subtree_gaps_scale = 1.0
         self._previous_incumbent_value = None  # Only needed for SSG
         # pygame initialize
-        init()
+        if 'display' in attrs:
+            self.set_display_mode(attrs['display'])
+        else:
+            self.set_display_mode('off')
+        pygame.init()
 
     def process_file(self, file_name):
         self._filename = file_name
@@ -199,6 +241,24 @@ class BBTree(BinaryTree):
         else:
             raise Exception("Only Dot mode supported in write_as_dynamic_gexf")
 
+    def set_display_mode(self, mode):
+        if mode is 'off':
+            self.attr['display'] = mode
+        elif mode is 'pygame':
+            if PYGAME_INSTALLED:
+                self.attr['display'] = 'pygame'
+            else:
+                print 'Pygame is not installed. Display is set to off.'
+                self.attr['display'] = 'off'
+        elif mode is 'xdot':
+            if XDOT_INSTALLED:
+                self.attr['display'] = 'xdot'
+            else:
+                print 'Xdot is not installed. Display is set to off.'
+                self.attr['display'] = 'off'
+        else:
+            raise Exception('%s is not a valid display mode.' %mode)
+
     def display(self, item = 'all'):
         '''
         TODO(aykut): support pygame, xdot and dot2tree display modes
@@ -207,24 +267,59 @@ class BBTree(BinaryTree):
         Input:
         Post: Pops up a display screen or writes the visuals to disk.
         '''
-        if item=='all':
-            self.display_all()
+        if self.attr['display'] is 'off':
             return
-        elif item=='tree':
-            gnuplot_image = self.GenerateTreeImage()
-        elif item=='scatterplot':
-            gnuplot_image = self.GenerateScatterplot()
-        elif item=='histogram':
-            gnuplot_image = self.GenerateHistogram()
-        elif item=='incumbent':
-            gnuplot_image = self.GenerateIncumbentPath()
-        elif item=='forecast':
-            gnuplot_image = self.GenerateForecastImages()
+        if self.attr['display'] is 'pygame':
+            if item=='all':
+                self.display_all()
+                return
+            elif item=='tree':
+                gnuplot_image = self.GenerateTreeImage()
+            elif item=='scatterplot':
+                gnuplot_image = self.GenerateScatterplot()
+            elif item=='histogram':
+                gnuplot_image = self.GenerateHistogram()
+            elif item=='incumbent':
+                gnuplot_image = self.GenerateIncumbentPath()
+            elif item=='forecast':
+                gnuplot_image = self.GenerateForecastImages()
+            else:
+                raise Exception('Unknown display() method argument %s' %item)
+            if gnuplot_image is not None:
+                self.display_image(gnuplot_image)
+        elif self.attr['display'] is 'xdot':
+            if XDOT_INSTALLED:
+                window = xdot.DotWindow()
+                window.set_dotcode(self.to_string())
+                window.connect('destroy', gtk.main_quit)
+                gtk.main()
+            else:
+                print 'Error: xdot not installed. Display disabled.'
+                self.attr['display'] = 'off'
+        elif self.attr['display'] is 'file':
+            if self.attr['layout'] is 'dot2tex':
+                if DOT2TEX_INSTALLED:
+                    if format != 'pdf' or format != 'ps':
+                        print "Dot2tex only supports pdf and ps formats, falling back to pdf"
+                        format = 'pdf'
+                    self.set_layout('dot')
+                    tex = dot2tex.dot2tex(self.to_string(), autosize=True, texmode = 'math', template = DOT2TEX_TEMPLATE)
+                    f = open(basename+'.tex', 'w')
+                    f.write(tex)
+                    f.close()
+                    subprocess.call(['latex', basename])
+                    if format == 'ps':
+                        subprocess.call(['dvips', basename])
+                    elif format == 'pdf':
+                        subprocess.call(['pdflatex', basename])
+                    self.set_layout('dot2tex')
+                else:
+                    print "Dot2tex not installed, falling back to graphviz"
+                    self.set_layout('dot')
+                    self.write(basename+'.'+format, self.get_layout(), format)
         else:
-            raise Exception('Unknown display() method argument %s' %item)
-        if gnuplot_image is not None:
-            self.display_image(gnuplot_image)
-
+            raise Exception('Unknown display mode %s' %self.attr['display'])
+            
     def display_all(self):
         '''
         Assumes all the images have the same size.
@@ -235,26 +330,26 @@ class BBTree(BinaryTree):
         incumbent = self.GenerateIncumbentPath()
         if tree is not None:
             imTree = StringIO(tree)
-            pTree = image.load(imTree, 'png')
+            pTree = pygame.image.load(imTree, 'png')
             sTree = pTree.get_size()
-            rTree = Rect(0,0,sTree[0],sTree[1])
+            rTree = pygame.Rect(0,0,sTree[0],sTree[1])
         if scatterplot is not None:
             imScatterplot = StringIO(scatterplot)
-            pScatterplot = image.load(imScatterplot, 'png')
+            pScatterplot = pygame.image.load(imScatterplot, 'png')
             sScatterplot = pScatterplot.get_size()
-            rScatterplot = Rect(sTree[0],0,sScatterplot[0],sScatterplot[1])
+            rScatterplot = pygame.Rect(sTree[0],0,sScatterplot[0],sScatterplot[1])
         if histogram is not None:
             imHistogram = StringIO(histogram)
-            pHistogram = image.load(imHistogram, 'png')
+            pHistogram = pygame.image.load(imHistogram, 'png')
             sHistogram = pHistogram.get_size()
-            rHistogram = Rect(0,sTree[1],sHistogram[0],sHistogram[1])
+            rHistogram = pygame.Rect(0,sTree[1],sHistogram[0],sHistogram[1])
         if incumbent is not None:
             imIncumbent = StringIO(incumbent)
-            pIncumbent = image.load(imIncumbent, 'png')
+            pIncumbent = pygame.image.load(imIncumbent, 'png')
             sIncumbent = pIncumbent.get_size()
-            rIncumbent = Rect(sTree[0],sTree[1],sIncumbent[0],sIncumbent[1])
+            rIncumbent = pygame.Rect(sTree[0],sTree[1],sIncumbent[0],sIncumbent[1])
         #screen = display.set_mode((sTree[0]+sScatterplot[0], sTree[1]+sIncumbent[1]))
-        screen = display.set_mode((sTree[0]+sTree[0], sTree[1]+sTree[1]))
+        screen = pygame.display.set_mode((sTree[0]+sTree[0], sTree[1]+sTree[1]))
         if tree is not None:
             screen.blit(pTree, rTree)
         if scatterplot is not None:
@@ -263,14 +358,36 @@ class BBTree(BinaryTree):
             screen.blit(pHistogram, rHistogram)
         if incumbent is not None:
             screen.blit(pIncumbent, rIncumbent)
-        display.flip()
+        pygame.display.flip()
+        pause = True
+        while pause:
+            e = pygame.event.poll()
+            if e.type == pygame.KEYDOWN:
+                break
+            if e.type == pygame.QUIT:
+                pause = False
+                pygame.display.quit()
+                # sys.exit() exits the whole program and I (aykut) guess it is
+                # not appropriate here.
+                #sys.exit()
 
     def display_image(self, gnuplot):
         im = StringIO(gnuplot)
-        picture = image.load(im, 'png')
-        screen = display.set_mode(picture.get_size())
+        picture = pygame.image.load(im, 'png')
+        screen = pygame.display.set_mode(picture.get_size())
         screen.blit(picture, picture.get_rect())
-        display.flip()
+        pygame.display.flip()
+        pause = True
+        while pause:
+            e = pygame.event.poll()
+            if e.type == pygame.KEYDOWN:
+                break
+            if e.type == pygame.QUIT:
+                pause = False
+                pygame.display.quit()
+                # sys.exit() exits the whole program and I (aykut) guess it is
+                # not appropriate here.
+                #sys.exit()
 
     def set_label(self, label):
         self._label = label
@@ -1970,7 +2087,7 @@ class BBTree(BinaryTree):
                     self._incumbent_value = relax
                     self._incumbent_parent = -1
                     self._new_integer_solution = True
-                if ETREE_INSTALLED and self.display_mode == 'svg':
+                if ETREE_INSTALLED and self.attr['display'] == 'svg':
                     self.write_as_svg(filename = "node%d" % iter_count,
                                       nextfile = "node%d" % (iter_count + 1),
                                       highlight = cur_index)
@@ -2003,7 +2120,7 @@ class BBTree(BinaryTree):
                     self._incumbent_value = relax
                     self._incumbent_parent = parent
                     self._new_integer_solution = True
-                if ETREE_INSTALLED and self.display_mode == 'svg':
+                if ETREE_INSTALLED and self.attr['display'] == 'svg':
                     self.write_as_svg(filename = "node%d" % iter_count,
                                       prevfile = "node%d" % (iter_count - 1),
                                       nextfile = "node%d" % (iter_count + 1),
@@ -2071,8 +2188,8 @@ class BBTree(BinaryTree):
                 self.set_node_attr(cur_index, color, 'green')
                 if  self.get_layout() == 'bak':
                     self.set_node_attr(cur_index, 'BBstatus', 'branched')
-            if self.root is not None and self.attr['display'] is 'pygame' and display_interval is not None:
-                self.display('all')
+            if self.root is not None and iter_count%display_interval == 0:
+                self.display()
         timer = int(math.ceil((time.time()-timer)*1000))
         print ""
         print "==========================================="
@@ -2091,6 +2208,7 @@ class BBTree(BinaryTree):
         print "Objective function value"
         print LB
         print "==========================================="
+        self.display()
         return opt, LB
 
 def CreatePerlStyleBooleanFlag(parser, flag_text, variable_name, help_text):
