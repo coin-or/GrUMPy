@@ -256,10 +256,12 @@ class BBTree(BinaryTree):
             else:
                 print 'Xdot is not installed. Display is set to off.'
                 self.attr['display'] = 'off'
+        elif mode is 'file':
+            self.attr['display'] = 'file'
         else:
             raise Exception('%s is not a valid display mode.' %mode)
 
-    def display(self, item = 'all'):
+    def display(self, item = 'all', basename = 'graph', format='png', count=None):
         '''
         TODO(aykut): support pygame, xdot and dot2tree display modes
         This the display method that users should use. It calls display_all and
@@ -297,6 +299,8 @@ class BBTree(BinaryTree):
                 print 'Error: xdot not installed. Display disabled.'
                 self.attr['display'] = 'off'
         elif self.attr['display'] is 'file':
+            if count is not None:
+                basename = basename + '_' + str(count)
             if self.attr['layout'] is 'dot2tex':
                 if DOT2TEX_INSTALLED:
                     if format != 'pdf' or format != 'ps':
@@ -313,13 +317,13 @@ class BBTree(BinaryTree):
                     elif format == 'pdf':
                         subprocess.call(['pdflatex', basename])
                     self.set_layout('dot2tex')
-                else:
-                    print "Dot2tex not installed, falling back to graphviz"
-                    self.set_layout('dot')
-                    self.write(basename+'.'+format, self.get_layout(), format)
+            else:
+                print "Dot2tex not installed, falling back to graphviz"
+                self.set_layout('dot')
+                self.write(basename+'.'+format, self.get_layout(), format)
         else:
             raise Exception('Unknown display mode %s' %self.attr['display'])
-            
+
     def display_all(self):
         '''
         Assumes all the images have the same size.
@@ -2062,13 +2066,14 @@ class BBTree(BinaryTree):
                 BBstatus = 'C'
                 status = 'candidate'
                 color = 'yellow'
-            if BBstatus is not 'I':
+            if BBstatus is 'I':
+                if self.get_layout() == 'dot2tex':
+                    label = '\text{I}'
+                else:
+                    label = 'I'
+            else:
 #               label = status + ": " + "%.1f"%relax
                 label = "%.1f"%relax
-            elif self.get_layout() == 'dot2tex':
-                label = '\text{I}'
-            else:
-                label = 'I'
             if iter_count == 0:
                 if status is not 'candidate':
                     integer_infeasibility_count = None
@@ -2114,7 +2119,7 @@ class BBTree(BinaryTree):
                                      branch_var_value = var_values[branch_var],
                                      sense = sense, rhs = rhs, obj = relax,
                                      color = color, style = 'filled',
-                                     fillcolor = color)
+                                     label = label, fillcolor = color)
                 if status is 'integer':
                     self._previous_incumbent_value = self._incumbent_value
                     self._incumbent_value = relax
@@ -2188,8 +2193,14 @@ class BBTree(BinaryTree):
                 self.set_node_attr(cur_index, color, 'green')
                 if  self.get_layout() == 'bak':
                     self.set_node_attr(cur_index, 'BBstatus', 'branched')
-            if self.root is not None and iter_count%display_interval == 0:
-                self.display()
+            if self.root is not None and display_interval is not None and iter_count%display_interval == 0:
+                # count argument does not have any effect if the display mode is noe file.
+                # when display mode is file it saves BB graph using graphviz.
+                # following names pictures as 1,2,3,...
+                #self.display(count=iter_count/display_interval)
+                # following names pictures as 4,8,12,... according to display_interval
+                self.display(count=iter_count)
+
         timer = int(math.ceil((time.time()-timer)*1000))
         print ""
         print "==========================================="
@@ -2208,7 +2219,8 @@ class BBTree(BinaryTree):
         print "Objective function value"
         print LB
         print "==========================================="
-        self.display()
+        if self.attr['display'] is not 'off':
+            self.display(count=iter_count)
         return opt, LB
 
 def CreatePerlStyleBooleanFlag(parser, flag_text, variable_name, help_text):
