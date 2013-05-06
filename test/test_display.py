@@ -7,7 +7,19 @@ you close the gtk window. Gtk window will pop up again when the required number
 of nodes (display_interval many) is added to the tree.
 2. If you want to get only the final tree give sys.maxiter as input.
 
-How to use
+Examples for display modes/layouts:
+1. file display mode, no layout specified, save in png format
+bt = BBTree(display='file')
+
+2. xdot display mode
+bt = BBTree(display='xdot')
+
+3. pygame display mode, no layout specified, save in png format
+bt = BBTree(display='pygame')
+
+4. file display mode, with dot2tex layout
+bt = BBTree(display='file', layout = 'dot2tex')
+
 '''
 from grumpy import BBTree
 import sys
@@ -21,6 +33,7 @@ if __name__=='__main__':
     #bt = BBTree(display='pygame')
     #======== file display mode, with dot2tex layout
     bt = BBTree(display='file', layout = 'dot2tex')
+
     CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = bt.GenerateRandomMIP(numVars=30, numCons=10, rand_seed = 0)
     bt.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                      branch_strategy = 'Pseudocost', search_strategy = 'Best First',
