@@ -371,6 +371,16 @@ class BBTree(BinaryTree):
                 self.write(basename+'.'+format, self.get_layout(), format)
         else:
             raise Exception('Unknown display mode %s' %self.attr['display'])
+        # clean auxilary files.
+        log_filelist = [f for f in os.listdir(".") if f.endswith(".log")]
+        aux_filelist = [f for f in os.listdir(".") if f.endswith(".aux")]
+        dvi_filelist = [f for f in os.listdir(".") if f.endswith(".dvi")]
+        dat_filelist = [f for f in os.listdir(".") if f.endswith(".dat")]
+        tex_filelist = [f for f in os.listdir(".") if f.endswith(".tex")]
+        filelist = (log_filelist + aux_filelist + dvi_filelist +
+                    dat_filelist + tex_filelist)
+        for f in filelist:
+            os.remove(f)
 
     def display_all(self):
         '''
