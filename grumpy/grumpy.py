@@ -320,9 +320,9 @@ class BBTree(BinaryTree):
         if self.attr['display'] is 'off':
             return
         if self.attr['display'] is 'pygame':
+            gnuplot_image = None
             if item=='all':
                 self.display_all()
-                return
             elif item=='tree':
                 gnuplot_image = self.GenerateTreeImage()
             elif item=='scatterplot':
@@ -337,6 +337,18 @@ class BBTree(BinaryTree):
                 raise Exception('Unknown display() method argument %s' %item)
             if gnuplot_image is not None:
                 self.display_image(gnuplot_image)
+            # clean auxilary files.
+            histogram_files = [f for f in os.listdir(".") if f.startswith("histogram")]
+            incumbent_files = [f for f in os.listdir(".") if f.startswith("incumbentpath")]
+            scatterplot_files = [f for f in os.listdir(".") if f.startswith("scatterplot")]
+            t_fathomed_files = [f for f in os.listdir(".") if f.startswith("tree_fathomed")]
+            t_integer_files = [f for f in os.listdir(".") if f.startswith("tree_integer")]
+            bak_filelist = (histogram_files + incumbent_files +
+                            scatterplot_files + t_fathomed_files +
+                            t_integer_files)
+            print bak_filelist
+            for f in bak_filelist:
+                os.remove(f)
         elif self.attr['display'] is 'xdot':
             if XDOT_INSTALLED:
                 window = xdot.DotWindow()
@@ -365,22 +377,16 @@ class BBTree(BinaryTree):
                     elif format == 'pdf':
                         subprocess.call(['pdflatex', basename])
                     self.set_layout('dot2tex')
+                    # clean auxilary files.
+                    aux_filelist = [basename+'.tex', basename+'.log', basename+'.dvi', basename+'.aux']
+                    for f in aux_filelist:
+                        os.remove(f)
             else:
                 print "Dot2tex not installed, falling back to graphviz"
                 self.set_layout('dot')
                 self.write(basename+'.'+format, self.get_layout(), format)
         else:
             raise Exception('Unknown display mode %s' %self.attr['display'])
-        # clean auxilary files.
-        log_filelist = [f for f in os.listdir(".") if f.endswith(".log")]
-        aux_filelist = [f for f in os.listdir(".") if f.endswith(".aux")]
-        dvi_filelist = [f for f in os.listdir(".") if f.endswith(".dvi")]
-        dat_filelist = [f for f in os.listdir(".") if f.endswith(".dat")]
-        tex_filelist = [f for f in os.listdir(".") if f.endswith(".tex")]
-        filelist = (log_filelist + aux_filelist + dvi_filelist +
-                    dat_filelist + tex_filelist)
-        for f in filelist:
-            os.remove(f)
 
     def display_all(self):
         '''
