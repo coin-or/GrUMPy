@@ -1,0 +1,15 @@
+GrUMPy 1.0
+==========
+
+To install, use either the incuded setup.py file:
+
+python setup.py install
+
+or the autotools:
+
+configure
+make
+make install
+
+
+

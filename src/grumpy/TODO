@@ -1,0 +1,16 @@
+#TODO(aykut)
+# -> get rid of parent_id==0 check in AddOrUpdateNode method, when adding edge
+# and when setting parent_id attribute
+# they are necessary -> line 1120 and line 1121 are unnecessary, since they are already 0.0 and 1.0
+#        horizontal_lower_bound[self._root_id] = 0.0
+#        horizontal_upper_bound[self._root_id] = 1.0
+# -> note that this script file is for python 3 and rest of our code is in 2.7.
+# we use this file with 2.7, be carefull, especially integer division
+# in python2.7 5/2=2, in python3 5/2=2.5
+# -> check subtree_root attribute of node class
+# -> fix documentation
+# -> remove unncesssary stuff
+# -> write help
+#
+#
+
