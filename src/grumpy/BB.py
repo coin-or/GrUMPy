@@ -54,7 +54,7 @@ import optparse
 from gimpy import BinaryTree
 from gimpy import quote_if_necessary as quote
 import time
-from gimpy.list import PriorityQueue
+from blimpy import PriorityQueue
 from StringIO import StringIO
 #from pygame.transform import scale
 from pulp import LpVariable, lpSum, LpProblem, LpMaximize, LpConstraint
@@ -66,28 +66,22 @@ try:
     import pygame # for locals.QUIT, locals.KEYDOWN,display,image,event,init
 except ImportError:
     PYGAME_INSTALLED = False
-    print 'Pygame not installed'
 else:
     PYGAME_INSTALLED = True
-    print 'Found pygame installation'
 
 try:
     import dot2tex # for dot2tex method
 except ImportError:
     DOT2TEX_INSTALLED = False
-    print 'dot2tex not installed'
 else:
     DOT2TEX_INSTALLED = True
-    print 'Found dot2tex'
 
 try:
     from PIL import Image as PIL_Image
 except ImportError:
     PIL_INSTALLED = False
-    print 'Python Image Library not installed'
 else:
     PIL_INSTALLED = True
-    print 'Found Python Image Library'
 
 try:
     import pygtk
@@ -95,19 +89,15 @@ try:
     import xdot
 except ImportError:
     XDOT_INSTALLED = False
-    print 'Xdot not installed'
 else:
     XDOT_INSTALLED = True
-    print 'Found xdot installation'
 
 try:
     import lxml # for etree
 except ImportError:
     ETREE_INSTALLED = False
-    print 'Etree could not be imported from lxml'
 else:
     ETREE_INSTALLED = True
-    print 'Found etree in lxml'
 
 DOT2TEX_TEMPLATE = r'''
 \documentclass[landscape]{article}
