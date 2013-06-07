@@ -67,7 +67,7 @@ AC_CANONICAL_BUILD
 AC_COIN_PROJECTDIR_INIT(GrUMPy)
 
 # Get the name of the C++ compiler and appropriate compiler options
-#AC_COIN_PROG_CXX
+AC_COIN_PROG_CXX
 
 # Initialize automake and libtool
 AC_COIN_INIT_AUTO_TOOLS
