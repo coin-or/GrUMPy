@@ -58,7 +58,8 @@ host_triplet = @host@
 # included in the tarball
 @ALWAYS_FALSE@am__append_1 = test
 DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(top_srcdir)/configure AUTHORS INSTALL \
+	$(srcdir)/Makefile.in $(top_srcdir)/configure \
+	$(top_srcdir)/src/grumpy/Makefile.in AUTHORS INSTALL \
 	config.guess config.sub depcomp install-sh ltmain.sh missing \
 	py-compile
 subdir = .
@@ -70,7 +71,7 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno configure.status.lineno
 mkinstalldirs = $(install_sh) -d
-CONFIG_CLEAN_FILES =
+CONFIG_CLEAN_FILES = src/grumpy/Makefile
 SOURCES =
 DIST_SOURCES =
 RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
@@ -95,6 +96,8 @@ distuninstallcheck_listfiles = find . -type f -print
 distcleancheck_listfiles = find . -type f -print
 ABSBUILDDIR = @ABSBUILDDIR@
 ACLOCAL = @ACLOCAL@
+ADD_CFLAGS = @ADD_CFLAGS@
+ADD_CXXFLAGS = @ADD_CXXFLAGS@
 ALWAYS_FALSE_FALSE = @ALWAYS_FALSE_FALSE@
 ALWAYS_FALSE_TRUE = @ALWAYS_FALSE_TRUE@
 AMDEP_FALSE = @AMDEP_FALSE@
@@ -109,14 +112,22 @@ AWK = @AWK@
 BUILDTOOLSDIR = @BUILDTOOLSDIR@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
+CDEFS = @CDEFS@
 CFLAGS = @CFLAGS@
+COIN_CC_IS_CL_FALSE = @COIN_CC_IS_CL_FALSE@
+COIN_CC_IS_CL_TRUE = @COIN_CC_IS_CL_TRUE@
+COIN_CXX_IS_CL_FALSE = @COIN_CXX_IS_CL_FALSE@
+COIN_CXX_IS_CL_TRUE = @COIN_CXX_IS_CL_TRUE@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CXX = @CXX@
 CXXCPP = @CXXCPP@
+CXXDEFS = @CXXDEFS@
 CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
+DBG_CFLAGS = @DBG_CFLAGS@
+DBG_CXXFLAGS = @DBG_CXXFLAGS@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 ECHO = @ECHO@
@@ -149,7 +160,11 @@ MAINT = @MAINT@
 MAINTAINER_MODE_FALSE = @MAINTAINER_MODE_FALSE@
 MAINTAINER_MODE_TRUE = @MAINTAINER_MODE_TRUE@
 MAKEINFO = @MAKEINFO@
+MPICC = @MPICC@
+MPICXX = @MPICXX@
 OBJEXT = @OBJEXT@
+OPT_CFLAGS = @OPT_CFLAGS@
+OPT_CXXFLAGS = @OPT_CXXFLAGS@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
@@ -224,6 +239,7 @@ pyexecdir = @pyexecdir@
 pythondir = @pythondir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
+sol_cc_compiler = @sol_cc_compiler@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 AUTOMAKE_OPTIONS = foreign
@@ -275,6 +291,8 @@ $(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 	cd $(srcdir) && $(AUTOCONF)
 $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
 	cd $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
+src/grumpy/Makefile: $(top_builddir)/config.status $(top_srcdir)/src/grumpy/Makefile.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -421,6 +439,7 @@ distclean-tags:
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
+	$(mkdir_p) $(distdir)/src/grumpy
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \
