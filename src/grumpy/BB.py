@@ -1,13 +1,17 @@
-# BAK_visual.py
+# BB.py
 #
 #  Copyright 2009, 2010 Google Inc.
 #  Copyright 2007 University of Pittsburgh.
+#  Copyright 2012, 2013 Lehigh University
 #  Google coding done by Brady Hunsaker.
 #  U of Pittsburgh coding done by Osman Ozaltin and Brady Hunsaker.
+#  Lehigh University coding done by Ted Ralphs and Aykut Bulut
 #
-#  This file is part of BAK (Branch-and-bound Analysis Kit).
+#  This file was part of BAK (Branch-and-bound Analysis Kit).
+#  It has now been incporporated into GrUMPy (Graphics for Understanding
+#  Mathematical Programming in Python). 
 #
-#  The contents of this file are subject to the Common Public License
+#  The contents of this file are subject to the Eclipse Public License
 #  1.0.  (the "License"); you may not use this file except in
 #  compliance with the License. You should have received a copy of
 #  the Common Public License along with STOP.
@@ -17,36 +21,21 @@
 #  implied. See the License for the specific language governing
 #  rights and limitations under the License.
 #
-#  Alternatively, the contents of this file may be used under the
-#  terms of the GNU General Public License Version 2 or later (the
-#  "GPL"), in which case the provisions of the GPL are applicable
-#  instead of those above. If you wish to allow use of your version
-#  of this file only under the terms of the GPL, and not to allow
-#  others to use your version of this file under the terms of the
-#  CPL, indicate your decision by deleting the provisions above and
-#  replace them with the notice and other provisions required by the
-#  GPL. If you do not delete the provisions above, a recipient may
-#  use your version of this file under the terms of either the CPL or
-#  the GPL.
-#
-
 # For developers: Please keep the code style consistent with the Python
 # style guide for Google's Summer of Code, except use 4 spaces to indent:
 #   http://code.google.com/p/soc/wiki/PythonStyleGuide
 
-__author__ = 'Brady Hunsaker, Osman Ozaltin'
-__maintainer__ = 'Brady Hunsaker (bhunsaker@google.com)'
+__author__ = 'Brady Hunsaker, Osman Ozaltin, Ted Ralphs, Aykut Bulut'
+__maintainer__ = 'Aykut Bulut (bhunsaker@google.com)'
 
 """
-Creates visualization images for branch-and-bound MIP solvers.
+This package is for visualizatiing branch-and-bound. It also contains
+a basicbranch-and-bound implementation primarily for classroom and educational
+use.
 
-The input is a file containing lines that describe significant events in
-the branch-and-bound process, such as new candidate nodes, branching, integer
-solutions, and heuristic solutions.  The expected grammar is described in
-separate documentation.
-
-Several types of images may be created.  Command-line flags allow the choice
-of which types will be created.
+Communication with solvers is through a grammar described in separate 
+documentation. Solvers can interface to this class in a number of
+different ways and a number of different types of images may be created. 
 
 Images at intervals that can be specified on the command line as well as after
 new incumbent solutions are found.
@@ -54,22 +43,6 @@ new incumbent solutions are found.
 Note that the generation of tree images takes significantly longer than other
 images because every node appears in the image.
 """
-
-#TODO(aykut)
-# -> get rid of parent_id==0 check in AddOrUpdateNode method, when adding edge
-# and when setting parent_id attribute
-# they are necessary -> line 1120 and line 1121 are unnecessary, since they are already 0.0 and 1.0
-#        horizontal_lower_bound[self._root_id] = 0.0
-#        horizontal_upper_bound[self._root_id] = 1.0
-# -> note that this script file is for python 3 and rest of our code is in 2.7.
-# we use this file with 2.7, be carefull, especially integer division
-# in python2.7 5/2=2, in python3 5/2=2.5
-# -> check subtree_root attribute of node class
-# -> fix documentation
-# -> remove unncesssary stuff
-# -> write help
-#
-#
 
 import math
 import random
@@ -86,7 +59,7 @@ from StringIO import StringIO
 #from pygame.transform import scale
 from pulp import LpVariable, lpSum, LpProblem, LpMaximize, LpConstraint
 from pulp import LpStatus, value
-from forecastingchainedsequences import ForecastingChainedSequences
+from forecasting import ForecastingChainedSequences
 
 
 try:
