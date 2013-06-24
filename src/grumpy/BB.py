@@ -1940,13 +1940,13 @@ class BBTree(BinaryTree):
             print "Fixed order"
         else:
             print "Unknown branching strategy %s" %branch_strategy
-            if search_strategy == 'Depth First':
-                print "Depth first search strategy"
-            elif search_strategy == 'Best First':
-                print "Best first search strategy"
-            else:
-                print "Unknown search strategy %s" %search_strategy
-            print "==========================================="
+        if search_strategy == 'Depth First':
+            print "Depth first search strategy"
+        elif search_strategy == 'Best First':
+            print "Best first search strategy"
+        else:
+            print "Unknown search strategy %s" %search_strategy
+        print "==========================================="
         # List of candidate nodes
         Q = PriorityQueue()
         # The current tree depth
