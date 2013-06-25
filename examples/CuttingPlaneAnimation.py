@@ -1,4 +1,4 @@
-from Polyhedron2D import Polyhedron2D, add_line
+from grumpy.polyhedron2D import Polyhedron2D, add_line
 import matplotlib.pyplot as plt
 
 from MIP2 import A, b, cuts, rhs, points, rays
