@@ -32,7 +32,7 @@
 #============================================================================#
 
 ########################################################################
-#                               GrUMPy                                 #
+#                               GrUMPy                                  #
 ########################################################################
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
@@ -80,6 +80,8 @@ py_compile = $(top_srcdir)/py-compile
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ABSBUILDDIR = @ABSBUILDDIR@
 ACLOCAL = @ACLOCAL@
+ADD_CFLAGS = @ADD_CFLAGS@
+ADD_CXXFLAGS = @ADD_CXXFLAGS@
 ALWAYS_FALSE_FALSE = @ALWAYS_FALSE_FALSE@
 ALWAYS_FALSE_TRUE = @ALWAYS_FALSE_TRUE@
 AMDEP_FALSE = @AMDEP_FALSE@
@@ -94,14 +96,22 @@ AWK = @AWK@
 BUILDTOOLSDIR = @BUILDTOOLSDIR@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
+CDEFS = @CDEFS@
 CFLAGS = @CFLAGS@
+COIN_CC_IS_CL_FALSE = @COIN_CC_IS_CL_FALSE@
+COIN_CC_IS_CL_TRUE = @COIN_CC_IS_CL_TRUE@
+COIN_CXX_IS_CL_FALSE = @COIN_CXX_IS_CL_FALSE@
+COIN_CXX_IS_CL_TRUE = @COIN_CXX_IS_CL_TRUE@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CXX = @CXX@
 CXXCPP = @CXXCPP@
+CXXDEFS = @CXXDEFS@
 CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
+DBG_CFLAGS = @DBG_CFLAGS@
+DBG_CXXFLAGS = @DBG_CXXFLAGS@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 ECHO = @ECHO@
@@ -134,7 +144,11 @@ MAINT = @MAINT@
 MAINTAINER_MODE_FALSE = @MAINTAINER_MODE_FALSE@
 MAINTAINER_MODE_TRUE = @MAINTAINER_MODE_TRUE@
 MAKEINFO = @MAKEINFO@
+MPICC = @MPICC@
+MPICXX = @MPICXX@
 OBJEXT = @OBJEXT@
+OPT_CFLAGS = @OPT_CFLAGS@
+OPT_CXXFLAGS = @OPT_CXXFLAGS@
 PACKAGE = @PACKAGE@
 PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
@@ -209,10 +223,11 @@ pyexecdir = @pyexecdir@
 pythondir = @pythondir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
+sol_cc_compiler = @sol_cc_compiler@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 GRUMPYdir = $(pythondir)/grumpy
-GRUMPY_PYTHON = __init__.py forescasting.py BB.py polyhedron2D.py
+GRUMPY_PYTHON = __init__.py forecasting.py BB.py polyhedron2D.py
 all: all-am
 
 .SUFFIXES:
