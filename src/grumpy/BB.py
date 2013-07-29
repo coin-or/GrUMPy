@@ -1872,10 +1872,10 @@ class BBTree(BinaryTree):
             VARIABLES = ["x_{"+str(i)+"}" for i in range(numVars)]
         else:
             VARIABLES = ["x"+str(i) for i in range(numVars)]
-        OBJ = {i : random.randint(1, maxObjCoeff) for i in VARIABLES}
-        MAT = {i : [random.randint(1, maxConsCoeff) \
+        OBJ = dict((i, random.randint(1, maxObjCoeff)) for i in VARIABLES)
+        MAT = dict((i, [random.randint(1, maxConsCoeff)
                         if random.random() <= density else 0
-                    for j in CONSTRAINTS] for i in VARIABLES}
+                        for j in CONSTRAINTS]) for i in VARIABLES)
         RHS = [random.randint(int(numVars*density*maxConsCoeff/2),
                        int(numVars*density*maxConsCoeff/1.5))
                for i in CONSTRAINTS]
