@@ -1930,8 +1930,8 @@ class BBTree(BinaryTree):
         numVars = len(VARIABLES)
         #List of incumbent solution variable values
         opt = dict([(i, 0) for i in VARIABLES])
-        pseudo_u = {i : (OBJ[i], 0) for i in VARIABLES}
-        pseudo_d = {i : (OBJ[i], 0) for i in VARIABLES}
+        pseudo_u = dict((i, (OBJ[i], 0)) for i in VARIABLES)
+        pseudo_d = dict((i, (OBJ[i], 0)) for i in VARIABLES)
         print "==========================================="
         print "Starting Branch and Bound"
         if branch_strategy == 'Most Fraction':
