@@ -9,7 +9,7 @@
 #
 #  This file was part of BAK (Branch-and-bound Analysis Kit).
 #  It has now been incporporated into GrUMPy (Graphics for Understanding
-#  Mathematical Programming in Python). 
+#  Mathematical Programming in Python).
 #
 #  The contents of this file are subject to the Eclipse Public License
 #  1.0.  (the "License"); you may not use this file except in
@@ -33,9 +33,9 @@ This package is for visualizatiing branch-and-bound. It also contains
 a basicbranch-and-bound implementation primarily for classroom and educational
 use.
 
-Communication with solvers is through a grammar described in separate 
+Communication with solvers is through a grammar described in separate
 documentation. Solvers can interface to this class in a number of
-different ways and a number of different types of images may be created. 
+different ways and a number of different types of images may be created.
 
 Images at intervals that can be specified on the command line as well as after
 new incumbent solutions are found.
@@ -98,6 +98,9 @@ except ImportError:
     ETREE_INSTALLED = False
 else:
     ETREE_INSTALLED = True
+
+# parent of root node.
+DUMMY_NODE = 'dummy_node'
 
 DOT2TEX_TEMPLATE = r'''
 \documentclass[landscape]{article}
@@ -437,7 +440,7 @@ class BBTree(BinaryTree):
 
     def __print(self, options):
         '''
-        TODO(aykut) Looks like thi method is obsolete
+        TODO(aykut) Looks like this method is obsolete
         '''
         # Make a final set of images
         if options.tree:
@@ -468,7 +471,7 @@ class BBTree(BinaryTree):
         integer_infeasibility_sum -> id node
         parent_id -> id node
         '''
-        if parent_id is not -1:
+        if parent_id is not DUMMY_NODE:
             if id in self.get_node_list():
                 self.set_node_attr(id, 'status', status)
                 self.set_node_attr(id, 'lp_bound', lp_bound)
@@ -505,7 +508,6 @@ class BBTree(BinaryTree):
                 integer_infeasibility_sum >
                 self._max_integer_infeasibility_sum):
                 self._max_integer_infeasibility_sum = integer_infeasibility_sum
-
 
     def IsBetterThan(self, value1, value2):
         """
@@ -1432,6 +1434,9 @@ class BBTree(BinaryTree):
             parent_id = tokens[3]
             branch_direction = tokens[4]
             remaining_tokens = tokens[5:]
+            # TODO(aykut):parent id of root node is 0 when we read from file.
+            if parent_id is '0':
+                parent_id = DUMMY_NODE
             # Check that the parent node id is valid
             if parent_id not in self.get_node_list() and self.root is not None:
                 print 'Parent id does not exist: %s' % line
@@ -2108,7 +2113,7 @@ class BBTree(BinaryTree):
                 if status is 'fathomed':
                     if self._incumbent_value is None:
                         print 'WARNING: Encountered "fathom" line before first incumbent.'
-                self.AddOrUpdateNode(0, -1, None, 'candidate', relax,
+                self.AddOrUpdateNode(0, DUMMY_NODE, None, 'candidate', relax,
                                  integer_infeasibility_count,
                                  integer_infeasibility_sum,
                                  label = label,

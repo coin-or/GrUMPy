@@ -30,9 +30,9 @@ if __name__=='__main__':
     #======== xdot display mode
     #bt = BBTree(display='xdot')
     #======== pygame display mode, no layout specified, save in png format
-    #bt = BBTree(display='pygame')
+    bt = BBTree(display='pygame')
     #======== file display mode, with dot2tex layout
-    bt = BBTree(display='file', layout = 'dot2tex')
+    #bt = BBTree(display='file', layout = 'dot2tex')
 
     CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = bt.GenerateRandomMIP(numVars=30, numCons=10, rand_seed = 0)
     bt.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
