@@ -11,6 +11,9 @@
 # -> fix documentation
 # -> remove unncesssary stuff
 # -> write help
-#
+# -> Change we deal with infinity in BB
+# -> in BB root node is 0 and parent of the root node is -1, previous authors
+# use 1 as root node and 0 as the parent of root node. Solve this conflict
+# using a global variable like DUMMY_NODE.
 #
 
