@@ -49,10 +49,7 @@ if __name__=='__main__':
         pulp_optimal = pulp.value(obj)
         # solve using BB
         solution, bb_optimal = bt.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ,
-                                                 MAT, RHS,
-                                                 #branch_strategy = 'Pseudocost',
-                                                 branch_strategy = 'Most Fractional',
-                                                 search_strategy = 'Best First')
+                                                 MAT, RHS)
         # test solution.
         #= test integer feasibility
         for v in solution:
