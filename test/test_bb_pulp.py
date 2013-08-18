@@ -3,21 +3,25 @@ Tests correctness of branch and bound algorithm.
 '''
 
 from grumpy import BBTree
+# import branching strategies
+from grumpy import MOST_FRACTIONAL, FIXED_BRANCHING, PSEUDOCOST_BRANCHING
+# import searching strategies
+from grumpy import DEPTH_FIRST, BEST_FIRST, BEST_ESTIMATE
 import pulp
 import sys
 import math
 
 EPSILON = 1e-10
 # test problem, (num_vars,num_cons,seed)
-problem = [#(10,10,0), k
-           #(10,10,1), k
+problem = [(10,10,0),
+           (10,10,1),
            (20,10,2),
-           #(20,10,3),
-           #(30,20,4), k
-           #(30,20,5),
-           #(40,20,6), k
-           #(40,20,7), k
-           #(40,30,8)
+           (20,10,3),
+           (30,20,4),
+           (30,20,5),
+           (40,20,6),
+           (40,20,7),
+           (40,30,8)
            ]
 
 if __name__=='__main__':
