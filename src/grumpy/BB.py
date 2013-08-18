@@ -101,6 +101,16 @@ else:
 
 # parent of root node.
 DUMMY_NODE = 'dummy_node'
+# branch strategy
+BRANCH_STRATEGY = None
+# search strategy
+SEARCH_STRATEGY = None
+# branching strategies
+MOST_FRACTIONAL = 'Most Fraction'
+FIXED_BRANCHING = 'Fixed Branching'
+# search strategies
+DEPTH_FIRST = 'Depth First'
+BEST_FIRST = 'Best First'
 
 DOT2TEX_TEMPLATE = r'''
 \documentclass[landscape]{article}
@@ -1887,8 +1897,8 @@ class BBTree(BinaryTree):
         return CONSTRAINTS, VARIABLES, OBJ, MAT, RHS
 
     def BranchAndBound(self, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
-                       branch_strategy = 'Most Fractional',
-                       search_strategy = 'Depth First',
+                       branch_strategy = MOST_FRACTIONAL,
+                       search_strategy = DEPTH_FIRST,
                        complete_enumeration = False,
                        display_interval = None):
         #Add key to tree display
@@ -1939,15 +1949,15 @@ class BBTree(BinaryTree):
         pseudo_d = dict((i, (OBJ[i], 0)) for i in VARIABLES)
         print "==========================================="
         print "Starting Branch and Bound"
-        if branch_strategy == 'Most Fraction':
+        if branch_strategy is MOST_FRACTIONAL:
             print "Most fractional variable"
-        elif branch_strategy == 'Fixed':
+        elif branch_strategy is FIXED_BRANCHING:
             print "Fixed order"
         else:
             print "Unknown branching strategy %s" %branch_strategy
-        if search_strategy == 'Depth First':
+        if search_strategy is DEPTH_FIRST:
             print "Depth first search strategy"
-        elif search_strategy == 'Best First':
+        elif search_strategy is BEST_FIRST:
             print "Best first search strategy"
         else:
             print "Unknown search strategy %s" %search_strategy
