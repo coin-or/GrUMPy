@@ -2264,6 +2264,7 @@ class BBTree(BinaryTree):
         print "==========================================="
         if self.attr['display'] is not 'off':
             self.display(count=iter_count)
+        self._lp_count = lp_count
         return opt, LB
 
 def CreatePerlStyleBooleanFlag(parser, flag_text, variable_name, help_text):
