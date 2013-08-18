@@ -2026,7 +2026,7 @@ class BBTree(BinaryTree):
             prob.solve()
             lp_count = lp_count +1
             # Check infeasibility
-            infeasible = LpStatus[prob.status] == "Infeasible"
+            infeasible = LpStatus[prob.status] == "Infeasible" or LpStatus[prob.status] == "Undefined"
             # Print status
             if infeasible:
                 print "LP Solved, status: Infeasible"
