@@ -108,9 +108,11 @@ SEARCH_STRATEGY = None
 # branching strategies
 MOST_FRACTIONAL = 'Most Fraction'
 FIXED_BRANCHING = 'Fixed Branching'
+PSEUDOCOST_BRANCHING = 'Pseudocost Branching'
 # search strategies
 DEPTH_FIRST = 'Depth First'
 BEST_FIRST = 'Best First'
+BEST_ESTIMATE = 'Best Estimate'
 
 DOT2TEX_TEMPLATE = r'''
 \documentclass[landscape]{article}
@@ -2185,7 +2187,7 @@ class BBTree(BinaryTree):
                 # Branching:
                 # Choose a variable for branching
                 branching_var = -1
-                if branch_strategy == 'Fixed':
+                if branch_strategy is FIXED_BRANCHING:
                     #fixed order
                     for i in VARIABLES:
                         frac = min(var[i].varValue-math.floor(var[i].varValue),
@@ -2195,7 +2197,7 @@ class BBTree(BinaryTree):
                             branching_var = i
                             # TODO(aykut): understand this break
                             break
-                elif branch_strategy == 'Most Fractional':
+                elif branch_strategy is MOST_FRACTIONAL:
                     #most fractional variable
                     min_frac = -1
                     for i in VARIABLES:
@@ -2204,7 +2206,7 @@ class BBTree(BinaryTree):
                         if (frac> min_frac):
                             min_frac = frac
                             branching_var = i
-                elif branch_strategy == 'Pseudocost':
+                elif branch_strategy is PSEUDOCOST_BRANCHING:
                     scores = {}
                     for i in VARIABLES:
                         # find the fractional solutions
@@ -2219,11 +2221,11 @@ class BBTree(BinaryTree):
                 if branching_var >= 0:
                     print "Branching on variable %s" %branching_var
                 #Create new nodes
-                if search_strategy == 'Depth First':
+                if search_strategy is DEPTH_FIRST:
                     priority = (-cur_depth - 1, -cur_depth - 1)
-                elif search_strategy == 'Best First':
+                elif search_strategy is BEST_FIRST:
                     priority = (-relax, -relax)
-                elif search_strategy == 'Best Estimate':
+                elif search_strategy is BEST_ESTIMATE:
                     priority = (-relax - pseudo_d[branching_var][0]*(math.floor(var[branching_var].varValue) - var[branching_var].varValue),
                                 -relax + pseudo_u[branching_var][0]*(math.ceil(var[branching_var].varValue) - var[branching_var].varValue))
                 node_count += 1
