@@ -113,6 +113,7 @@ PSEUDOCOST_BRANCHING = 'Pseudocost Branching'
 DEPTH_FIRST = 'Depth First'
 BEST_FIRST = 'Best First'
 BEST_ESTIMATE = 'Best Estimate'
+INFINITY = sys.maxint
 
 DOT2TEX_TEMPLATE = r'''
 \documentclass[landscape]{article}
@@ -1903,7 +1904,6 @@ class BBTree(BinaryTree):
                        search_strategy = DEPTH_FIRST,
                        complete_enumeration = False,
                        display_interval = None):
-        #Add key to tree display
         '''
         if self.get_layout() == 'dot2tex':
             C = Cluster(graph_name = 'Key', label = '\text{Key}', fontsize = '12')
@@ -1935,7 +1935,6 @@ class BBTree(BinaryTree):
         C.add_edge('P', 'PC', style = 'invisible', arrowhead = 'none')
         self.add_subgraph(C)
         '''
-        INFINITY = 9999
         #The initial lower bound
         LB = -INFINITY
         #The number of LP's solved, and the number of nodes solved
