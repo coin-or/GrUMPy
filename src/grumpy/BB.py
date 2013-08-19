@@ -172,7 +172,6 @@ class BBTree(BinaryTree):
     in the data file and to generate images as necessary.
     """
     def __init__(self, **attrs):
-        #attrs['layout'] = 'bak'
         BinaryTree.__init__(self, **attrs)
         # User-controlled constant values
         self._label = ''
@@ -182,7 +181,7 @@ class BBTree(BinaryTree):
         self._edge_limit = 1000000
         # current time, updated each time we read a new line
         self._time = 0.0
-        #use at most NUM nodes of each type in tree images; zero means no limit
+        # use at most NUM nodes of each type in tree images; zero means no limit
         self._sample_tree = 0
         # Instance-dependent constant values
         self._optimization_sense = None
@@ -432,9 +431,6 @@ class BBTree(BinaryTree):
             if e.type == pygame.QUIT:
                 pause = False
                 pygame.display.quit()
-                # sys.exit() exits the whole program and I (aykut) guess it is
-                # not appropriate here.
-                #sys.exit()
 
     def set_label(self, label):
         self._label = label
@@ -450,24 +446,6 @@ class BBTree(BinaryTree):
 
     def set_sample_tree(self, number):
         self._sample_tree = number
-
-    def __print(self, options):
-        '''
-        TODO(aykut) Looks like this method is obsolete
-        '''
-        # Make a final set of images
-        if options.tree:
-            self.GenerateTreeImage()
-        if options.fixed_tree:
-            self.GenerateTreeImage(fixed_horizontal_positions=True)
-        # Do prediction images if requested
-        if options.predictions:
-            self.GeneratePredictionImages()
-        # Use Gnuplot to actually generate images
-        if options.run_gnuplot:
-            self.RunGnuplotOnAllFiles()
-        if options.animate:
-            self.CreateAnimatedImages()
 
     def AddOrUpdateNode(self, id, parent_id, branch_direction, status, lp_bound,
                         integer_infeasibility_count, integer_infeasibility_sum,
@@ -1381,11 +1359,6 @@ class BBTree(BinaryTree):
             for line in candidate_lines:
                 plot_parts.append('"< echo %s" w p lt 6 pt 7'
                                   %line.rstrip('\r\n'))
-#            self.WriteDataFileFromList('%s_candidate%s.dat' % (name_prefix,
-#                                                               index_string),
-#                                       candidate_lines)
-#            plot_parts.append('\'%s_candidate%s.dat\' w p lt 6 pt 7' %
-#                              (name_prefix, index_string))
         if len(integer_lines):
             self.WriteDataFileFromList('%s_integer%s.dat' % (name_prefix,
                                                              index_string),
@@ -1400,7 +1373,6 @@ class BBTree(BinaryTree):
             self._min_objective_value, self._max_objective_value)
         data = ''
         data += 'set terminal png notransparent size 480,360\n'
-#        data += 'set terminal png notransparent size large\n'
         data += 'set nokey\n'
         data += 'set autoscale\n'
         data += 'set tics scale 0.001\n'
@@ -1649,7 +1621,6 @@ class BBTree(BinaryTree):
           remaining_tokens: List of string tokens. These are those that remain
             after any common tokens are processed.
         """
-        #self.AddProgressMeasures()
         # Parse remaining tokens
         if len(remaining_tokens) != 0:
             print 'Invalid line: %s infeasible %s %s %s %s' % (
@@ -1658,7 +1629,6 @@ class BBTree(BinaryTree):
             print 'Should match: <time> infeasible <node id> <parent id> '
             print '<branch direction>'
             sys.exit(1)
-        #parent_node = self._nodes[parent_id]
         # Use parent values if the node does not have its own
         lp_bound = self.get_node_attr(parent_id, 'lp_bound')
         ii_count = self.get_node_attr(parent_id, 'integer_infeasibility_count')
@@ -1935,16 +1905,16 @@ class BBTree(BinaryTree):
         C.add_edge('P', 'PC', style = 'invisible', arrowhead = 'none')
         self.add_subgraph(C)
         '''
-        #The initial lower bound
+        # The initial lower bound
         LB = -INFINITY
-        #The number of LP's solved, and the number of nodes solved
+        # The number of LP's solved, and the number of nodes solved
         node_count = 1
         iter_count = 0
         lp_count = 0
         var   = LpVariable.dicts("", VARIABLES, 0, 1)
         numCons = len(CONSTRAINTS)
         numVars = len(VARIABLES)
-        #List of incumbent solution variable values
+        # List of incumbent solution variable values
         opt = dict([(i, 0) for i in VARIABLES])
         pseudo_u = dict((i, (OBJ[i], 0)) for i in VARIABLES)
         pseudo_d = dict((i, (OBJ[i], 0)) for i in VARIABLES)
@@ -1991,13 +1961,13 @@ class BBTree(BinaryTree):
             #====================================
             #    LP Relaxation
             #====================================
-            #Compute lower bound by LP relaxation
+            # Compute lower bound by LP relaxation
             prob = LpProblem("relax", LpMaximize)
             prob += lpSum([OBJ[i]*var[i] for i in VARIABLES]), "Objective"
             for j in range(numCons):
                 prob += (lpSum([MAT[i][j]*var[i] for i in VARIABLES])<=RHS[j],\
                              CONSTRAINTS[j])
-            #Fix all prescribed variables
+            # Fix all prescribed variables
             branch_vars = []
             if cur_index is not 0:
                 sys.stdout.write("Branching variables: ")
@@ -2035,7 +2005,7 @@ class BBTree(BinaryTree):
                                                          value(prob.objective))
             if(LpStatus[prob.status] == "Optimal"):
                 relax = value(prob.objective)
-                #Update pseudocost
+                # Update pseudocost
                 if branch_var != None:
                     if sense == '<=':
                         pseudo_d[branch_var] = ((pseudo_d[branch_var][0]*pseudo_d[branch_var][1] +
@@ -2054,7 +2024,7 @@ class BBTree(BinaryTree):
                         integer_solution = 0
                         break
                 # Determine integer_infeasibility_count and
-                #integer_infeasibility_sum for scatterplot and such
+                # Integer_infeasibility_sum for scatterplot and such
                 integer_infeasibility_count = 0
                 integer_infeasibility_sum = 0.0
                 for i in VARIABLES:
@@ -2064,7 +2034,7 @@ class BBTree(BinaryTree):
                 if (integer_solution and relax>LB):
                     LB = relax
                     for i in VARIABLES:
-                        #these two have different data structures first one
+                        # These two have different data structures first one
                         #list, second one dictionary
                         opt[i] = var_values[i]
                     print "New best solution found, objective: %s" %relax
@@ -2115,7 +2085,6 @@ class BBTree(BinaryTree):
                 else:
                     label = 'I'
             else:
-#               label = status + ": " + "%.1f"%relax
                 label = "%.1f"%relax
             if iter_count == 0:
                 if status is not 'candidate':
@@ -2237,7 +2206,7 @@ class BBTree(BinaryTree):
                 if  self.get_layout() == 'bak':
                     self.set_node_attr(cur_index, 'BBstatus', 'branched')
             if self.root is not None and display_interval is not None and iter_count%display_interval == 0:
-                # count argument does not have any effect if the display mode is noe file.
+                # count argument does not have any effect if the display mode is not file.
                 # when display mode is file it saves BB graph using graphviz.
                 # following names pictures as 1,2,3,...
                 #self.display(count=iter_count/display_interval)
@@ -2395,5 +2364,5 @@ if __name__ == '__main__':
     T.set_display_mode('pygame')
     CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP(rand_seed = 3)
     T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
-                     branch_strategy = 'Pseudocost', search_strategy = 'Best First',
+                     branch_strategy = PSEUDOCOST_BRANCHING, search_strategy = BEST_FIRST,
                      display_interval = None)
