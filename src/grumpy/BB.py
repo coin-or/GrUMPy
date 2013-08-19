@@ -572,8 +572,11 @@ class BBTree(BinaryTree):
         output_filename = "histogram."+index_string+".png"
         if output_file:
             script += 'set output "%s"\n' % output_filename
-        script += ('set title "Histogram of LP Bounds: %s, %s, %.2fs"\n'
-                    % (self._filename, self._label, self._time))
+        if self._filename is None:
+            script += 'set title "Histogram of LP Bounds"'
+        else:
+            script += ('set title "Histogram of LP Bounds: %s, %s, %.2fs"\n'
+                       % (self._filename, self._label, self._time))
         script += 'set xlabel "obj. value"\n'
         script += 'set ylabel "number of nodes"\n'
         if self._logscaley:
@@ -839,8 +842,11 @@ class BBTree(BinaryTree):
         # Make settings for the scatter plot.
         if output_file:
             script += 'set output "%s"\n' % output_filename
-        script += ('set title "Scatterplot: %s, %s, %ds"\n' % (
-                self._filename, self._label, int(self._time)))
+        if self._filename is None:
+            script += 'set title "Scatterplot"'
+        else:
+            script += ('set title "Scatterplot: %s, %s, %ds"\n' % (
+                    self._filename, self._label, int(self._time)))
         script += 'set pointsize 0.8\n'
         script += 'set nokey\n'
         script += 'set xlabel \"sum of int. infeas.\"\n'
@@ -941,8 +947,11 @@ class BBTree(BinaryTree):
 
         # Set terminal for the output files.
         script += 'set terminal png notransparent size 480,360\n\n'
-        script += ('set title "Incumbent path (%s %.2fs %s)"\n' % (
-                self._filename, self._time, self._label))
+        if self._filename is None:
+            script += 'set title "Incumbent path"\n'
+        else:
+            script += ('set title "Incumbent path (%s %.2fs %s)"\n' % (
+                    self._filename, self._time, self._label))
         script += 'set pointsize 0.8\n'
         script += 'set nokey\n'
         script += 'set xlabel \"sum of int. infeas.\"\n'
@@ -1066,7 +1075,10 @@ class BBTree(BinaryTree):
                                                           image_min_obj)
         data += 'set format x ""\n'
         data += 'set ylabel "obj. value"\n'
-        data += 'set title "B&B tree (%s %.2fs %s)"\n\n' % (
+        if self,_filename is None:
+            data += 'set title "B&B tree'
+        else:
+            data += 'set title "B&B tree (%s %.2fs %s)"\n\n' % (
                 self._filename, self._time, self._label)
 
         for line in additional_lines:
