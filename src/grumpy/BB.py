@@ -1098,7 +1098,7 @@ class BBTree(BinaryTree):
                                                           image_min_obj)
         data += 'set format x ""\n'
         data += 'set ylabel "obj. value"\n'
-        if self,_filename is None:
+        if self._filename is None:
             data += 'set title "B&B tree'
         else:
             data += 'set title "B&B tree (%s %.2fs %s)"\n\n' % (
