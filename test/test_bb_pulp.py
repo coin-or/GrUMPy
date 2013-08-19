@@ -1,5 +1,24 @@
 '''
-Tests correctness of branch and bound algorithm.
+Tests correctness of branch and bound algorithm. Optimal values of problems are
+compared to PuLP (a python interface/modeler to various open-source solvers)
+results. See test_bb.py for comparing branch and bound results to hard-coded
+values (no PuLP necessary).
+
+The result of the script is as follows (until python decides to change its
+random number generator).
+
+Problem     | BB optimal   | PuLP optimal
+-----------------------------------------
+(10, 10, 0) | 50.0         | 50.0
+(10, 10, 1) | 45.0         | 45.0
+(20, 10, 2) | 104.0        | 104.0
+(20, 10, 3) | 93.0         | 93.0
+(30, 20, 4) | 139.0        | 139.0
+(30, 20, 5) | 136.0        | 136.0
+(40, 20, 6) | 192.0        | 192.0
+(40, 20, 7) | 164.0        | 164.0
+(40, 30, 8) | 179.0        | 179.0
+
 '''
 
 from grumpy import BBTree
@@ -21,8 +40,12 @@ problem = [(10,10,0),
            (30,20,5),
            (40,20,6),
            (40,20,7),
-           (40,30,8)
+           (40,30,8),
            ]
+# will keep PuLP optimal objective value
+pulp_optimal = {}
+# will keep branch and bound optimal objective value
+bb_optimal = {}
 
 if __name__=='__main__':
     for p in problem:
@@ -33,7 +56,7 @@ if __name__=='__main__':
                                                                      rand_seed=seed)
         # construct pulp problem
         # create problem object
-        prob = pulp.LpProblem('test', sense=pulp.LpMinimize)
+        prob = pulp.LpProblem('test', sense=pulp.LpMaximize)
         # create variable dictionary
         prob_var = {}
         for v in VARIABLES:
@@ -50,9 +73,9 @@ if __name__=='__main__':
         if pulp.LpStatus[status] != 'Optimal':
             raise Exception('Pulp: Optimal solution could not be found.')
         # get optimal value
-        pulp_optimal = pulp.value(obj)
+        pulp_optimal[p] = pulp.value(obj)
         # solve using BB
-        solution, bb_optimal = bt.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ,
+        solution, bb_optimal[p] = bt.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ,
                                                  MAT, RHS)
         # test solution.
         #= test integer feasibility
@@ -62,6 +85,14 @@ if __name__=='__main__':
                 print diff
                 raise Exception('Integer infeasible variable %s, value %f ' %(v, solution[v]))
         # test optimality
-        if bb_optimal < pulp_optimal:
+        if bb_optimal[p] != pulp_optimal[p]:
             raise Exception('Optimality is not acheived for problem %s. BB: %f, OPT: %f ' %(str(p), bb_optimal, pulp_optimal))
-
+    # print optimal values in a table
+    print 'Problem     | BB optimal   | PuLP optimal'
+    print '-----------------------------------------'
+    for p in problem:
+        print str(p).ljust(10),
+        print '|',
+        print str(bb_optimal[p]).ljust(12),
+        print '|',
+        print str(pulp_optimal[p])
