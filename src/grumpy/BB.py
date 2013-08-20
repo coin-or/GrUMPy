@@ -26,7 +26,7 @@
 #   http://code.google.com/p/soc/wiki/PythonStyleGuide
 
 __author__ = 'Brady Hunsaker, Osman Ozaltin, Ted Ralphs, Aykut Bulut'
-__maintainer__ = 'Aykut Bulut (bhunsaker@google.com)'
+__maintainer__ = 'Aykut Bulut (aykut@lehigh.edu)'
 
 """
 This package is for visualizatiing branch-and-bound. It also contains
@@ -648,7 +648,7 @@ class BBTree(BinaryTree):
         if output_file:
             script += 'set output "%s"\n' % output_filename
         if self._filename is None:
-            script += 'set title "Histogram of LP Bounds"'
+            script += 'set title "Histogram of LP Bounds"\n'
         else:
             script += ('set title "Histogram of LP Bounds: %s, %s, %.2fs"\n'
                        % (self._filename, self._label, self._time))
@@ -888,7 +888,7 @@ class BBTree(BinaryTree):
         if output_file:
             script += 'set output "%s"\n' % output_filename
         if self._filename is None:
-            script += 'set title "Scatterplot"'
+            script += 'set title "Scatterplot"\n'
         else:
             script += ('set title "Scatterplot: %s, %s, %ds"\n' % (
                     self._filename, self._label, int(self._time)))
@@ -1014,8 +1014,11 @@ class BBTree(BinaryTree):
         script += 'set terminal png notransparent size 480,360\n\n'
 
         # Make settings for the scatter plot.
-        script += ('set title "Incumbent paths (%s %.2fs %s)"\n' % (
-                self._filename, self._time, self._label))
+        if self._filename is None:
+            script += 'set title "Incumbent paths"\n'
+        else:
+            script += ('set title "Incumbent paths (%s %.2fs %s)"\n' % (
+                    self._filename, self._time, self._label))
         script += 'set pointsize 0.8\n'
         script += 'set nokey\n'
         script += 'set xlabel \"sum of int. infeas.\"\n'
@@ -1099,7 +1102,7 @@ class BBTree(BinaryTree):
         data += 'set format x ""\n'
         data += 'set ylabel "obj. value"\n'
         if self._filename is None:
-            data += 'set title "B&B tree'
+            data += 'set title "B&B tree"\n'
         else:
             data += 'set title "B&B tree (%s %.2fs %s)"\n\n' % (
                 self._filename, self._time, self._label)
@@ -1394,8 +1397,11 @@ class BBTree(BinaryTree):
                                                           image_min_obj)
         data += 'set format x ""\n'
         data += 'set ylabel "obj. value"\n'
-        data += 'set title "B&B tree (%s %.2fs %s)"\n\n' % (
-                    self._filename, self._time, self._label)
+        if self._filename is None:
+            data += 'set title "B&B tree"\n\n'
+        else:
+            data += 'set title "B&B tree (%s %.2fs %s)"\n\n' % (
+                self._filename, self._time, self._label)
         for line in additional_script_lines:
             data += line
         gp = Popen(['gnuplot'], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
@@ -1772,8 +1778,11 @@ class BBTree(BinaryTree):
         # Set terminal for the output files.
         measures_script = 'set terminal png notransparent size 480,360\n\n'
         # Make settings for the plot.
-        measures_script += ('set title "Progress Measures: %s, %s"\n' % (
-                self._filename, self._label))
+        if self.filename is None:
+            measures_script += 'set title "Progress Measures"\n'
+        else:
+            measures_script += ('set title "Progress Measures: %s, %s"\n' % (
+                    self._filename, self._label))
         measures_script += 'set xlabel \"time (s)\"\n'
         measures_script += 'set ylabel \"measure\"\n'
         measures_script += 'set autoscale\n'
@@ -1814,8 +1823,11 @@ class BBTree(BinaryTree):
         # Set terminal for the output files.
         forecast_script = 'set terminal png notransparent size 480,360\n\n'
         # Make settings for the plot.
-        forecast_script += ('set title "Forecasts: %s, %s"\n' % (
-                self._filename, self._label))
+        if self._filename is None:
+            forecast_script += 'set title "Forecasts"\n'
+        else:
+            forecast_script += ('set title "Forecasts: %s, %s"\n' % (
+                    self._filename, self._label))
         forecast_script += 'set xlabel \"time (s)\"\n'
         forecast_script += 'set ylabel \"prediction of total time\"\n'
         forecast_script += 'set autoscale\n'
