@@ -2215,8 +2215,6 @@ class BBTree(BinaryTree):
                 Q.push((node_count, cur_index, relax, branching_var, var_values[branching_var],
                         '>=', math.ceil(var[branching_var].varValue)), priority[1])
                 self.set_node_attr(cur_index, color, 'green')
-                if  self.get_layout() == 'bak':
-                    self.set_node_attr(cur_index, 'BBstatus', 'branched')
             if self.root is not None and display_interval is not None and iter_count%display_interval == 0:
                 # count argument does not have any effect if the display mode is not file.
                 # when display mode is file it saves BB graph using graphviz.
@@ -2369,11 +2367,10 @@ def parse_options():
 
 if __name__ == '__main__':
     T = BBTree()
-#    T.set_layout('dot2tex')
-#    T.set_display_mode('file')
-    T.set_layout('bak')
+    #T.set_layout('dot2tex')
+    #T.set_display_mode('file')
     T.set_display_mode('xdot')
-    T.set_display_mode('pygame')
+    #T.set_display_mode('pygame')
     CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP(rand_seed = 3)
     T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                      branch_strategy = PSEUDOCOST_BRANCHING, search_strategy = BEST_FIRST,
