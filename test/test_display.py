@@ -21,21 +21,29 @@ bt = BBTree(display='pygame')
 bt = BBTree(display='file', layout = 'dot2tex')
 
 '''
-from grumpy import BBTree
+from grumpy import BBTree, PSEUDOCOST_BRANCHING, BEST_FIRST
 import sys
 
 if __name__=='__main__':
     #======== file display mode, no layout specified, save in png format
-    #bt = BBTree(display='file')
-    #======== xdot display mode
-    #bt = BBTree(display='xdot')
-    #======== pygame display mode, no layout specified, save in png format
-    bt = BBTree(display='pygame')
-    #======== file display mode, with dot2tex layout
-    #bt = BBTree(display='file', layout = 'dot2tex')
-
+    bt = BBTree(display='file')
     CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = bt.GenerateRandomMIP(numVars=30, numCons=10, rand_seed = 0)
     bt.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
-                     branch_strategy = 'Pseudocost', search_strategy = 'Best First',
+                     branch_strategy = PSEUDOCOST_BRANCHING, search_strategy = BEST_FIRST,
+                     display_interval = 4)
+    #======== xdot display mode
+    bt = BBTree(display='xdot')
+    bt.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
+                     branch_strategy = PSEUDOCOST_BRANCHING, search_strategy = BEST_FIRST,
+                     display_interval = 4)
+    #======== pygame display mode, no layout specified, save in png format
+    bt = BBTree(display='pygame')
+    bt.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
+                     branch_strategy = PSEUDOCOST_BRANCHING, search_strategy = BEST_FIRST,
+                     display_interval = 4)
+    #======== file display mode, with dot2tex layout
+    bt = BBTree(display='file', layout = 'dot2tex')
+    bt.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
+                     branch_strategy = PSEUDOCOST_BRANCHING, search_strategy = BEST_FIRST,
                      display_interval = 4)
 
