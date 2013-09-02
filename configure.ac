@@ -90,7 +90,8 @@ AM_CONDITIONAL([HAVE_PYTHON], [test "$PYTHON" != "" ])
 #############################################################################
 
 AC_CONFIG_FILES([Makefile
-		src/grumpy/Makefile])
+		src/grumpy/Makefile
+		test/Makefile])
 
 # Finally, we let configure write all the output...
 AC_COIN_FINALIZE
