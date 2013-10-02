@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
+from setuptools import setup
+import setuptools
 
 setup(name='coinor.grumpy',
       version='0.5.0',
@@ -15,5 +16,5 @@ In addition, GrUMPy includes a class for visualizing 2-dimensional polyhedra tha
       url='http://projects.coin-or.org/CoinBazaar/wiki/Projects/GIMPy',
       packages=['grumpy'],
       package_dir = {'': 'src'},
-      install_requires=['coin-or.gimpy']
+      install_requires=['coinor.gimpy']
      )
