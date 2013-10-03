@@ -51,8 +51,20 @@ if __name__=='__main__':
             diff = solution[v]-math.floor(solution[v])
             if (diff>EPSILON and diff<(1-EPSILON)):
                 raise Exception('Integer infeasible variable %s, value %f ' %(v, solution[v]))
+        #= test feasibility of constraints
+        Ax = []
+        num_cons = len(CONSTRAINTS)
+        #== for each constraint
+        for c in range(num_cons):
+            _sum = 0.0
+            for v in VARIABLES:
+                _sum += MAT[v][c]*solution[v]
+            Ax.append(_sum)
+        for c in range(num_cons):
+            if Ax[c] > RHS[c]:
+                raise Exception('Solution does not satisfy constraint ' + CONSTRAINTS[c])
         #= test optimal value
-        if opt_value<pre_computed_opt_val[p]:
+        if opt_value!=pre_computed_opt_val[p]:
             raise Exception('Optimality is not acheived for problem %s. BB: %f, OPT: %f ' %(str(p), opt_value[p], pre_computed_opt_val[p]))
         print '***************************************************'
         print '* No exceptions raised, BB solutions are correct. *'
