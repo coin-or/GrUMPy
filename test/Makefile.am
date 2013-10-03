@@ -15,10 +15,9 @@
 AUTOMAKE_OPTIONS = foreign
 
 test:
-	PYTHONPATH=@abs_source_dir@/src:@abs_source_dir@/../GiMPy/src:@abs_source_dir@/test python @abs_source_dir@/test/test_bb.py
-	PYTHONPATH=@abs_source_dir@/src:@abs_source_dir@/../GiMPy/src:@abs_source_dir@/test python @abs_source_dir@/test/test_bb_pulp.py
-	PYTHONPATH=@abs_source_dir@/src:@abs_source_dir@/../GiMPy/src:@abs_source_dir@/test python @abs_source_dir@/test/test_strategies.py
-	PYTHONPATH=@abs_source_dir@/src:@abs_source_dir@/../GiMPy/src:@abs_source_dir@/test python @abs_source_dir@/test/test_display.py
+	PYTHONPATH=@abs_source_dir@/src:@abs_source_dir@/../GiMPy/src:@abs_source_dir@/test ${PYTHON} @abs_source_dir@/test/test_bb.py
+	PYTHONPATH=@abs_source_dir@/src:@abs_source_dir@/../GiMPy/src:@abs_source_dir@/test ${PYTHON} @abs_source_dir@/test/test_bb_pulp.py
+	PYTHONPATH=@abs_source_dir@/src:@abs_source_dir@/../GiMPy/src:@abs_source_dir@/test ${PYTHON} @abs_source_dir@/test/test_strategies.py
 
 .PHONY: test
 
