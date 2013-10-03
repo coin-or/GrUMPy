@@ -372,10 +372,9 @@ uninstall-am: uninstall-info-am
 
 
 test:
-	PYTHONPATH=@abs_source_dir@/src:@abs_source_dir@/../GiMPy/src:@abs_source_dir@/test python @abs_source_dir@/test/test_bb.py
-	PYTHONPATH=@abs_source_dir@/src:@abs_source_dir@/../GiMPy/src:@abs_source_dir@/test python @abs_source_dir@/test/test_bb_pulp.py
-	PYTHONPATH=@abs_source_dir@/src:@abs_source_dir@/../GiMPy/src:@abs_source_dir@/test python @abs_source_dir@/test/test_strategies.py
-	PYTHONPATH=@abs_source_dir@/src:@abs_source_dir@/../GiMPy/src:@abs_source_dir@/test python @abs_source_dir@/test/test_display.py
+	PYTHONPATH=@abs_source_dir@/src:@abs_source_dir@/../GiMPy/src:@abs_source_dir@/test ${PYTHON} @abs_source_dir@/test/test_bb.py
+	PYTHONPATH=@abs_source_dir@/src:@abs_source_dir@/../GiMPy/src:@abs_source_dir@/test ${PYTHON} @abs_source_dir@/test/test_bb_pulp.py
+	PYTHONPATH=@abs_source_dir@/src:@abs_source_dir@/../GiMPy/src:@abs_source_dir@/test ${PYTHON} @abs_source_dir@/test/test_strategies.py
 
 .PHONY: test
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
