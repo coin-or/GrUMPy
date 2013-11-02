@@ -298,6 +298,9 @@ class BBTree(BinaryTree):
         Displays/Saves images requested. BranchAndBound method calls this method
         to visualize the branch and bound tree.
         '''
+        if self.attr['layout'] != 'bak':
+            BinaryTree.display(self)
+            return
         if self.attr['display'] is 'off':
             return
         if self.attr['display'] is 'pygame':
