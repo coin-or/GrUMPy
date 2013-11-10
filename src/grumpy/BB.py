@@ -178,7 +178,6 @@ class BBTree(BinaryTree):
     keeps the entire branch-and-bound tree in self.
     """
     def __init__(self, **attrs):
-        attrs['d2tgraphstyle'] = 'every text node part/.style={align=center}'
         BinaryTree.__init__(self, **attrs)
         # User-controlled constant values
         self._label = ''
@@ -2422,7 +2421,7 @@ if __name__ == '__main__':
     T.set_display_mode('file')
     #T.set_display_mode('xdot')
     #T.set_display_mode('pygame')
-    CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP(rand_seed = 7)
+    CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP(rand_seed = 9)
     T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                      branch_strategy = PSEUDOCOST_BRANCHING,
                      search_strategy = BEST_FIRST,
