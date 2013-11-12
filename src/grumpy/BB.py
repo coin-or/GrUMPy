@@ -219,7 +219,8 @@ class BBTree(BinaryTree):
             self.set_display_mode(attrs['display'])
         else:
             self.set_display_mode('off')
-        pygame.init()
+        if PYGAME_INSTALLED:
+            pygame.init()
 
     def process_file(self, file_name):
         self._filename = file_name
@@ -385,6 +386,9 @@ class BBTree(BinaryTree):
         '''
         Assumes all the images have the same size.
         '''
+        if not PYGAME_INSTALLED:
+            print 'Pygame not installed. Display disabled'
+            return
         tree = self.GenerateTreeImage()
         scatterplot = self.GenerateScatterplot()
         histogram = self.GenerateHistogram()
@@ -434,6 +438,9 @@ class BBTree(BinaryTree):
                 #sys.exit()
 
     def display_image(self, gnuplot):
+        if not PYGAME_INSTALLED:
+            print 'Pygame not installed. Display disabled'
+            return
         im = StringIO(gnuplot)
         picture = pygame.image.load(im, 'png')
         screen = pygame.display.set_mode(picture.get_size())
@@ -1903,7 +1910,8 @@ class BBTree(BinaryTree):
         return True
 
     def GenerateRandomMIP(self, numVars = 40, numCons = 20, density = 0.2,
-                            maxObjCoeff = 10, maxConsCoeff = 10, rand_seed = 2):
+                            maxObjCoeff = 10, maxConsCoeff = 10, 
+                            tightness = 2, rand_seed = 2):
         random.seed(rand_seed)
         CONSTRAINTS = ["C"+str(i) for i in range(numCons)]
         if self.get_layout() == 'dot2tex':
@@ -1914,7 +1922,7 @@ class BBTree(BinaryTree):
         MAT = dict((i, [random.randint(1, maxConsCoeff)
                         if random.random() <= density else 0
                         for j in CONSTRAINTS]) for i in VARIABLES)
-        RHS = [random.randint(int(numVars*density*maxConsCoeff/2),
+        RHS = [random.randint(int(numVars*density*maxConsCoeff/tightness),
                        int(numVars*density*maxConsCoeff/1.5))
                for i in CONSTRAINTS]
         return CONSTRAINTS, VARIABLES, OBJ, MAT, RHS
@@ -1924,37 +1932,35 @@ class BBTree(BinaryTree):
                        search_strategy = DEPTH_FIRST,
                        complete_enumeration = False,
                        display_interval = None):
-        '''
         if self.get_layout() == 'dot2tex':
-            C = Cluster(graph_name = 'Key', label = '\text{Key}', fontsize = '12')
-            C.add_node('C', label = '\text{Candidate}', style = 'filled',
-                       color = 'yellow', fillcolor = 'yellow')
-            C.add_node('I', label = '\text{Infeasible}', style = 'filled',
-                       color = 'orange', fillcolor = 'orange')
-            C.add_node('S', label = '\text{Solution}', style = 'filled',
-                       color = 'lightblue', fillcolor = 'lightblue')
-            C.add_node('P', label = '\text{Pruned}', style = 'filled',
-                       color = 'red', fillcolor = 'red')
-            C.add_node('PC', label = '\text{Pruned\\ Candidate}', style = 'filled',
-                       color = 'red', fillcolor = 'yellow')
+            cluster_attrs = {'name':'Key', 'label':r'\text{Key}', 'fontsize':'12'}
+            self.add_node('C', label = r'\text{Candidate}', style = 'filled',
+                          color = 'yellow', fillcolor = 'yellow')
+            self.add_node('I', label = r'\text{Infeasible}', style = 'filled',
+                          color = 'orange', fillcolor = 'orange')
+            self.add_node('S', label = r'\text{Solution}', style = 'filled',
+                          color = 'lightblue', fillcolor = 'lightblue')
+            self.add_node('P', label = r'\text{Pruned}', style = 'filled',
+                          color = 'red', fillcolor = 'red')
+            self.add_node('PC', label = r'\text{Pruned}$\\ $\text{Candidate}', style = 'filled',
+                          color = 'red', fillcolor = 'yellow')
         else:
-            C = Cluster(graph_name = 'Key', label = 'Key', fontsize = '12')
-            C.add_node('C', label = 'Candidate', style = 'filled',
-                       color = 'yellow', fillcolor = 'yellow')
-            C.add_node('I', label = 'Infeasible', style = 'filled',
-                       color = 'orange', fillcolor = 'orange')
-            C.add_node('S', label = 'Solution', style = 'filled',
-                       color = 'lightblue', fillcolor = 'lightblue')
-            C.add_node('P', label = 'Pruned', style = 'filled',
-                       color = 'red', fillcolor = 'red')
-            C.add_node('PC', label = 'Pruned \n Candidate', style = 'filled',
-                       color = 'red', fillcolor = 'yellow')
-        C.add_edge('C', 'I', style = 'invisible', arrowhead = 'none')
-        C.add_edge('I', 'S', style = 'invisible', arrowhead = 'none')
-        C.add_edge('S', 'P', style = 'invisible', arrowhead = 'none')
-        C.add_edge('P', 'PC', style = 'invisible', arrowhead = 'none')
-        self.add_subgraph(C)
-        '''
+            cluster_attrs = {'name':'Key', 'label':'Key', 'fontsize':'12'}
+            self.add_node('C', label = 'Candidate', style = 'filled',
+                          color = 'yellow', fillcolor = 'yellow')
+            self.add_node('I', label = 'Infeasible', style = 'filled',
+                          color = 'orange', fillcolor = 'orange')
+            self.add_node('S', label = 'Solution', style = 'filled',
+                          color = 'lightblue', fillcolor = 'lightblue')
+            self.add_node('P', label = 'Pruned', style = 'filled',
+                          color = 'red', fillcolor = 'red')
+            self.add_node('PC', label = 'Pruned \n Candidate', style = 'filled',
+                          color = 'red', fillcolor = 'yellow')
+        self.add_edge('C', 'I', style = 'invisible', arrowhead = 'none')
+        self.add_edge('I', 'S', style = 'invisible', arrowhead = 'none')
+        self.add_edge('S', 'P', style = 'invisible', arrowhead = 'none')
+        self.add_edge('P', 'PC', style = 'invisible', arrowhead = 'none')
+        self.create_cluster(['C', 'I', 'S', 'P', 'PC'], cluster_attrs)
         # The initial lower bound
         LB = -INFINITY
         # The number of LP's solved, and the number of nodes solved
@@ -1974,6 +1980,8 @@ class BBTree(BinaryTree):
             print "Most fractional variable"
         elif branch_strategy is FIXED_BRANCHING:
             print "Fixed order"
+        elif branch_strategy is PSEUDOCOST_BRANCHING:
+            print "Pseudocost brancing"
         else:
             print "Unknown branching strategy %s" %branch_strategy
         if search_strategy is DEPTH_FIRST:
@@ -2421,7 +2429,7 @@ if __name__ == '__main__':
     #T.set_display_mode('file')
     T.set_display_mode('xdot')
     #T.set_display_mode('pygame')
-    CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP(rand_seed = 3)
+    CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP(rand_seed = 10)
     T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                      branch_strategy = PSEUDOCOST_BRANCHING,
                      search_strategy = BEST_FIRST,
