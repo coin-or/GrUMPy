@@ -1903,7 +1903,8 @@ class BBTree(BinaryTree):
         return True
 
     def GenerateRandomMIP(self, numVars = 40, numCons = 20, density = 0.2,
-                            maxObjCoeff = 10, maxConsCoeff = 10, rand_seed = 2):
+                            maxObjCoeff = 10, maxConsCoeff = 10, 
+                            tightness = 2, rand_seed = 2):
         random.seed(rand_seed)
         CONSTRAINTS = ["C"+str(i) for i in range(numCons)]
         if self.get_layout() == 'dot2tex':
@@ -1914,7 +1915,7 @@ class BBTree(BinaryTree):
         MAT = dict((i, [random.randint(1, maxConsCoeff)
                         if random.random() <= density else 0
                         for j in CONSTRAINTS]) for i in VARIABLES)
-        RHS = [random.randint(int(numVars*density*maxConsCoeff/2),
+        RHS = [random.randint(int(numVars*density*maxConsCoeff/tightness),
                        int(numVars*density*maxConsCoeff/1.5))
                for i in CONSTRAINTS]
         return CONSTRAINTS, VARIABLES, OBJ, MAT, RHS
@@ -2417,11 +2418,11 @@ def parse_options():
 
 if __name__ == '__main__':
     T = BBTree()
-    T.set_layout('dot2tex')
-    T.set_display_mode('file')
-    #T.set_display_mode('xdot')
+    #T.set_layout('dot2tex')
+    #T.set_display_mode('file')
+    T.set_display_mode('xdot')
     #T.set_display_mode('pygame')
-    CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP(rand_seed = 9)
+    CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP(rand_seed = 10)
     T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                      branch_strategy = PSEUDOCOST_BRANCHING,
                      search_strategy = BEST_FIRST,
