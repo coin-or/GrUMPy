@@ -36,7 +36,7 @@ class Polyhedron2D:
                            int(ceil(self.max_point[1]))+1):
                 if np.alltrue(np.dot(self.hrep.A, [i, j]) <= self.hrep.b):
                     v.append([i, j])
-        r = [p.generators[self.ray_indices[i]].tolist() 
+        r = [self.hrep.generators[self.ray_indices[i]].tolist() 
              for i in range(len(self.ray_indices))]
         return Polyhedron2D(points = v, rays = r)
 
