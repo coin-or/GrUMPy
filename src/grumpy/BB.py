@@ -219,7 +219,8 @@ class BBTree(BinaryTree):
             self.set_display_mode(attrs['display'])
         else:
             self.set_display_mode('off')
-        pygame.init()
+        if PYGAME_INSTALLED:
+            pygame.init()
 
     def process_file(self, file_name):
         self._filename = file_name
@@ -385,6 +386,9 @@ class BBTree(BinaryTree):
         '''
         Assumes all the images have the same size.
         '''
+        if not PYGAME_INSTALLED:
+            print 'Pygame not installed. Display disabled'
+            return
         tree = self.GenerateTreeImage()
         scatterplot = self.GenerateScatterplot()
         histogram = self.GenerateHistogram()
@@ -434,6 +438,9 @@ class BBTree(BinaryTree):
                 #sys.exit()
 
     def display_image(self, gnuplot):
+        if not PYGAME_INSTALLED:
+            print 'Pygame not installed. Display disabled'
+            return
         im = StringIO(gnuplot)
         picture = pygame.image.load(im, 'png')
         screen = pygame.display.set_mode(picture.get_size())

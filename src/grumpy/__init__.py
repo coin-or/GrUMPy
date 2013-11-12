@@ -1,2 +1,5 @@
 from BB import *
-from polyhedron2D import *
+try:
+    from polyhedron2D import *
+except ImportError:
+    pass
