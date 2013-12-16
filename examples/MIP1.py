@@ -1,5 +1,6 @@
 numVars = 2
 numCons = 3
+'''
 A = [[-2, -3], 
      [-4, -2], 
      [-3, -4],
@@ -14,9 +15,9 @@ x_u = [9,
        6,
        ]
 
-integerIndices = [0, 1]
-
 '''
+
+# For display, adding bounds explicitly is better
 A = [[-2, -3], 
      [-4, -2], 
      [-3, -4], 
@@ -32,7 +33,8 @@ b = [-5,
      6, 
      0, 
      0]
-'''
+
+integerIndices = [0, 1]
 
 c = [20,
      15,
