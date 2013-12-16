@@ -14,7 +14,8 @@ In addition, GrUMPy includes a class for visualizing 2-dimensional polyhedra tha
       author_email='{aykut,ted}@lehigh.edu',
       license='Eclipse Public License',
       url='http://projects.coin-or.org/CoinBazaar/wiki/Projects/GIMPy',
-      packages=['grumpy'],
-      package_dir = {'': 'src'},
+      namespace_packages=['coinor'],
+      packages=['coinor.grumpy','coinor'],
+      package_dir = {'coinor': 'src'},
       install_requires=['coinor.gimpy']
      )
