@@ -51,10 +51,17 @@ import subprocess
 import sys, os
 from subprocess import Popen, PIPE, STDOUT
 import optparse
-from coinor.gimpy import BinaryTree
-from coinor.gimpy import quote_if_necessary as quote
+try:
+    from src.gimpy import BinaryTree
+    from src.gimpy import quote_if_necessary as quote
+except ImportError:
+    from coinor.gimpy import BinaryTree
+    from coinor.gimpy import quote_if_necessary as quote
 import time
-from coinor.blimpy import PriorityQueue
+try:
+    from src.blimpy import PriorityQueue
+except ImportError:
+    from coinor.blimpy import PriorityQueue
 from StringIO import StringIO
 #from pygame.transform import scale
 from pulp import LpVariable, lpSum, LpProblem, LpMaximize, LpConstraint
