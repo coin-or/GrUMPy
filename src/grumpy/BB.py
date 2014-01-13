@@ -106,8 +106,6 @@ except ImportError:
 else:
     ETREE_INSTALLED = True
 
-# parent of root node.
-DUMMY_NODE = 'dummy_node'
 # branch strategy
 BRANCH_STRATEGY = None
 # search strategy
@@ -494,7 +492,7 @@ class BBTree(BinaryTree):
         integer_infeasibility_sum -> node
         parent_id -> node
         '''
-        if parent_id is not DUMMY_NODE:
+        if parent_id is not None:
             if id in self.get_node_list():
                 self.set_node_attr(id, 'status', status)
                 self.set_node_attr(id, 'lp_bound', lp_bound)
@@ -1472,7 +1470,7 @@ class BBTree(BinaryTree):
             remaining_tokens = tokens[5:]
             # TODO(aykut):parent id of root node is 0 when we read from file.
             if parent_id is '0':
-                parent_id = DUMMY_NODE
+                parent_id = None
             # Check that the parent node id is valid
             if parent_id not in self.get_node_list() and self.root is not None:
                 print 'Parent id does not exist: %s' % line
@@ -2005,7 +2003,7 @@ class BBTree(BinaryTree):
         cur_index = 0
         # Timer
         timer = time.time()
-        Q.push((0, None, None, None, None, None, None), -INFINITY)
+        Q.push(0, (0, None, None, None, None, None, None), -INFINITY)
         # Branch and Bound Loop
         while not Q.isEmpty():
             infeasible = False
@@ -2164,7 +2162,7 @@ class BBTree(BinaryTree):
                     if self._incumbent_value is None:
                         print 'WARNING: Encountered "fathom" line before '+\
                             'first incumbent.'
-                self.AddOrUpdateNode(0, DUMMY_NODE, None, 'candidate', relax,
+                self.AddOrUpdateNode(0, None, None, 'candidate', relax,
                                  integer_infeasibility_count,
                                  integer_infeasibility_sum,
                                  label = label,
@@ -2274,12 +2272,12 @@ class BBTree(BinaryTree):
                                      (math.ceil(var[branching_var].varValue) -\
                                           var[branching_var].varValue))
                 node_count += 1
-                Q.push((node_count, cur_index, relax, branching_var,
+                Q.push(node_count, (node_count, cur_index, relax, branching_var,
                         var_values[branching_var],
                         '<=', math.floor(var[branching_var].varValue)),
                        priority[0])
                 node_count += 1
-                Q.push((node_count, cur_index, relax, branching_var,
+                Q.push(node_count, (node_count, cur_index, relax, branching_var,
                         var_values[branching_var],
                         '>=', math.ceil(var[branching_var].varValue)),
                        priority[1])
