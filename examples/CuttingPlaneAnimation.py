@@ -1,4 +1,7 @@
-from coinor.grumpy.polyhedron2D import Polyhedron2D, add_line
+try:
+    from src.grumpy.polyhedron2D import Polyhedron2D, add_line
+except ImportError:
+    from coinor.grumpy.polyhedron2D import Polyhedron2D, add_line
 import matplotlib.pyplot as plt
 
 from MIP2 import A, b, cuts, rhs, points, rays

@@ -1,4 +1,4 @@
-from coinor.grumpy import BBTree
+from src.grumpy import BBTree
 import sys
 
 if __name__ == '__main__':
