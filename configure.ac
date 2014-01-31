@@ -22,7 +22,7 @@
 AC_PREREQ(2.59)
 
 # name of project, version number, contact info
-AC_INIT([GrUMPy],[trunk],[coin-bazaar@lists.coin-or.org])
+AC_INIT([GrUMPy],[0.6.0],[coin-bazaar@lists.coin-or.org])
 
 # copyright for configure script
 AC_COPYRIGHT([
