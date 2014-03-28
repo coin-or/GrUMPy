@@ -13,7 +13,7 @@ In addition, GrUMPy includes a class for visualizing 2-dimensional polyhedra tha
       author='Aykut Bulut, Ted Ralphs',
       author_email='{aykut,ted}@lehigh.edu',
       license='Eclipse Public License',
-      url='http://projects.coin-or.org/CoinBazaar/wiki/Projects/GIMPy',
+      url='https://github.com/tkralphs/GrUMPy/',
       namespace_packages=['coinor'],
       packages=['coinor.grumpy','coinor'],
       package_dir = {'coinor': 'src'},
