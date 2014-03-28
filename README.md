@@ -1,4 +1,4 @@
-GrUMPy 0.5
+GrUMPy 0.6
 ==========
 
 Graphics for Understanding Mathematical Programming in Python (GrUMPy) is a
