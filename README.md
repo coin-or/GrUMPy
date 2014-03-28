@@ -10,4 +10,5 @@ thus appropriate for use in the classroom.
 
 Documentation for the API is here:
 
-http://coral.ie.lehigh.edu/~ted/files/docs/grumpy/html
+http://pythonhosted.org/coinor.grumpy
+
