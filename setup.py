@@ -21,5 +21,5 @@ http://pythonhosted.org/coinor.grumpy
       namespace_packages=['coinor'],
       packages=['coinor.grumpy','coinor'],
       package_dir = {'coinor': 'src'},
-      install_requires=['coinor.gimpy>=1.2.0', 'pulp']
+      install_requires=['coinor.gimpy>=1.3.0', 'pulp']
      )
