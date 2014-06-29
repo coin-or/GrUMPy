@@ -189,6 +189,7 @@ class BBTree(BinaryTree):
         self._filename = None
         self._logscaley = False
         self._fathom = False
+        self._wait_for_keypress = True
         self._edge_limit = 1000000
         # current time, updated each time we read a new line
         self._time = 0.0
@@ -430,10 +431,17 @@ class BBTree(BinaryTree):
         if incumbent is not None:
             screen.blit(pIncumbent, rIncumbent)
         pygame.display.flip()
-        pause = True
+        if self._wait_for_keypress:
+            pause = True
+            print "Press any key to continue to next image (ESCAPE to disable pausing)"
+        else:
+            pause = False
         while pause:
             e = pygame.event.poll()
             if e.type == pygame.KEYDOWN:
+                keystate = pygame.key.get_pressed()
+                if keystate[pygame.K_ESCAPE] != 0:
+                    self._wait_for_keypress = False
                 break
             if e.type == pygame.QUIT:
                 pause = False
