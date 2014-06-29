@@ -29,8 +29,8 @@ __author__ = 'Brady Hunsaker, Osman Ozaltin, Ted Ralphs, Aykut Bulut'
 __maintainer__ = 'Aykut Bulut (aykut@lehigh.edu)'
 
 """
-This package is for visualizatiing branch-and-bound. It also contains
-a basicbranch-and-bound implementation primarily for classroom and educational
+This package is for visualizing branch-and-bound. It also contains
+a basic branch-and-bound implementation primarily for classroom and educational
 use.
 
 Communication with solvers is through a grammar described in separate
@@ -2003,7 +2003,7 @@ class BBTree(BinaryTree):
         cur_index = 0
         # Timer
         timer = time.time()
-        Q.push(0, (0, None, None, None, None, None, None), -INFINITY)
+        Q.push(0, -INFINITY, (0, None, None, None, None, None, None))
         # Branch and Bound Loop
         while not Q.isEmpty():
             infeasible = False
@@ -2272,15 +2272,13 @@ class BBTree(BinaryTree):
                                      (math.ceil(var[branching_var].varValue) -\
                                           var[branching_var].varValue))
                 node_count += 1
-                Q.push(node_count, (node_count, cur_index, relax, branching_var,
+                Q.push(node_count, priority[0], (node_count, cur_index, relax, branching_var,
                         var_values[branching_var],
-                        '<=', math.floor(var[branching_var].varValue)),
-                       priority[0])
+                        '<=', math.floor(var[branching_var].varValue)))
                 node_count += 1
-                Q.push(node_count, (node_count, cur_index, relax, branching_var,
+                Q.push(node_count, priority[1], (node_count, cur_index, relax, branching_var,
                         var_values[branching_var],
-                        '>=', math.ceil(var[branching_var].varValue)),
-                       priority[1])
+                        '>=', math.ceil(var[branching_var].varValue)))
                 self.set_node_attr(cur_index, color, 'green')
             if self.root is not None and display_interval is not None and\
                     iter_count%display_interval == 0:
