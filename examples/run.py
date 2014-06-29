@@ -26,3 +26,4 @@ if __name__ == '__main__':
 #                bt.display_image(gnuplot_image)
             bt.display_all()
 
+raw_input("Press a key to exit")
