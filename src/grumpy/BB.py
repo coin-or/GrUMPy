@@ -526,6 +526,12 @@ class BBTree(BinaryTree):
                     self._optimization_sense = 'max'
                 elif lp_bound > self.root.get_attr('lp_bound'):
                     self._optimization_sense = 'min'
+            if self._optimization_sense == 'min' and lp_bound < self.root.get_attr('lp_bound'):
+                print "Switching guess about objective sense to maximization based on bound change"
+                self._optimization_sense = 'max'
+            if self._optimization_sense == 'max' and lp_bound > self.root.get_attr('lp_bound'):
+                print "Switching guess about objective sense to minimization based on bound change"
+                self._optimization_sense = 'max'
         if integer_infeasibility_sum is not None:
             if (self._max_integer_infeasibility_sum is None or
                 integer_infeasibility_sum >
@@ -542,6 +548,9 @@ class BBTree(BinaryTree):
         Returns:
           True if value1 is better than value2 as an objective value.
         """
+        if self._optimization_sense is None:
+            print "Optimization sense is not set, assuming sense is miniminzation"
+            self._optimization_sense = 'min'
         if self._optimization_sense == 'min':
             return value1 < value2
         else:
@@ -1519,6 +1528,13 @@ class BBTree(BinaryTree):
         else:
             associated_node = None
         # Check that this is actually an improvement
+        if self._incumbent_value is not None and self._optimization_sense is None:
+            if objective_value > self._incumbent_value:
+                print "Objective sense unset, guessing maximization"
+                self._optimization_sense = 'max'
+            else:
+                print "Objective sense unset, guessing minimization"
+                self._optimization_sense = 'min'
         if not self.IsBetterThanIncumbent(objective_value):
             return
         self._previous_incumbent_value = self._incumbent_value
