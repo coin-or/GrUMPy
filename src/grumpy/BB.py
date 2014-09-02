@@ -1398,35 +1398,35 @@ class BBTree(BinaryTree):
             self.WriteDataFileFromList('%s_branched%s.dat' % (name_prefix,
                                                               index_string),
                                        branched_lines)
-            plot_parts.append('\'%s_branched%s.dat\' w p lt 2 pt 7' %
+            plot_parts.append('\'%s_branched%s.dat\' w p lt rgb "yellow" pt 7' %
                               (name_prefix, index_string))
         if len(fathomed_lines):
             self.WriteDataFileFromList('%s_fathomed%s.dat' % (name_prefix,
                                                               index_string),
                                        fathomed_lines)
-            plot_parts.append('\'%s_fathomed%s.dat\' w p lt 5 pt 7' %
+            plot_parts.append('\'%s_fathomed%s.dat\' w p lt rgb "light-red" pt 7' %
                               (name_prefix, index_string))
         if len(infeasible_lines):
             self.WriteDataFileFromList('%s_infeasible%s.dat' % (name_prefix,
                                                                 index_string),
                                        infeasible_lines)
-            plot_parts.append('\'%s_infeasible%s.dat\' w p lt 3 pt 7' %
+            plot_parts.append('\'%s_infeasible%s.dat\' w p lt rgb "dark-red" pt 7' %
                               (name_prefix, index_string))
         if len(pregnant_lines):
             self.WriteDataFileFromList('%s_pregnant%s.dat' % (name_prefix,
                                                               index_string),
                                        pregnant_lines)
-            plot_parts.append('\'%s_pregnant%s.dat\' w p lt 7 pt 7' %
+            plot_parts.append('\'%s_pregnant%s.dat\' w p lt rgb "green" pt 7' %
                               (name_prefix, index_string))
         if len(candidate_lines):
             for line in candidate_lines:
-                plot_parts.append('"< echo %s" w p lt 6 pt 7'
+                plot_parts.append('"< echo %s" w p lt rgb "green" pt 7'
                                   %line.rstrip('\r\n'))
         if len(integer_lines):
             self.WriteDataFileFromList('%s_integer%s.dat' % (name_prefix,
                                                              index_string),
                                        integer_lines)
-            plot_parts.append('\'%s_integer%s.dat\' w p lt 1 pt 7' %
+            plot_parts.append('\'%s_integer%s.dat\' w p lt rgb "cyan" pt 7' %
                               (name_prefix, index_string))
         if self._incumbent_value is not None:
             plot_parts.append('%0.6f lt 1 lw 0.5' % self._incumbent_value)
