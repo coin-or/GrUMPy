@@ -13,13 +13,13 @@ if __name__ == '__main__':
     bt = BBTree()
     bt.set_display_mode('pygame')
     line_number = 0
-    file_ = open('air04.bak', 'r')
-#    for line in sys.stdin:
-    for line in file_:
+#    file_ = open('air04.bak', 'r')
+    for line in sys.stdin:
+#    for line in file_:
         bt.ProcessLine(line)
         print 'line', line_number, 'processed.'
         line_number = line_number+1
-        if line_number%500 != 0:
+        if line_number%10000 != 0:
             continue
 #        imagefile = open('tree-'+str(line_number)+'.png','w')
 #        imagefile.write(bt.GenerateTreeImage())
