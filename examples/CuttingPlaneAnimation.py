@@ -4,9 +4,9 @@ except ImportError:
     from coinor.grumpy.polyhedron2D import Polyhedron2D, add_line
 import matplotlib.pyplot as plt
 
-from MIP2 import A, b, cuts, rhs, points, rays
+from MIP5 import A, b, cuts, rhs, points, rays
 try:
-    from MIP2 import c, obj_val
+    from MIP5 import c, obj_val
 except ImportError:
     c = None
 fig = plt.figure()
@@ -16,14 +16,17 @@ if points is not None:
     p = Polyhedron2D(points = points, rays = rays)
 else:
     p = Polyhedron2D(A = A, b = b)
-p.draw(ax, color = 'blue', linestyle = 'solid')
+p.draw(ax, color = 'blue', linestyle = 'solid', 
+       label = 'Polyhedron P')
 ax.set_xlim(p.plot_min[0], p.plot_max[0])
 ax.set_ylim(p.plot_min[1], p.plot_max[1])
 pI = p.make_integer_hull()
-pI.draw(ax, color = 'red', linestyle = 'dashed')
+pI.draw(ax, color = 'red', linestyle = 'dashed', 
+        label = 'Convex Hull of Integer Points')
 if c is not None:
     add_line(ax, c, obj_val, p.plot_max - [0.2, 0.2], p.plot_min + [0.2, 0.2], 
              linestyle = 'dashed')
+plt.legend()
 plt.show()
 
 if cuts is not None:
