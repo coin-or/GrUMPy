@@ -2005,17 +2005,17 @@ class BBTree(BinaryTree):
         pseudo_d = dict((i, (OBJ[i], 0)) for i in VARIABLES)
         print "==========================================="
         print "Starting Branch and Bound"
-        if branch_strategy is MOST_FRACTIONAL:
+        if branch_strategy == MOST_FRACTIONAL:
             print "Most fractional variable"
-        elif branch_strategy is FIXED_BRANCHING:
+        elif branch_strategy == FIXED_BRANCHING:
             print "Fixed order"
-        elif branch_strategy is PSEUDOCOST_BRANCHING:
+        elif branch_strategy == PSEUDOCOST_BRANCHING:
             print "Pseudocost brancing"
         else:
             print "Unknown branching strategy %s" %branch_strategy
-        if search_strategy is DEPTH_FIRST:
+        if search_strategy == DEPTH_FIRST:
             print "Depth first search strategy"
-        elif search_strategy is BEST_FIRST:
+        elif search_strategy == BEST_FIRST:
             print "Best first search strategy"
         else:
             print "Unknown search strategy %s" %search_strategy
@@ -2249,7 +2249,7 @@ class BBTree(BinaryTree):
                 # Branching:
                 # Choose a variable for branching
                 branching_var = -1
-                if branch_strategy is FIXED_BRANCHING:
+                if branch_strategy == FIXED_BRANCHING:
                     #fixed order
                     for i in VARIABLES:
                         frac = min(var[i].varValue-math.floor(var[i].varValue),
@@ -2259,7 +2259,7 @@ class BBTree(BinaryTree):
                             branching_var = i
                             # TODO(aykut): understand this break
                             break
-                elif branch_strategy is MOST_FRACTIONAL:
+                elif branch_strategy == MOST_FRACTIONAL:
                     #most fractional variable
                     min_frac = -1
                     for i in VARIABLES:
@@ -2268,7 +2268,7 @@ class BBTree(BinaryTree):
                         if (frac> min_frac):
                             min_frac = frac
                             branching_var = i
-                elif branch_strategy is PSEUDOCOST_BRANCHING:
+                elif branch_strategy == PSEUDOCOST_BRANCHING:
                     scores = {}
                     for i in VARIABLES:
                         # find the fractional solutions
@@ -2284,11 +2284,11 @@ class BBTree(BinaryTree):
                 if branching_var >= 0:
                     print "Branching on variable %s" %branching_var
                 #Create new nodes
-                if search_strategy is DEPTH_FIRST:
+                if search_strategy == DEPTH_FIRST:
                     priority = (-cur_depth - 1, -cur_depth - 1)
-                elif search_strategy is BEST_FIRST:
+                elif search_strategy == BEST_FIRST:
                     priority = (-relax, -relax)
-                elif search_strategy is BEST_ESTIMATE:
+                elif search_strategy == BEST_ESTIMATE:
                     priority = (-relax - pseudo_d[branching_var][0]*\
                                      (math.floor(var[branching_var].varValue) -\
                                           var[branching_var].varValue),
