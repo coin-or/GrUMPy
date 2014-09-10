@@ -1957,10 +1957,11 @@ class BBTree(BinaryTree):
         return CONSTRAINTS, VARIABLES, OBJ, MAT, RHS
 
     def BranchAndBound(self, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
-                       branch_strategy = MOST_FRACTIONAL,
-                       search_strategy = DEPTH_FIRST,
-                       complete_enumeration = False,
-                       display_interval = None):
+                        branch_strategy = MOST_FRACTIONAL,
+                        search_strategy = DEPTH_FIRST,
+                        complete_enumeration = False,
+                        display_interval = None,
+                        binary_vars = True):
         if self.get_layout() == 'dot2tex':
             cluster_attrs = {'name':'Key', 'label':r'\text{Key}', 'fontsize':'12'}
             self.add_node('C', label = r'\text{Candidate}', style = 'filled',
@@ -1996,7 +1997,12 @@ class BBTree(BinaryTree):
         node_count = 1
         iter_count = 0
         lp_count = 0
-        var   = LpVariable.dicts("", VARIABLES, 0, 1)
+        
+        if binary_vars:
+            var   = LpVariable.dicts("", VARIABLES, 0, 1)
+        else:
+            var   = LpVariable.dicts("", VARIABLES)
+        
         numCons = len(CONSTRAINTS)
         numVars = len(VARIABLES)
         # List of incumbent solution variable values
@@ -2041,7 +2047,10 @@ class BBTree(BinaryTree):
             print ""
             print "----------------------------------------------------"
             print ""
-            print "Node: %s, Depth: %s, LB: %s" %(cur_index,cur_depth,LB)
+            if LB > -INFINITY:
+                print "Node: %s, Depth: %s, LB: %s" %(cur_index,cur_depth,LB)
+            else:
+                print "Node: %s, Depth: %s, LB: %s" %(cur_index,cur_depth,"None")
             if relax is not None and relax <= LB:
                 print "Node pruned immediately by bound"
                 self.set_node_attr(parent, 'color', 'red')
@@ -2111,7 +2120,7 @@ class BBTree(BinaryTree):
                 var_values = dict([(i, var[i].varValue) for i in VARIABLES])
                 integer_solution = 1
                 for i in VARIABLES:
-                    if (var_values[i] not in set([0,1])):
+                    if (abs(round(var_values[i]) - var_values[i]) > .001):
                         integer_solution = 0
                         break
                 # Determine integer_infeasibility_count and
@@ -2456,7 +2465,7 @@ if __name__ == '__main__':
     #T.set_display_mode('file')
     T.set_display_mode('xdot')
     #T.set_display_mode('pygame')
-    CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP(rand_seed = 10)
+    CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP(rand_seed = 19)
     T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                      branch_strategy = PSEUDOCOST_BRANCHING,
                      search_strategy = BEST_FIRST,
