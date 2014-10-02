@@ -91,26 +91,37 @@ problem     | branching strategy   | search strategy   | num lp
 
 '''
 
-from grumpy import BBTree
+from coinor.grumpy import BBTree
 # import branching strategies
-from grumpy import MOST_FRACTIONAL, FIXED_BRANCHING, PSEUDOCOST_BRANCHING
+from coinor.grumpy import MOST_FRACTIONAL, FIXED_BRANCHING, PSEUDOCOST_BRANCHING
 # import searching strategies
-from grumpy import DEPTH_FIRST, BEST_FIRST, BEST_ESTIMATE
+from coinor.grumpy import DEPTH_FIRST, BEST_FIRST, BEST_ESTIMATE
 import sys
 import math
 
 branch_strategy = [MOST_FRACTIONAL, FIXED_BRANCHING, PSEUDOCOST_BRANCHING]
 search_strategy = [DEPTH_FIRST, BEST_FIRST, BEST_ESTIMATE]
+# branching strategy string dictionary for naming output files
+bs_dict = {MOST_FRACTIONAL:"most_fractional", FIXED_BRANCHING:"fixed_b", PSEUDOCOST_BRANCHING:"pseudocost_b"}
+# search strategy string dictionary for naming output files
+ss_dict ={DEPTH_FIRST:"depthfirst", BEST_FIRST:"bestfirst", BEST_ESTIMATE:"bestestimate"}
+
 # test problem, (num_vars,num_cons,seed)
 problem = [(10,10,0),
            (10,10,1),
-           (20,10,2),
-           (20,10,3),
-           (30,20,4),
-           (30,20,5),
-           (40,20,6),
-           (40,20,7),
-           (40,30,8)
+           (10,10,2),
+           (10,10,3),
+           (20,10,4),
+           (20,10,5),
+           (20,10,6),
+           (20,10,7),
+           (30,20,8),
+           (30,20,9),
+           (30,20,10),
+           (30,20,11),
+           (40,20,12),
+           (40,20,13),
+           (40,30,14)
            ]
 # number of LPs solved for each problem
 num_lp = {}
@@ -147,5 +158,16 @@ if __name__=='__main__':
                 print str(s).ljust(17),
                 print '|',
                 print num_lp[p][(b,s)]
-
-
+    for b in branch_strategy:
+        for s in search_strategy:
+            filename = bs_dict[b] + "_" + ss_dict[s]
+            print "writing output file ", filename, "..."
+            f = open(filename, "w")
+            f.write("#problem".ljust(15))
+            f.write("num lp".ljust(10))
+            f.write("\n")
+            for p in problem:
+                f.write(str(p).ljust(15))
+                f.write(str(num_lp[p][(b,s)]).ljust(10))
+                f.write("\n")
+            f.close()
