@@ -113,7 +113,7 @@ class Polyhedron2D:
         self.plot_max = np.array([ceil(self.plot_max[i]) + padding 
                                   for i in [0, 1]])
 
-    def draw(self, ax, color = 'blue', linestyle = 'solid'):
+    def draw(self, ax, color = 'blue', linestyle = 'solid', label = None):
         if self.plot_max == None or self.plot_min == None:
             self.determine_plot_size()
         x, y = [], []
@@ -186,7 +186,8 @@ class Polyhedron2D:
             linestyle = '--'
         if linestyle == 'solid':
             linestyle = '-'
-        line = lines.Line2D(x, y, color = color, linestyle = linestyle)
+        line = lines.Line2D(x, y, color = color, linestyle = linestyle,
+                            label = label)
         ax.add_line(line)
 
 def add_line(ax, coeffs, level, plot_max = None, plot_min = None, 
@@ -251,13 +252,14 @@ if __name__ == '__main__':
     ax.grid()
     p = Polyhedron2D(A = [[4, 1], [1, 4], [1, -1], [-1, 0], [0, -1]], 
                    b = [28, 27, 1, 0, 0])
-    p.draw(ax, color = 'blue', linestyle = 'solid')
+    p.draw(ax, color = 'blue', linestyle = 'solid', label = 'p')
     ax.set_xlim(p.plot_min[0], p.plot_max[0])
     ax.set_ylim(p.plot_min[1], p.plot_max[1])
     pI = p.make_integer_hull()
-    pI.draw(ax, color = 'red', linestyle = 'dashed') 
+    pI.draw(ax, color = 'red', linestyle = 'dashed', label = 'pI') 
     add_line(ax, [1, 1], 1, p.plot_max - [0.2, 0.2], p.plot_min + [0.2, 0.2], 
              linestyle = 'dashed')
+    plt.legend()
     plt.show()
 
 

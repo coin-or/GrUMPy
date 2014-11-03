@@ -1398,35 +1398,35 @@ class BBTree(BinaryTree):
             self.WriteDataFileFromList('%s_branched%s.dat' % (name_prefix,
                                                               index_string),
                                        branched_lines)
-            plot_parts.append('\'%s_branched%s.dat\' w p lt 2 pt 7' %
+            plot_parts.append('\'%s_branched%s.dat\' w p lt rgb "yellow" pt 7' %
                               (name_prefix, index_string))
         if len(fathomed_lines):
             self.WriteDataFileFromList('%s_fathomed%s.dat' % (name_prefix,
                                                               index_string),
                                        fathomed_lines)
-            plot_parts.append('\'%s_fathomed%s.dat\' w p lt 5 pt 7' %
+            plot_parts.append('\'%s_fathomed%s.dat\' w p lt rgb "light-red" pt 7' %
                               (name_prefix, index_string))
         if len(infeasible_lines):
             self.WriteDataFileFromList('%s_infeasible%s.dat' % (name_prefix,
                                                                 index_string),
                                        infeasible_lines)
-            plot_parts.append('\'%s_infeasible%s.dat\' w p lt 3 pt 7' %
+            plot_parts.append('\'%s_infeasible%s.dat\' w p lt rgb "dark-red" pt 7' %
                               (name_prefix, index_string))
         if len(pregnant_lines):
             self.WriteDataFileFromList('%s_pregnant%s.dat' % (name_prefix,
                                                               index_string),
                                        pregnant_lines)
-            plot_parts.append('\'%s_pregnant%s.dat\' w p lt 7 pt 7' %
+            plot_parts.append('\'%s_pregnant%s.dat\' w p lt rgb "green" pt 7' %
                               (name_prefix, index_string))
         if len(candidate_lines):
             for line in candidate_lines:
-                plot_parts.append('"< echo %s" w p lt 6 pt 7'
+                plot_parts.append('"< echo %s" w p lt rgb "green" pt 7'
                                   %line.rstrip('\r\n'))
         if len(integer_lines):
             self.WriteDataFileFromList('%s_integer%s.dat' % (name_prefix,
                                                              index_string),
                                        integer_lines)
-            plot_parts.append('\'%s_integer%s.dat\' w p lt 1 pt 7' %
+            plot_parts.append('\'%s_integer%s.dat\' w p lt rgb "cyan" pt 7' %
                               (name_prefix, index_string))
         if self._incumbent_value is not None:
             plot_parts.append('%0.6f lt 1 lw 0.5' % self._incumbent_value)
@@ -1957,10 +1957,11 @@ class BBTree(BinaryTree):
         return CONSTRAINTS, VARIABLES, OBJ, MAT, RHS
 
     def BranchAndBound(self, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
-                       branch_strategy = MOST_FRACTIONAL,
-                       search_strategy = DEPTH_FIRST,
-                       complete_enumeration = False,
-                       display_interval = None):
+                        branch_strategy = MOST_FRACTIONAL,
+                        search_strategy = DEPTH_FIRST,
+                        complete_enumeration = False,
+                        display_interval = None,
+                        binary_vars = True):
         if self.get_layout() == 'dot2tex':
             cluster_attrs = {'name':'Key', 'label':r'\text{Key}', 'fontsize':'12'}
             self.add_node('C', label = r'\text{Candidate}', style = 'filled',
@@ -1996,7 +1997,12 @@ class BBTree(BinaryTree):
         node_count = 1
         iter_count = 0
         lp_count = 0
-        var   = LpVariable.dicts("", VARIABLES, 0, 1)
+        
+        if binary_vars:
+            var   = LpVariable.dicts("", VARIABLES, 0, 1)
+        else:
+            var   = LpVariable.dicts("", VARIABLES)
+        
         numCons = len(CONSTRAINTS)
         numVars = len(VARIABLES)
         # List of incumbent solution variable values
@@ -2005,17 +2011,17 @@ class BBTree(BinaryTree):
         pseudo_d = dict((i, (OBJ[i], 0)) for i in VARIABLES)
         print "==========================================="
         print "Starting Branch and Bound"
-        if branch_strategy is MOST_FRACTIONAL:
+        if branch_strategy == MOST_FRACTIONAL:
             print "Most fractional variable"
-        elif branch_strategy is FIXED_BRANCHING:
+        elif branch_strategy == FIXED_BRANCHING:
             print "Fixed order"
-        elif branch_strategy is PSEUDOCOST_BRANCHING:
+        elif branch_strategy == PSEUDOCOST_BRANCHING:
             print "Pseudocost brancing"
         else:
             print "Unknown branching strategy %s" %branch_strategy
-        if search_strategy is DEPTH_FIRST:
+        if search_strategy == DEPTH_FIRST:
             print "Depth first search strategy"
-        elif search_strategy is BEST_FIRST:
+        elif search_strategy == BEST_FIRST:
             print "Best first search strategy"
         else:
             print "Unknown search strategy %s" %search_strategy
@@ -2041,7 +2047,10 @@ class BBTree(BinaryTree):
             print ""
             print "----------------------------------------------------"
             print ""
-            print "Node: %s, Depth: %s, LB: %s" %(cur_index,cur_depth,LB)
+            if LB > -INFINITY:
+                print "Node: %s, Depth: %s, LB: %s" %(cur_index,cur_depth,LB)
+            else:
+                print "Node: %s, Depth: %s, LB: %s" %(cur_index,cur_depth,"None")
             if relax is not None and relax <= LB:
                 print "Node pruned immediately by bound"
                 self.set_node_attr(parent, 'color', 'red')
@@ -2111,7 +2120,7 @@ class BBTree(BinaryTree):
                 var_values = dict([(i, var[i].varValue) for i in VARIABLES])
                 integer_solution = 1
                 for i in VARIABLES:
-                    if (var_values[i] not in set([0,1])):
+                    if (abs(round(var_values[i]) - var_values[i]) > .001):
                         integer_solution = 0
                         break
                 # Determine integer_infeasibility_count and
@@ -2249,7 +2258,7 @@ class BBTree(BinaryTree):
                 # Branching:
                 # Choose a variable for branching
                 branching_var = -1
-                if branch_strategy is FIXED_BRANCHING:
+                if branch_strategy == FIXED_BRANCHING:
                     #fixed order
                     for i in VARIABLES:
                         frac = min(var[i].varValue-math.floor(var[i].varValue),
@@ -2259,7 +2268,7 @@ class BBTree(BinaryTree):
                             branching_var = i
                             # TODO(aykut): understand this break
                             break
-                elif branch_strategy is MOST_FRACTIONAL:
+                elif branch_strategy == MOST_FRACTIONAL:
                     #most fractional variable
                     min_frac = -1
                     for i in VARIABLES:
@@ -2268,7 +2277,7 @@ class BBTree(BinaryTree):
                         if (frac> min_frac):
                             min_frac = frac
                             branching_var = i
-                elif branch_strategy is PSEUDOCOST_BRANCHING:
+                elif branch_strategy == PSEUDOCOST_BRANCHING:
                     scores = {}
                     for i in VARIABLES:
                         # find the fractional solutions
@@ -2284,11 +2293,11 @@ class BBTree(BinaryTree):
                 if branching_var >= 0:
                     print "Branching on variable %s" %branching_var
                 #Create new nodes
-                if search_strategy is DEPTH_FIRST:
+                if search_strategy == DEPTH_FIRST:
                     priority = (-cur_depth - 1, -cur_depth - 1)
-                elif search_strategy is BEST_FIRST:
+                elif search_strategy == BEST_FIRST:
                     priority = (-relax, -relax)
-                elif search_strategy is BEST_ESTIMATE:
+                elif search_strategy == BEST_ESTIMATE:
                     priority = (-relax - pseudo_d[branching_var][0]*\
                                      (math.floor(var[branching_var].varValue) -\
                                           var[branching_var].varValue),
@@ -2456,7 +2465,7 @@ if __name__ == '__main__':
     #T.set_display_mode('file')
     T.set_display_mode('xdot')
     #T.set_display_mode('pygame')
-    CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP(rand_seed = 10)
+    CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP(rand_seed = 19)
     T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                      branch_strategy = PSEUDOCOST_BRANCHING,
                      search_strategy = BEST_FIRST,

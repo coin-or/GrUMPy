@@ -12,3 +12,6 @@ Documentation for the API is here:
 
 http://pythonhosted.org/coinor.grumpy
 
+Installation:
+
+easy_install coinor.grumpy
