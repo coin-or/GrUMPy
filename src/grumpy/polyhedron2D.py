@@ -7,7 +7,7 @@ from math import ceil, floor
 class Polyhedron2D:
     def __init__(self, points = None, rays = None, A = None, b = None):
         have_rep = False
-        if points is not None and rays is not None:
+        if points is not None or rays is not None:
             self.vrep = Vrep(points, rays)
             self.hrep = Hrep(self.vrep.A, self.vrep.b)
             have_rep = True
@@ -15,7 +15,7 @@ class Polyhedron2D:
             self.hrep = Hrep(A, b)
             have_rep = True
         if not have_rep:
-            raise RuntimeError('Must provide either generators or constraint',
+            raise RuntimeError('Must provide either generators or constraint'+
                                'matrix')
         self.ray_indices = []
         for i in range(len(self.hrep.generators)):
@@ -113,7 +113,8 @@ class Polyhedron2D:
         self.plot_max = np.array([ceil(self.plot_max[i]) + padding 
                                   for i in [0, 1]])
 
-    def draw(self, ax, color = 'blue', linestyle = 'solid', label = None):
+    def draw(self, ax, color = 'blue', linestyle = 'solid', label = None,
+             color_int_points = False):
         if self.plot_max == None or self.plot_min == None:
             self.determine_plot_size()
         x, y = [], []
@@ -189,6 +190,13 @@ class Polyhedron2D:
         line = lines.Line2D(x, y, color = color, linestyle = linestyle,
                             label = label)
         ax.add_line(line)
+        if color_int_points:
+            for i in range(int(ceil(self.min_point[0])), 
+                           int(ceil(self.max_point[0]))+1):
+                for j in range(int(ceil(self.min_point[1])), 
+                               int(ceil(self.max_point[1]))+1):
+                    if np.alltrue(np.dot(self.hrep.A, [i, j]) <= self.hrep.b):
+                        add_point(ax, (i, j), radius = 0.02, color = 'black')
 
 def add_line(ax, coeffs, level, plot_max = None, plot_min = None, 
              color = 'blue', linestyle = 'solid'):
@@ -242,6 +250,9 @@ def add_line(ax, coeffs, level, plot_max = None, plot_min = None,
         linestyle = '-'
     line = lines.Line2D(x, y, color = color, linestyle = linestyle)
     ax.add_line(line)
+    
+def add_point(ax, center, radius = .02, color = 'red', ):
+    ax.add_patch(plt.Circle(center, radius = radius, color = color))
 
 if __name__ == '__main__':
     #points = np.random.random ((20,2))
