@@ -118,7 +118,7 @@ class Polyhedron2D:
 class Figure:
 
     def __init__(self):
-        self.initialize()
+        self.fig = None
 
     def initialize(self):
         self.fig = plt.figure()
@@ -128,7 +128,7 @@ class Figure:
     def add_polyhedron(self, p, color = 'blue', linestyle = 'solid', label = None,
                        show_int_points = False):
         if self.fig is None:
-            self.initialize_figure()
+            self.initialize()
         if p.plot_max == None or p.plot_min == None:
             p.determine_plot_size()
         x, y = [], []
@@ -212,64 +212,92 @@ class Figure:
                     if np.alltrue(np.dot(p.hrep.A, [i, j]) <= p.hrep.b):
                         self.add_point((i, j), radius = 0.02, color = 'black')
 
+    def add_line_segment(self, point1, point2, color = 'blue', linestyle = 'solid',
+                         label = None):
+        if linestyle == 'dashed':
+            linestyle = '--'
+        if linestyle == 'solid':
+            linestyle = '-'
+        line = lines.Line2D([point1[0], point2[0]], 
+                            [point1[1], point2[1]], 
+                            color = color, linestyle = linestyle,
+                            label = label)
+        self.ax.add_line(line)
+        
     def add_line(self, coeffs, level, plot_max = None, plot_min = None, 
-                 color = 'blue', linestyle = 'solid'):
+                 color = 'blue', linestyle = 'solid', label = None):
         if self.fig is None:
             self.initialize()
         if plot_max == None or plot_min == None:
             print 'Must have plot_max and plot_min set in order to add line'
             return
-        x_intercept = [float(level - plot_min[1]*coeffs[1])/coeffs[0],
-                       float(level - plot_max[1]*coeffs[1])/coeffs[0]]
-        y_intercept = [float(level - plot_min[0]*coeffs[0])/coeffs[1],
-                       float(level - plot_max[0]*coeffs[0])/coeffs[1]]
-        
-        x, y = [], []
-        if coeffs[0]/coeffs[1] < 0:
-            if y_intercept[1] > plot_max[1]:
-                y.append(plot_max[1])
-                x.append(float(level - plot_max[1]*coeffs[1])/coeffs[0])
-            elif y_intercept[1] < plot_min[1]:
-                return
-            else:
-                x.append(plot_max[0])
-                y.append(float(level - plot_max[0]*coeffs[0])/coeffs[1])
-            if y_intercept[0] < plot_min[1]:
-                y.append(plot_min[1])
-                x.append(float(level - plot_min[1]*coeffs[1])/coeffs[0])
-            elif y_intercept[0] > plot_max[1]:
-                return
-            else:
-                x.append(plot_min[0])
-                y.append(float(level - plot_min[0]*coeffs[0])/coeffs[1])
+        x_intercept = None
+        y_intercept = None
+        x = []
+        y = []
+        if coeffs[0] == 0 and coeffs[1] == 0:
+            print 'Trying to plot line with zero coefficients...'
+            return
+        if coeffs[0] == 0:
+            x = [plot_min[0], plot_max[0]]
+            y = [level/coeffs[1], level/coeffs[1]]
         else:
-            if y_intercept[1] < plot_min[1]:
-                y.append(plot_min[1])
-                x.append(float(level - plot_min[1]*coeffs[1])/coeffs[0])
-            elif y_intercept[1] > plot_max[1]:
-                return
+            x_intercept = [float(level - plot_min[1]*coeffs[1])/coeffs[0],
+                           float(level - plot_max[1]*coeffs[1])/coeffs[0]]
+        if coeffs[1] == 0:
+            x = [level/coeffs[0], level/coeffs[0]]
+            y = [plot_min[1], plot_max[1]]
+        else:
+            y_intercept = [float(level - plot_min[0]*coeffs[0])/coeffs[1],
+                           float(level - plot_max[0]*coeffs[0])/coeffs[1]]
+        
+        if x_intercept is not None and y_intercept is not None:
+            if coeffs[0]/coeffs[1] < 0:
+                if y_intercept[1] > plot_max[1]:
+                    y.append(plot_max[1])
+                    x.append(float(level - plot_max[1]*coeffs[1])/coeffs[0])
+                elif y_intercept[1] < plot_min[1]:
+                    return
+                else:
+                    x.append(plot_max[0])
+                    y.append(float(level - plot_max[0]*coeffs[0])/coeffs[1])
+                if y_intercept[0] < plot_min[1]:
+                    y.append(plot_min[1])
+                    x.append(float(level - plot_min[1]*coeffs[1])/coeffs[0])
+                elif y_intercept[0] > plot_max[1]:
+                    return
+                else:
+                    x.append(plot_min[0])
+                    y.append(float(level - plot_min[0]*coeffs[0])/coeffs[1])
             else:
-                x.append(plot_max[0])
-                y.append(float(level - plot_max[0]*coeffs[0])/coeffs[1])
-            if y_intercept[1] > plot_max[1]:
-                y.append(plot_max[1])
-                x.append(float(level - plot_max[1]*coeffs[1])/coeffs[0])
-            elif y_intercept[0] < plot_min[1]:
-                return
-            else:
-                x.append(plot_min[0])
-                y.append(float(level - plot_min[0]*coeffs[0])/coeffs[1])
+                if y_intercept[1] < plot_min[1]:
+                    y.append(plot_min[1])
+                    x.append(float(level - plot_min[1]*coeffs[1])/coeffs[0])
+                elif y_intercept[1] > plot_max[1]:
+                    return
+                else:
+                    x.append(plot_max[0])
+                    y.append(float(level - plot_max[0]*coeffs[0])/coeffs[1])
+                if y_intercept[1] > plot_max[1]:
+                    y.append(plot_max[1])
+                    x.append(float(level - plot_max[1]*coeffs[1])/coeffs[0])
+                elif y_intercept[0] < plot_min[1]:
+                    return
+                else:
+                    x.append(plot_min[0])
+                    y.append(float(level - plot_min[0]*coeffs[0])/coeffs[1])
     
         if linestyle == 'dashed':
             linestyle = '--'
         if linestyle == 'solid':
             linestyle = '-'
-        line = lines.Line2D(x, y, color = color, linestyle = linestyle)
+        line = lines.Line2D(x, y, color = color, linestyle = linestyle,
+                            label = label)
         self.ax.add_line(line)
     
     def add_point(self, center, radius = .02, color = 'red', ):
         if self.fig is None:
-            self.initialize_figure()
+            self.initialize()
         self.ax.add_patch(plt.Circle(center, radius = radius, color = color))
     
     def add_text(self, x, y, text):
@@ -284,6 +312,7 @@ class Figure:
     def show(self):
         plt.legend()
         plt.show()
+        self.fig = None
 
 if __name__ == '__main__':
     #points = np.random.random ((20,2))
