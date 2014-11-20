@@ -23,8 +23,9 @@
 \contentsline {subsubsection}{\numberline {3.5.1}Methods}{16}{subsubsection.3.5.1}
 \contentsline {subsubsection}{\numberline {3.5.2}Properties}{16}{subsubsection.3.5.2}
 \contentsline {section}{\numberline {4}Module coinor.grumpy.polyhedron2D}{17}{section.4}
-\contentsline {subsection}{\numberline {4.1}Functions}{17}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Variables}{17}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Class Polyhedron2D}{17}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.1}Variables}{17}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Class Polyhedron2D}{17}{subsection.4.2}
+\contentsline {subsubsection}{\numberline {4.2.1}Methods}{17}{subsubsection.4.2.1}
+\contentsline {subsection}{\numberline {4.3}Class Figure}{17}{subsection.4.3}
 \contentsline {subsubsection}{\numberline {4.3.1}Methods}{17}{subsubsection.4.3.1}
-\contentsline {section}{Index}{18}{section*.2}
+\contentsline {section}{Index}{19}{section*.2}
