@@ -32,10 +32,10 @@ class Polyhedron2D:
         if self.min_point is None or self.max_point is None:
             self.determine_hull_size()
         v = []
-        for i in range(int(ceil(self.min_point[0])), 
-                       int(ceil(self.max_point[0]))+1):
-            for j in range(int(ceil(self.min_point[1])), 
-                           int(ceil(self.max_point[1]))+1):
+        for i in range(int(ceil(round(self.min_point[0], 3))), 
+                       int(ceil(round(self.max_point[0], 3)))+1):
+            for j in range(int(ceil(round(self.min_point[1], 3))), 
+                           int(ceil(round(self.max_point[1], 3)))+1):
                 if np.alltrue(np.dot(self.hrep.A, [i, j]) <= self.hrep.b):
                     v.append([i, j])
         r = [self.hrep.generators[self.ray_indices[i]].tolist() 
