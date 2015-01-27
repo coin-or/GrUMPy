@@ -43,7 +43,6 @@ coinor.grumpy.forecasting	coinor.grumpy.forecasting-module.html
 coinor.grumpy.forecasting.__maintainer__	coinor.grumpy.forecasting-module.html#__maintainer__
 coinor.grumpy.forecasting.__package__	coinor.grumpy.forecasting-module.html#__package__
 coinor.grumpy.polyhedron2D	coinor.grumpy.polyhedron2D-module.html
-coinor.grumpy.polyhedron2D.add_line	coinor.grumpy.polyhedron2D-module.html#add_line
 coinor.grumpy.polyhedron2D.__package__	coinor.grumpy.polyhedron2D-module.html#__package__
 coinor.grumpy.BB.BBTree	coinor.grumpy.BB.BBTree-class.html
 coinor.grumpy.BB.BBTree.GenerateScatterplot	coinor.grumpy.BB.BBTree-class.html#GenerateScatterplot
@@ -59,7 +58,6 @@ coinor.grumpy.BB.BBTree.RunGnuplotOnAllFiles	coinor.grumpy.BB.BBTree-class.html#
 coinor.grumpy.BB.BBTree.WriteIncumbentPathScript	coinor.grumpy.BB.BBTree-class.html#WriteIncumbentPathScript
 coinor.grumpy.BB.BBTree.ProcessCandidateLine	coinor.grumpy.BB.BBTree-class.html#ProcessCandidateLine
 coinor.grumpy.BB.BBTree.display_all	coinor.grumpy.BB.BBTree-class.html#display_all
-coinor.grumpy.BB.BBTree.WriteTreeScript	coinor.grumpy.BB.BBTree-class.html#WriteTreeScript
 coinor.grumpy.BB.BBTree.ProcessInfeasibleLine	coinor.grumpy.BB.BBTree-class.html#ProcessInfeasibleLine
 coinor.grumpy.BB.BBTree.GenerateHistogram	coinor.grumpy.BB.BBTree-class.html#GenerateHistogram
 coinor.grumpy.BB.BBTree.ProcessHeuristicLine	coinor.grumpy.BB.BBTree-class.html#ProcessHeuristicLine
@@ -82,6 +80,7 @@ coinor.grumpy.BB.BBTree.WriteDataFileFromList	coinor.grumpy.BB.BBTree-class.html
 coinor.grumpy.BB.BBTree.process_file	coinor.grumpy.BB.BBTree-class.html#process_file
 coinor.grumpy.BB.BBTree.WriteScatterplotScript	coinor.grumpy.BB.BBTree-class.html#WriteScatterplotScript
 coinor.grumpy.BB.BBTree.GenerateIncumbentPath	coinor.grumpy.BB.BBTree-class.html#GenerateIncumbentPath
+coinor.grumpy.BB.BBTree.WriteTreeScript	coinor.grumpy.BB.BBTree-class.html#WriteTreeScript
 coinor.grumpy.BB.BBTree.display	coinor.grumpy.BB.BBTree-class.html#display
 coinor.grumpy.BB.BBTree.GetTreeHorizontalPositions	coinor.grumpy.BB.BBTree-class.html#GetTreeHorizontalPositions
 coinor.grumpy.BB.BBTree.BranchAndBound	coinor.grumpy.BB.BBTree-class.html#BranchAndBound
@@ -111,9 +110,19 @@ coinor.grumpy.forecasting.ProgressMeasurement	coinor.grumpy.forecasting.Progress
 coinor.grumpy.forecasting.ProgressMeasurement.__init__	coinor.grumpy.forecasting.ProgressMeasurement-class.html#__init__
 coinor.grumpy.forecasting.TimeForecast	coinor.grumpy.forecasting.TimeForecast-class.html
 coinor.grumpy.forecasting.TimeForecast.__init__	coinor.grumpy.forecasting.TimeForecast-class.html#__init__
+coinor.grumpy.polyhedron2D.Figure	coinor.grumpy.polyhedron2D.Figure-class.html
+coinor.grumpy.polyhedron2D.Figure.set_xlim	coinor.grumpy.polyhedron2D.Figure-class.html#set_xlim
+coinor.grumpy.polyhedron2D.Figure.show	coinor.grumpy.polyhedron2D.Figure-class.html#show
+coinor.grumpy.polyhedron2D.Figure.add_polyhedron	coinor.grumpy.polyhedron2D.Figure-class.html#add_polyhedron
+coinor.grumpy.polyhedron2D.Figure.add_text	coinor.grumpy.polyhedron2D.Figure-class.html#add_text
+coinor.grumpy.polyhedron2D.Figure.add_point	coinor.grumpy.polyhedron2D.Figure-class.html#add_point
+coinor.grumpy.polyhedron2D.Figure.add_line_segment	coinor.grumpy.polyhedron2D.Figure-class.html#add_line_segment
+coinor.grumpy.polyhedron2D.Figure.__init__	coinor.grumpy.polyhedron2D.Figure-class.html#__init__
+coinor.grumpy.polyhedron2D.Figure.initialize	coinor.grumpy.polyhedron2D.Figure-class.html#initialize
+coinor.grumpy.polyhedron2D.Figure.add_line	coinor.grumpy.polyhedron2D.Figure-class.html#add_line
+coinor.grumpy.polyhedron2D.Figure.set_ylim	coinor.grumpy.polyhedron2D.Figure-class.html#set_ylim
 coinor.grumpy.polyhedron2D.Polyhedron2D	coinor.grumpy.polyhedron2D.Polyhedron2D-class.html
-coinor.grumpy.polyhedron2D.Polyhedron2D.draw	coinor.grumpy.polyhedron2D.Polyhedron2D-class.html#draw
-coinor.grumpy.polyhedron2D.Polyhedron2D.determine_hull_size	coinor.grumpy.polyhedron2D.Polyhedron2D-class.html#determine_hull_size
-coinor.grumpy.polyhedron2D.Polyhedron2D.make_integer_hull	coinor.grumpy.polyhedron2D.Polyhedron2D-class.html#make_integer_hull
 coinor.grumpy.polyhedron2D.Polyhedron2D.determine_plot_size	coinor.grumpy.polyhedron2D.Polyhedron2D-class.html#determine_plot_size
+coinor.grumpy.polyhedron2D.Polyhedron2D.make_integer_hull	coinor.grumpy.polyhedron2D.Polyhedron2D-class.html#make_integer_hull
+coinor.grumpy.polyhedron2D.Polyhedron2D.determine_hull_size	coinor.grumpy.polyhedron2D.Polyhedron2D-class.html#determine_hull_size
 coinor.grumpy.polyhedron2D.Polyhedron2D.__init__	coinor.grumpy.polyhedron2D.Polyhedron2D-class.html#__init__

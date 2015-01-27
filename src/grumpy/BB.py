@@ -52,10 +52,10 @@ import sys, os
 from subprocess import Popen, PIPE, STDOUT
 import optparse
 try:
-    from src.gimpy import BinaryTree
+    from src.gimpy import BinaryTree, XDOT_INSTALLED, PYGAME_INSTALLED, DOT2TEX_INSTALLED, ETREE_INSTALLED
     from src.gimpy import quote_if_necessary as quote
 except ImportError:
-    from coinor.gimpy import BinaryTree
+    from coinor.gimpy import BinaryTree, XDOT_INSTALLED, PYGAME_INSTALLED, DOT2TEX_INSTALLED, ETREE_INSTALLED
     from coinor.gimpy import quote_if_necessary as quote
 import time
 try:
@@ -68,43 +68,8 @@ from pulp import LpVariable, lpSum, LpProblem, LpMaximize, LpConstraint
 from pulp import LpStatus, value
 from forecasting import ForecastingChainedSequences
 
-
-try:
-    import pygame # for locals.QUIT, locals.KEYDOWN,display,image,event,init
-except ImportError:
-    PYGAME_INSTALLED = False
-else:
-    PYGAME_INSTALLED = True
-
-try:
-    import dot2tex # for dot2tex method
-except ImportError:
-    DOT2TEX_INSTALLED = False
-else:
-    DOT2TEX_INSTALLED = True
-
-try:
-    from PIL import Image as PIL_Image
-except ImportError:
-    PIL_INSTALLED = False
-else:
-    PIL_INSTALLED = True
-
-try:
-    import pygtk
-    import gtk
-    import xdot
-except ImportError:
-    XDOT_INSTALLED = False
-else:
-    XDOT_INSTALLED = True
-
-try:
-    import lxml # for etree
-except ImportError:
-    ETREE_INSTALLED = False
-else:
-    ETREE_INSTALLED = True
+if PYGAME_INSTALLED:
+    import pygame
 
 # branch strategy
 BRANCH_STRATEGY = None
@@ -2469,4 +2434,4 @@ if __name__ == '__main__':
     T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                      branch_strategy = PSEUDOCOST_BRANCHING,
                      search_strategy = BEST_FIRST,
-                     display_interval = None)
+                     display_interval = 10)
