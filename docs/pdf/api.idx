@@ -1,5 +1,5 @@
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}|(hyperpage}{2}
-\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}|)}{2}
+\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}|)hyperpage}{2}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.BB \textit{(module)}|(hyperpage}{3}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.BB \textit{(module)}!coinor.grumpy.BB.CreatePerlStyleBooleanFlag \textit{(function)}|hyperpage}{3}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.BB \textit{(module)}!coinor.grumpy.BB.parse\_options \textit{(function)}|hyperpage}{3}
@@ -48,33 +48,33 @@
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.BB \textit{(module)}!coinor.grumpy.BB.BBTree \textit{(class)}!coinor.grumpy.BB.BBTree.GenerateForecastImages \textit{(method)}|hyperpage}{11}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.BB \textit{(module)}!coinor.grumpy.BB.BBTree \textit{(class)}!coinor.grumpy.BB.BBTree.GenerateRandomMIP \textit{(method)}|hyperpage}{11}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.BB \textit{(module)}!coinor.grumpy.BB.BBTree \textit{(class)}!coinor.grumpy.BB.BBTree.BranchAndBound \textit{(method)}|hyperpage}{11}
-\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.BB \textit{(module)}!coinor.grumpy.BB.BBTree \textit{(class)}|)}{12}
-\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.BB \textit{(module)}|)}{12}
+\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.BB \textit{(module)}!coinor.grumpy.BB.BBTree \textit{(class)}|)hyperpage}{12}
+\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.BB \textit{(module)}|)hyperpage}{12}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}|(hyperpage}{13}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}!coinor.grumpy.forecasting.ProgressMeasurement \textit{(class)}|(hyperpage}{13}
-\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}!coinor.grumpy.forecasting.ProgressMeasurement \textit{(class)}|)}{14}
+\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}!coinor.grumpy.forecasting.ProgressMeasurement \textit{(class)}|)hyperpage}{14}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}!coinor.grumpy.forecasting.TimeForecast \textit{(class)}|(hyperpage}{14}
-\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}!coinor.grumpy.forecasting.TimeForecast \textit{(class)}|)}{14}
+\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}!coinor.grumpy.forecasting.TimeForecast \textit{(class)}|)hyperpage}{14}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}!coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster \textit{(class)}|(hyperpage}{14}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}!coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster \textit{(class)}!coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster.AddMeasure \textit{(method)}|hyperpage}{15}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}!coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster \textit{(class)}!coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster.ComputeForecast \textit{(method)}|hyperpage}{15}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}!coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster \textit{(class)}!coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster.GetForecasts \textit{(method)}|hyperpage}{15}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}!coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster \textit{(class)}!coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster.GetMeasures \textit{(method)}|hyperpage}{15}
-\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}!coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster \textit{(class)}|)}{15}
+\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}!coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster \textit{(class)}|)hyperpage}{15}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}!coinor.grumpy.forecasting.ForecastingChainedSequences \textit{(class)}|(hyperpage}{15}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}!coinor.grumpy.forecasting.ForecastingChainedSequences \textit{(class)}!coinor.grumpy.forecasting.ForecastingChainedSequences.AddMeasure \textit{(method)}|hyperpage}{16}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}!coinor.grumpy.forecasting.ForecastingChainedSequences \textit{(class)}!coinor.grumpy.forecasting.ForecastingChainedSequences.StartNewSequence \textit{(method)}|hyperpage}{16}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}!coinor.grumpy.forecasting.ForecastingChainedSequences \textit{(class)}!coinor.grumpy.forecasting.ForecastingChainedSequences.GetAllForecasts \textit{(method)}|hyperpage}{16}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}!coinor.grumpy.forecasting.ForecastingChainedSequences \textit{(class)}!coinor.grumpy.forecasting.ForecastingChainedSequences.GetAllMeasures \textit{(method)}|hyperpage}{16}
-\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}!coinor.grumpy.forecasting.ForecastingChainedSequences \textit{(class)}|)}{16}
-\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}|)}{16}
+\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}!coinor.grumpy.forecasting.ForecastingChainedSequences \textit{(class)}|)hyperpage}{16}
+\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.forecasting \textit{(module)}|)hyperpage}{16}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.polyhedron2D \textit{(module)}|(hyperpage}{17}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.polyhedron2D \textit{(module)}!coinor.grumpy.polyhedron2D.Polyhedron2D \textit{(class)}|(hyperpage}{17}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.polyhedron2D \textit{(module)}!coinor.grumpy.polyhedron2D.Polyhedron2D \textit{(class)}!coinor.grumpy.polyhedron2D.Polyhedron2D.\_\_init\_\_ \textit{(method)}|hyperpage}{17}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.polyhedron2D \textit{(module)}!coinor.grumpy.polyhedron2D.Polyhedron2D \textit{(class)}!coinor.grumpy.polyhedron2D.Polyhedron2D.make\_integer\_hull \textit{(method)}|hyperpage}{17}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.polyhedron2D \textit{(module)}!coinor.grumpy.polyhedron2D.Polyhedron2D \textit{(class)}!coinor.grumpy.polyhedron2D.Polyhedron2D.determine\_hull\_size \textit{(method)}|hyperpage}{17}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.polyhedron2D \textit{(module)}!coinor.grumpy.polyhedron2D.Polyhedron2D \textit{(class)}!coinor.grumpy.polyhedron2D.Polyhedron2D.determine\_plot\_size \textit{(method)}|hyperpage}{17}
-\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.polyhedron2D \textit{(module)}!coinor.grumpy.polyhedron2D.Polyhedron2D \textit{(class)}|)}{17}
+\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.polyhedron2D \textit{(module)}!coinor.grumpy.polyhedron2D.Polyhedron2D \textit{(class)}|)hyperpage}{17}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.polyhedron2D \textit{(module)}!coinor.grumpy.polyhedron2D.Figure \textit{(class)}|(hyperpage}{17}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.polyhedron2D \textit{(module)}!coinor.grumpy.polyhedron2D.Figure \textit{(class)}!coinor.grumpy.polyhedron2D.Figure.\_\_init\_\_ \textit{(method)}|hyperpage}{17}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.polyhedron2D \textit{(module)}!coinor.grumpy.polyhedron2D.Figure \textit{(class)}!coinor.grumpy.polyhedron2D.Figure.initialize \textit{(method)}|hyperpage}{17}
@@ -86,5 +86,5 @@
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.polyhedron2D \textit{(module)}!coinor.grumpy.polyhedron2D.Figure \textit{(class)}!coinor.grumpy.polyhedron2D.Figure.set\_xlim \textit{(method)}|hyperpage}{18}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.polyhedron2D \textit{(module)}!coinor.grumpy.polyhedron2D.Figure \textit{(class)}!coinor.grumpy.polyhedron2D.Figure.set\_ylim \textit{(method)}|hyperpage}{18}
 \indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.polyhedron2D \textit{(module)}!coinor.grumpy.polyhedron2D.Figure \textit{(class)}!coinor.grumpy.polyhedron2D.Figure.show \textit{(method)}|hyperpage}{18}
-\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.polyhedron2D \textit{(module)}!coinor.grumpy.polyhedron2D.Figure \textit{(class)}|)}{18}
-\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.polyhedron2D \textit{(module)}|)}{18}
+\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.polyhedron2D \textit{(module)}!coinor.grumpy.polyhedron2D.Figure \textit{(class)}|)hyperpage}{18}
+\indexentry{coinor \textit{(package)}!coinor.grumpy \textit{(package)}!coinor.grumpy.polyhedron2D \textit{(module)}|)hyperpage}{18}
