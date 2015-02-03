@@ -11,7 +11,7 @@ try:
 except ImportError:
     CYLP_INSTALLED = False
     
-import MIP4 as LP
+import LP6 as LP
 
 def disp_polyhedron(A = None, b = None, points = None, rays = None, c = None, obj_val = None,
                     opt = None, loc = None):
@@ -85,4 +85,3 @@ if p is not None:
         print LP.b
     
         disp_polyhedron(A = p.hrep.A, b = p.hrep.b)
-     
