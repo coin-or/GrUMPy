@@ -30,7 +30,7 @@ def disp_polyhedron(A = None, b = None, points = None, rays = None, c = None, ob
     f.show()
     
 try:
-    p = Polyhedron2D(A = LP.A + [[-1, 0], [0, -1]], b = LP.b + [0, 0])
+    p = Polyhedron2D(A = LP.A, b = LP.b)
 except AttributeError:
     try:
         p = Polyhedron2D(points = LP.points, rays = LP.rays)
@@ -45,20 +45,27 @@ if p is not None:
         
         A = np.matrix(p.hrep.A)
         b = CyLPArray(p.hrep.b)
-                
+        
         print A
         print b
     
-        disp_polyhedron(A = A, b = b)
+        if LP.numVars == 2:
+            disp_polyhedron(A = A, b = b)
     
         x = lp.addVariable('x', LP.numVars)
             
-        lp += A * x <= b
+        if LP.sense[0] == '>=':
+            lp += A * x >= b
+        else:
+            lp += A * x <= b
         lp += x >= 0
     
         c = CyLPArray(LP.c)
         # We are maximizing, so negate objective
-        lp.objective = -c * x
+        if LP.sense[1] == 'Min':
+            lp.objective = c * x
+        else:
+            lp.objective = -c * x
         lp.logLevel = 0
         lp.primal(startFinishOptions = 'x')
         np.set_printoptions(precision = 2, linewidth = 200)
@@ -69,17 +76,25 @@ if p is not None:
         print 'Right-hand side of optimal tableaux:'
         #There is a bug in CyLP and this is wrong
         #print lp.rhs
-        print np.dot(lp.basisInverse, lp.constraintsUpper)
+        if LP.sense[0] == '<=':
+            print np.dot(lp.basisInverse, lp.constraintsUpper)
+        else:
+            print np.dot(lp.basisInverse, lp.constraintsLower)
         print 'Inverse of optimal basis:'
         print np.around(lp.basisInverse, 3)
-        obj_val = -lp.objectiveValue
+        if LP.sense[1] == 'Min':
+            obj_val = lp.objectiveValue
+        else:
+            obj_val = -lp.objectiveValue
+            
         psol = np.around(lp.primalVariableSolution['x'], 2)
         print 'Optimal Value:', obj_val
         print 'Primal solution:', psol
         print 'Dual solution:', lp.dualConstraintSolution['R_1']
     
-        disp_polyhedron(A = A, b = b, c = c, obj_val = obj_val,
-                        opt = psol.tolist(), loc = (psol[0]+0.1, psol[1]-0.1))
+        if LP.numVars == 2:
+            disp_polyhedron(A = A, b = b, c = c, obj_val = obj_val,
+                            opt = psol.tolist(), loc = (psol[0]+0.1, psol[1]-0.1))
     else:
         print LP.A
         print LP.b

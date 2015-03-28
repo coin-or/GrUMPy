@@ -7,3 +7,5 @@ rays = []
 c = [1,-1]
 opt = (6.5, 0.5)
 obj_val = 6
+
+sense = ('<=', 'Max')
