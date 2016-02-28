@@ -32,3 +32,13 @@ easy_install coinor.grumpy
 2. GrUMPy can also visualize 2D polyhedra with the installation of 
   [pypolyhedron](https://github.com/rdeits/pypolyhedron), which must be
   installed from source.
+
+##Examples
+
+![Branch and bound tree](https://github.com/coin-or/GrUMPy/raw/master/images/BranchAndBound.png)
+
+![Figure 1 made with GrUMPy](https://raw.githubusercontent.com/tkralphs/GrUMPy/master/images/polyhedron.png)
+
+![Figure 2 made with GrUMPy](https://raw.githubusercontent.com/tkralphs/GrUMPy/master/images/GMI-Row2-Disjunction.png)
+
+![Figure 3 made with GrUMPy](https://raw.githubusercontent.com/tkralphs/GrUMPy/master/images/GMI-Row3.png)
