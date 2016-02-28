@@ -29,6 +29,15 @@ easy_install coinor.grumpy
   * [Pygame](pygame.org) and call `set_display_mode('pygame')`
   * Call `set_display_mode('file')` to just write files to disk that have to
     then be opened manually. 
+  
+  It is also possible to typeset labels in LaTex and to output the graph in 
+  LaTex format using `dot2tex`. After installing `dot2tex`, this can be done 
+  by simply calling the method `write(basename='fileName', format='dot')`, and 
+  then doing `dot2tex --tmath fileName.dot` or by calling 
+  `set_display_mode('dot2tex')` and then `display()` as usual. At the moment,
+  the latter only seems to work with version `2.9.0dev` available 
+  [here](https://github.com/Alwnikrotikz/dot2tex). For the former method, just 
+  using `easy_install dot2tex` should work fine.
 2. GrUMPy can also visualize 2D polyhedra with the installation of 
   [pypolyhedron](https://github.com/rdeits/pypolyhedron), which must be
   installed from source.
