@@ -52,10 +52,12 @@ import sys, os
 from subprocess import Popen, PIPE, STDOUT
 import optparse
 try:
-    from src.gimpy import BinaryTree, XDOT_INSTALLED, PYGAME_INSTALLED, DOT2TEX_INSTALLED, ETREE_INSTALLED
+    from src.gimpy import BinaryTree, XDOT_INSTALLED, PYGAME_INSTALLED, DOT2TEX_INSTALLED
+    from src.gimpy import PIL_INSTALLED, ETREE_INSTALLED
     from src.gimpy import quote_if_necessary as quote
 except ImportError:
-    from coinor.gimpy import BinaryTree, XDOT_INSTALLED, PYGAME_INSTALLED, DOT2TEX_INSTALLED, ETREE_INSTALLED
+    from coinor.gimpy import BinaryTree, XDOT_INSTALLED, PYGAME_INSTALLED, DOT2TEX_INSTALLED
+    from coinor.gimpy import PIL_INSTALLED, ETREE_INSTALLED
     from coinor.gimpy import quote_if_necessary as quote
 import time
 try:
@@ -253,6 +255,12 @@ class BBTree(BinaryTree):
                 self.attr['display'] = 'pygame'
             else:
                 print 'Pygame is not installed. Display is set to off.'
+                self.attr['display'] = 'off'
+        elif mode is 'PIL':
+            if PIL_INSTALLED:
+                self.attr['display'] = 'PIL'
+            else:
+                print 'PIL is not installed. Display is set to off.'
                 self.attr['display'] = 'off'
         elif mode is 'xdot':
             if XDOT_INSTALLED:
