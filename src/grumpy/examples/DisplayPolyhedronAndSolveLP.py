@@ -11,7 +11,7 @@ try:
 except ImportError:
     CYLP_INSTALLED = False
     
-import LP6 as LP
+import LP9 as LP
 
 def disp_polyhedron(A = None, b = None, points = None, rays = None, c = None, obj_val = None,
                     opt = None, loc = None):
@@ -58,7 +58,7 @@ if p is not None:
             lp += A * x >= b
         else:
             lp += A * x <= b
-        lp += x >= 0
+        #lp += x >= 0
     
         c = CyLPArray(LP.c)
         # We are maximizing, so negate objective
