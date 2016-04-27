@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>coinor.grumpy.examples.generators</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="coinor.grumpy-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;coinor ::
+        <a href="coinor.grumpy-module.html">Package&nbsp;grumpy</a> ::
+        <a href="coinor.grumpy.examples-module.html">Package&nbsp;examples</a> ::
+        Module&nbsp;generators
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="coinor.grumpy.examples.generators-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="coinor.grumpy.examples.generators-module.html">Module coinor.grumpy.examples.generators</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">matplotlib</tt><tt class="py-op">.</tt><tt class="py-name">pyplot</tt> <tt class="py-keyword">as</tt> <tt class="py-name">plt</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">src</tt><tt class="py-op">.</tt><tt id="link-0" class="py-name" targets="Package coinor.grumpy=coinor.grumpy-module.html"><a title="coinor.grumpy" class="py-name" href="#" onclick="return doclink('link-0', 'grumpy', 'link-0');">grumpy</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module coinor.grumpy.polyhedron2D=coinor.grumpy.polyhedron2D-module.html"><a title="coinor.grumpy.polyhedron2D" class="py-name" href="#" onclick="return doclink('link-1', 'polyhedron2D', 'link-1');">polyhedron2D</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class coinor.grumpy.polyhedron2D.Polyhedron2D=coinor.grumpy.polyhedron2D.Polyhedron2D-class.html"><a title="coinor.grumpy.polyhedron2D.Polyhedron2D" class="py-name" href="#" onclick="return doclink('link-2', 'Polyhedron2D', 'link-2');">Polyhedron2D</a></tt><tt class="py-op">,</tt> <tt id="link-3" class="py-name" targets="Method coinor.grumpy.polyhedron2D.Figure.add_line()=coinor.grumpy.polyhedron2D.Figure-class.html#add_line"><a title="coinor.grumpy.polyhedron2D.Figure.add_line" class="py-name" href="#" onclick="return doclink('link-3', 'add_line', 'link-3');">add_line</a></tt><tt class="py-op">,</tt> <tt id="link-4" class="py-name" targets="Method coinor.grumpy.polyhedron2D.Figure.add_point()=coinor.grumpy.polyhedron2D.Figure-class.html#add_point"><a title="coinor.grumpy.polyhedron2D.Figure.add_point" class="py-name" href="#" onclick="return doclink('link-4', 'add_point', 'link-4');">add_point</a></tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt class="py-name">__name__</tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line">    <tt class="py-comment">#points = np.random.random ((20,2))</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line">    <tt class="py-comment">#p = make_hull(points)</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line">    <tt id="link-5" class="py-name" targets="Variable coinor.grumpy.examples.DisplayPolyhedronAndSolveLP.A=coinor.grumpy.examples.DisplayPolyhedronAndSolveLP-module.html#A,Variable coinor.grumpy.examples.LP1.A=coinor.grumpy.examples.LP1-module.html#A,Variable coinor.grumpy.examples.LP2.A=coinor.grumpy.examples.LP2-module.html#A,Variable coinor.grumpy.examples.LP3.A=coinor.grumpy.examples.LP3-module.html#A,Variable coinor.grumpy.examples.LP4.A=coinor.grumpy.examples.LP4-module.html#A,Variable coinor.grumpy.examples.LP6.A=coinor.grumpy.examples.LP6-module.html#A,Variable coinor.grumpy.examples.LP7.A=coinor.grumpy.examples.LP7-module.html#A,Variable coinor.grumpy.examples.LP8.A=coinor.grumpy.examples.LP8-module.html#A,Variable coinor.grumpy.examples.LP9.A=coinor.grumpy.examples.LP9-module.html#A"><a title="coinor.grumpy.examples.DisplayPolyhedronAndSolveLP.A
+coinor.grumpy.examples.LP1.A
+coinor.grumpy.examples.LP2.A
+coinor.grumpy.examples.LP3.A
+coinor.grumpy.examples.LP4.A
+coinor.grumpy.examples.LP6.A
+coinor.grumpy.examples.LP7.A
+coinor.grumpy.examples.LP8.A
+coinor.grumpy.examples.LP9.A" class="py-name" href="#" onclick="return doclink('link-5', 'A', 'link-5');">A</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">[</tt><tt class="py-op">-</tt><tt class="py-number">5</tt><tt class="py-op">,</tt> <tt class="py-op">-</tt><tt class="py-number">3</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line">         <tt class="py-op">[</tt><tt class="py-op">-</tt><tt class="py-number">5</tt><tt class="py-op">,</tt> <tt class="py-number">5</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line">         <tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-op">-</tt><tt class="py-number">2</tt><tt class="py-op">]</tt><tt class="py-op">]</tt>  </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line">    <tt id="link-6" class="py-name" targets="Variable coinor.grumpy.examples.DisplayPolyhedronAndSolveLP.b=coinor.grumpy.examples.DisplayPolyhedronAndSolveLP-module.html#b,Variable coinor.grumpy.examples.LP1.b=coinor.grumpy.examples.LP1-module.html#b,Variable coinor.grumpy.examples.LP2.b=coinor.grumpy.examples.LP2-module.html#b,Variable coinor.grumpy.examples.LP3.b=coinor.grumpy.examples.LP3-module.html#b,Variable coinor.grumpy.examples.LP4.b=coinor.grumpy.examples.LP4-module.html#b,Variable coinor.grumpy.examples.LP6.b=coinor.grumpy.examples.LP6-module.html#b,Variable coinor.grumpy.examples.LP7.b=coinor.grumpy.examples.LP7-module.html#b,Variable coinor.grumpy.examples.LP8.b=coinor.grumpy.examples.LP8-module.html#b,Variable coinor.grumpy.examples.LP9.b=coinor.grumpy.examples.LP9-module.html#b"><a title="coinor.grumpy.examples.DisplayPolyhedronAndSolveLP.b
+coinor.grumpy.examples.LP1.b
+coinor.grumpy.examples.LP2.b
+coinor.grumpy.examples.LP3.b
+coinor.grumpy.examples.LP4.b
+coinor.grumpy.examples.LP6.b
+coinor.grumpy.examples.LP7.b
+coinor.grumpy.examples.LP8.b
+coinor.grumpy.examples.LP9.b" class="py-name" href="#" onclick="return doclink('link-6', 'b', 'link-6');">b</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">-</tt><tt class="py-number">10</tt><tt class="py-op">,</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line">         <tt class="py-number">1</tt><tt class="py-op">,</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">         <tt class="py-number">2</tt><tt class="py-op">]</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">    <tt id="link-7" class="py-name" targets="Variable coinor.grumpy.examples.DecompVis.points=coinor.grumpy.examples.DecompVis-module.html#points,Variable coinor.grumpy.examples.LP5.points=coinor.grumpy.examples.LP5-module.html#points"><a title="coinor.grumpy.examples.DecompVis.points
+coinor.grumpy.examples.LP5.points" class="py-name" href="#" onclick="return doclink('link-7', 'points', 'link-7');">points</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">[</tt><tt class="py-number">1.175</tt><tt class="py-op">,</tt> <tt class="py-number">1.375</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">              <tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">,</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">              <tt class="py-op">[</tt><tt class="py-number">2.175</tt><tt class="py-op">,</tt> <tt class="py-number">2.375</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">              <tt class="py-op">[</tt><tt class="py-number">3</tt><tt class="py-op">,</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">              <tt class="py-op">[</tt><tt class="py-number">3.175</tt><tt class="py-op">,</tt> <tt class="py-number">2.375</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">              <tt class="py-op">[</tt><tt class="py-number">4</tt><tt class="py-op">,</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">]</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">         </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">    <tt class="py-name">fig</tt> <tt class="py-op">=</tt> <tt class="py-name">plt</tt><tt class="py-op">.</tt><tt class="py-name">figure</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">    <tt class="py-name">ax</tt> <tt class="py-op">=</tt> <tt class="py-name">fig</tt><tt class="py-op">.</tt><tt class="py-name">add_subplot</tt><tt class="py-op">(</tt><tt class="py-number">111</tt><tt class="py-op">)</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">    <tt class="py-name">ax</tt><tt class="py-op">.</tt><tt class="py-name">grid</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">    <tt id="link-8" class="py-name" targets="Variable coinor.grumpy.examples.DisplayPolyhedronAndSolveLP.p=coinor.grumpy.examples.DisplayPolyhedronAndSolveLP-module.html#p"><a title="coinor.grumpy.examples.DisplayPolyhedronAndSolveLP.p" class="py-name" href="#" onclick="return doclink('link-8', 'p', 'link-8');">p</a></tt> <tt class="py-op">=</tt> <tt id="link-9" class="py-name"><a title="coinor.grumpy.polyhedron2D.Polyhedron2D" class="py-name" href="#" onclick="return doclink('link-9', 'Polyhedron2D', 'link-2');">Polyhedron2D</a></tt><tt class="py-op">(</tt><tt id="link-10" class="py-name"><a title="coinor.grumpy.examples.DisplayPolyhedronAndSolveLP.A
+coinor.grumpy.examples.LP1.A
+coinor.grumpy.examples.LP2.A
+coinor.grumpy.examples.LP3.A
+coinor.grumpy.examples.LP4.A
+coinor.grumpy.examples.LP6.A
+coinor.grumpy.examples.LP7.A
+coinor.grumpy.examples.LP8.A
+coinor.grumpy.examples.LP9.A" class="py-name" href="#" onclick="return doclink('link-10', 'A', 'link-5');">A</a></tt> <tt class="py-op">=</tt> <tt id="link-11" class="py-name"><a title="coinor.grumpy.examples.DisplayPolyhedronAndSolveLP.A
+coinor.grumpy.examples.LP1.A
+coinor.grumpy.examples.LP2.A
+coinor.grumpy.examples.LP3.A
+coinor.grumpy.examples.LP4.A
+coinor.grumpy.examples.LP6.A
+coinor.grumpy.examples.LP7.A
+coinor.grumpy.examples.LP8.A
+coinor.grumpy.examples.LP9.A" class="py-name" href="#" onclick="return doclink('link-11', 'A', 'link-5');">A</a></tt><tt class="py-op">,</tt> <tt id="link-12" class="py-name"><a title="coinor.grumpy.examples.DisplayPolyhedronAndSolveLP.b
+coinor.grumpy.examples.LP1.b
+coinor.grumpy.examples.LP2.b
+coinor.grumpy.examples.LP3.b
+coinor.grumpy.examples.LP4.b
+coinor.grumpy.examples.LP6.b
+coinor.grumpy.examples.LP7.b
+coinor.grumpy.examples.LP8.b
+coinor.grumpy.examples.LP9.b" class="py-name" href="#" onclick="return doclink('link-12', 'b', 'link-6');">b</a></tt> <tt class="py-op">=</tt> <tt id="link-13" class="py-name"><a title="coinor.grumpy.examples.DisplayPolyhedronAndSolveLP.b
+coinor.grumpy.examples.LP1.b
+coinor.grumpy.examples.LP2.b
+coinor.grumpy.examples.LP3.b
+coinor.grumpy.examples.LP4.b
+coinor.grumpy.examples.LP6.b
+coinor.grumpy.examples.LP7.b
+coinor.grumpy.examples.LP8.b
+coinor.grumpy.examples.LP9.b" class="py-name" href="#" onclick="return doclink('link-13', 'b', 'link-6');">b</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">    <tt class="py-name">q</tt> <tt class="py-op">=</tt> <tt id="link-14" class="py-name"><a title="coinor.grumpy.polyhedron2D.Polyhedron2D" class="py-name" href="#" onclick="return doclink('link-14', 'Polyhedron2D', 'link-2');">Polyhedron2D</a></tt><tt class="py-op">(</tt><tt id="link-15" class="py-name"><a title="coinor.grumpy.examples.DecompVis.points
+coinor.grumpy.examples.LP5.points" class="py-name" href="#" onclick="return doclink('link-15', 'points', 'link-7');">points</a></tt> <tt class="py-op">=</tt> <tt id="link-16" class="py-name"><a title="coinor.grumpy.examples.DecompVis.points
+coinor.grumpy.examples.LP5.points" class="py-name" href="#" onclick="return doclink('link-16', 'points', 'link-7');">points</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">    <tt id="link-17" class="py-name"><a title="coinor.grumpy.examples.DisplayPolyhedronAndSolveLP.p" class="py-name" href="#" onclick="return doclink('link-17', 'p', 'link-8');">p</a></tt><tt class="py-op">.</tt><tt class="py-name">draw</tt><tt class="py-op">(</tt><tt class="py-name">ax</tt><tt class="py-op">,</tt> <tt class="py-name">color</tt> <tt class="py-op">=</tt> <tt class="py-string">'blue'</tt><tt class="py-op">,</tt> <tt class="py-name">linestyle</tt> <tt class="py-op">=</tt> <tt class="py-string">'solid'</tt><tt class="py-op">,</tt> <tt class="py-name">label</tt> <tt class="py-op">=</tt> <tt class="py-string">'$P$'</tt><tt class="py-op">)</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">    <tt class="py-name">q</tt><tt class="py-op">.</tt><tt class="py-name">draw</tt><tt class="py-op">(</tt><tt class="py-name">ax</tt><tt class="py-op">,</tt> <tt class="py-name">color</tt> <tt class="py-op">=</tt> <tt class="py-string">'black'</tt><tt class="py-op">,</tt> <tt class="py-name">linestyle</tt> <tt class="py-op">=</tt> <tt class="py-string">'solid'</tt><tt class="py-op">,</tt> <tt class="py-name">color_int_points</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">           <tt class="py-name">label</tt> <tt class="py-op">=</tt> <tt class="py-string">'$Q$'</tt><tt class="py-op">)</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">    <tt class="py-name">ax</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Method coinor.grumpy.polyhedron2D.Figure.set_xlim()=coinor.grumpy.polyhedron2D.Figure-class.html#set_xlim"><a title="coinor.grumpy.polyhedron2D.Figure.set_xlim" class="py-name" href="#" onclick="return doclink('link-18', 'set_xlim', 'link-18');">set_xlim</a></tt><tt class="py-op">(</tt><tt id="link-19" class="py-name"><a title="coinor.grumpy.examples.DisplayPolyhedronAndSolveLP.p" class="py-name" href="#" onclick="return doclink('link-19', 'p', 'link-8');">p</a></tt><tt class="py-op">.</tt><tt class="py-name">plot_min</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">-</tt><tt class="py-number">0.5</tt><tt class="py-op">,</tt> <tt id="link-20" class="py-name"><a title="coinor.grumpy.examples.DisplayPolyhedronAndSolveLP.p" class="py-name" href="#" onclick="return doclink('link-20', 'p', 'link-8');">p</a></tt><tt class="py-op">.</tt><tt class="py-name">plot_max</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">+</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">    <tt class="py-name">ax</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name" targets="Method coinor.grumpy.polyhedron2D.Figure.set_ylim()=coinor.grumpy.polyhedron2D.Figure-class.html#set_ylim"><a title="coinor.grumpy.polyhedron2D.Figure.set_ylim" class="py-name" href="#" onclick="return doclink('link-21', 'set_ylim', 'link-21');">set_ylim</a></tt><tt class="py-op">(</tt><tt id="link-22" class="py-name"><a title="coinor.grumpy.examples.DisplayPolyhedronAndSolveLP.p" class="py-name" href="#" onclick="return doclink('link-22', 'p', 'link-8');">p</a></tt><tt class="py-op">.</tt><tt class="py-name">plot_min</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt id="link-23" class="py-name"><a title="coinor.grumpy.examples.DisplayPolyhedronAndSolveLP.p" class="py-name" href="#" onclick="return doclink('link-23', 'p', 'link-8');">p</a></tt><tt class="py-op">.</tt><tt class="py-name">plot_max</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">+</tt><tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">    <tt class="py-name">pI</tt> <tt class="py-op">=</tt> <tt id="link-24" class="py-name"><a title="coinor.grumpy.examples.DisplayPolyhedronAndSolveLP.p" class="py-name" href="#" onclick="return doclink('link-24', 'p', 'link-8');">p</a></tt><tt class="py-op">.</tt><tt id="link-25" class="py-name" targets="Method coinor.grumpy.polyhedron2D.Polyhedron2D.make_integer_hull()=coinor.grumpy.polyhedron2D.Polyhedron2D-class.html#make_integer_hull"><a title="coinor.grumpy.polyhedron2D.Polyhedron2D.make_integer_hull" class="py-name" href="#" onclick="return doclink('link-25', 'make_integer_hull', 'link-25');">make_integer_hull</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">    <tt class="py-name">pI</tt><tt class="py-op">.</tt><tt class="py-name">draw</tt><tt class="py-op">(</tt><tt class="py-name">ax</tt><tt class="py-op">,</tt> <tt class="py-name">color</tt> <tt class="py-op">=</tt> <tt class="py-string">'red'</tt><tt class="py-op">,</tt> <tt class="py-name">linestyle</tt> <tt class="py-op">=</tt> <tt class="py-string">'dashed'</tt><tt class="py-op">,</tt> <tt class="py-name">label</tt> <tt class="py-op">=</tt> <tt class="py-string">'conv(S)'</tt><tt class="py-op">)</tt>  </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">    <tt class="py-name">plt</tt><tt class="py-op">.</tt><tt class="py-name">text</tt><tt class="py-op">(</tt><tt class="py-op">-</tt><tt class="py-number">0.2</tt><tt class="py-op">,</tt> <tt class="py-number">1.3</tt><tt class="py-op">,</tt> <tt class="py-string">r'$e_1 = (1.175, 1.375)$'</tt><tt class="py-op">)</tt> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">    <tt class="py-name">plt</tt><tt class="py-op">.</tt><tt class="py-name">text</tt><tt class="py-op">(</tt><tt class="py-number">1.8</tt><tt class="py-op">,</tt> <tt class="py-op">-</tt><tt class="py-number">0.2</tt><tt class="py-op">,</tt> <tt class="py-string">r'$e_2 = (2, 0)$'</tt><tt class="py-op">)</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">    <tt class="py-name">plt</tt><tt class="py-op">.</tt><tt class="py-name">text</tt><tt class="py-op">(</tt><tt class="py-number">1.5</tt><tt class="py-op">,</tt> <tt class="py-number">2.5</tt><tt class="py-op">,</tt> <tt class="py-string">r'$r_1 = (1, 1)$'</tt><tt class="py-op">)</tt> </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">    <tt class="py-name">plt</tt><tt class="py-op">.</tt><tt class="py-name">text</tt><tt class="py-op">(</tt><tt class="py-number">3.5</tt><tt class="py-op">,</tt> <tt class="py-number">0.5</tt><tt class="py-op">,</tt> <tt class="py-string">r'$r_2 = (2, 1)$'</tt><tt class="py-op">)</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">    <tt id="link-26" class="py-name"><a title="coinor.grumpy.polyhedron2D.Figure.add_point" class="py-name" href="#" onclick="return doclink('link-26', 'add_point', 'link-4');">add_point</a></tt><tt class="py-op">(</tt><tt class="py-name">ax</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt class="py-number">1.175</tt><tt class="py-op">,</tt><tt class="py-number">1.375</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-number">0.02</tt><tt class="py-op">,</tt> <tt class="py-string">'red'</tt><tt class="py-op">)</tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">    <tt id="link-27" class="py-name"><a title="coinor.grumpy.polyhedron2D.Figure.add_point" class="py-name" href="#" onclick="return doclink('link-27', 'add_point', 'link-4');">add_point</a></tt><tt class="py-op">(</tt><tt class="py-name">ax</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt class="py-number">2</tt><tt class="py-op">,</tt><tt class="py-number">0</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-number">0.02</tt><tt class="py-op">,</tt> <tt class="py-string">'red'</tt><tt class="py-op">)</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">    <tt class="py-name">plt</tt><tt class="py-op">.</tt><tt class="py-name">legend</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">    <tt class="py-name">plt</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name" targets="Method coinor.grumpy.polyhedron2D.Figure.show()=coinor.grumpy.polyhedron2D.Figure-class.html#show"><a title="coinor.grumpy.polyhedron2D.Figure.show" class="py-name" href="#" onclick="return doclink('link-28', 'show', 'link-28');">show</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="coinor.grumpy-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Apr 27 01:28:39 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
