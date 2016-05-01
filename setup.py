@@ -12,7 +12,7 @@ In addition, GrUMPy includes a class for visualizing 2-dimensional polyhedra tha
 
 Documentation for the API is here:
 
-http://pythonhosted.org/coinor.grumpy
+https://tkralphs.github.io/GrUMPy
 ''',
       author='Aykut Bulut, Ted Ralphs',
       author_email='{aykut,ted}@lehigh.edu',
