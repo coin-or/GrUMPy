@@ -1,0 +1,2146 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>coinor.grumpy.BB.BBTree</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="coinor.grumpy-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;coinor ::
+        <a href="coinor.grumpy-module.html">Package&nbsp;grumpy</a> ::
+        <a href="coinor.grumpy.BB-module.html">Module&nbsp;BB</a> ::
+        Class&nbsp;BBTree
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="coinor.grumpy.BB.BBTree-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class BBTree</h1><p class="nomargin-top"><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+       object --+            
+                |            
+gimpy.graph.Graph --+        
+                    |        
+      gimpy.tree.Tree --+    
+                        |    
+    gimpy.tree.BinaryTree --+
+                            |
+                           <strong class="uidshort">BBTree</strong>
+</pre>
+
+<hr />
+<p>Methods to process and visualize information about a b&amp;b tree. It 
+  can process an output file (in a specific format, see BAK project in 
+  COIN-OR) of a solver that has three information. See run.py in examples 
+  directory fot this use. Moreover it implements a branch and bound method 
+  that can solve binary programs (0-1 variables only) using PuLP as an LP 
+  solver. It provides different branching and searching strategies. See 
+  test_strategies.py in test directory.</p>
+  <p>This is the main class of GrUMPy. It inherits BinaryTree from GIMPy 
+  and keeps the entire branch-and-bound tree in self.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">**attrs</span>)</span><br />
+      API: __init__(self, **attrs)
+Description:
+    Class constructor.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="process_file"></a><span class="summary-sig-name">process_file</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">file_name</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.process_file">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="write_as_dynamic_gexf"></a><span class="summary-sig-name">write_as_dynamic_gexf</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">filename</span>,
+        <span class="summary-sig-arg">mode</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">Dot</code><code class="variable-quote">'</code></span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.write_as_dynamic_gexf">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#set_display_mode" class="summary-sig-name">set_display_mode</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">mode</span>)</span><br />
+      API:
+    set_display_mode(self, value)
+Description:
+    Sets display mode to value.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.set_display_mode">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#display" class="summary-sig-name">display</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">item</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">all</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">basename</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">graph</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">format</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">png</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">count</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Displays/Saves images requested.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.display">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="display_all"></a><span class="summary-sig-name">display_all</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Assumes all the images have the same size.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.display_all">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="display_image"></a><span class="summary-sig-name">display_image</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">gnuplot</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.display_image">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_label"></a><span class="summary-sig-name">set_label</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">label</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.set_label">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_logscaley"></a><span class="summary-sig-name">set_logscaley</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">boolean</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.set_logscaley">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_fathom"></a><span class="summary-sig-name">set_fathom</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">boolean</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.set_fathom">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_edge_limit"></a><span class="summary-sig-name">set_edge_limit</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">limit</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.set_edge_limit">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_sample_tree"></a><span class="summary-sig-name">set_sample_tree</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">number</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.set_sample_tree">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#AddOrUpdateNode" class="summary-sig-name">AddOrUpdateNode</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">id</span>,
+        <span class="summary-sig-arg">parent_id</span>,
+        <span class="summary-sig-arg">branch_direction</span>,
+        <span class="summary-sig-arg">status</span>,
+        <span class="summary-sig-arg">lp_bound</span>,
+        <span class="summary-sig-arg">integer_infeasibility_count</span>,
+        <span class="summary-sig-arg">integer_infeasibility_sum</span>,
+        <span class="summary-sig-arg">**attrs</span>)</span><br />
+      This method designed to update nodes (in BAK) but we use it for 
+      updating/adding arcs.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.AddOrUpdateNode">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#IsBetterThan" class="summary-sig-name">IsBetterThan</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">value1</span>,
+        <span class="summary-sig-arg">value2</span>)</span><br />
+      Returns True if value1 is better than value2 as an objective value.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.IsBetterThan">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#IsBetterThanIncumbent" class="summary-sig-name">IsBetterThanIncumbent</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">value</span>)</span><br />
+      Returns True if the passed value is better than current incumbent.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.IsBetterThanIncumbent">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#UpdateObjectiveValueLimits" class="summary-sig-name">UpdateObjectiveValueLimits</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">value</span>)</span><br />
+      Updates the min and max objective values if appropriate.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.UpdateObjectiveValueLimits">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="AddProgressMeasures"></a><span class="summary-sig-name">AddProgressMeasures</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.AddProgressMeasures">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="GetImageCounterString"></a><span class="summary-sig-name">GetImageCounterString</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns a string with the image counter.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.GetImageCounterString">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#WriteHistogramScript" class="summary-sig-name">WriteHistogramScript</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">num_bins</span>,
+        <span class="summary-sig-arg">bin_width</span>,
+        <span class="summary-sig-arg">max_bin_count</span>,
+        <span class="summary-sig-arg">lp_bound</span>,
+        <span class="summary-sig-arg">data_filename</span>,
+        <span class="summary-sig-arg">output_file</span>)</span><br />
+      Write a Gnuplot script file to generate a histogram image.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.WriteHistogramScript">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#AdjustHistogramEndBins" class="summary-sig-name">AdjustHistogramEndBins</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">objective_list</span>,
+        <span class="summary-sig-arg">num_bins</span>,
+        <span class="summary-sig-arg">bin_width</span>,
+        <span class="summary-sig-arg">bin_counts</span>,
+        <span class="summary-sig-arg">bin_centers</span>,
+        <span class="summary-sig-arg">bin_widths</span>)</span><br />
+      Adjusts the two end bins if necessary to make them narrower.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.AdjustHistogramEndBins">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#GenerateHistogram" class="summary-sig-name">GenerateHistogram</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">output_file</span>=<span class="summary-sig-default">False</span>)</span><br />
+      Generate files necessary for a histogram image.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.GenerateHistogram">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#GetImageObjectiveBounds" class="summary-sig-name">GetImageObjectiveBounds</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">min_value</span>,
+        <span class="summary-sig-arg">max_value</span>)</span><br />
+      Return min and max bounds to be used for images.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.GetImageObjectiveBounds">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#WriteScatterplotScript" class="summary-sig-name">WriteScatterplotScript</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">data_filename</span>,
+        <span class="summary-sig-arg">output_file</span>)</span><br />
+      Write a Gnuplot script file to generate a scatterplot image.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.WriteScatterplotScript">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#GenerateScatterplot" class="summary-sig-name">GenerateScatterplot</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">output_file</span>=<span class="summary-sig-default">False</span>)</span><br />
+      Generate files necessary for a scatterplot image.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.GenerateScatterplot">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#WriteIncumbentPathScript" class="summary-sig-name">WriteIncumbentPathScript</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">data_filename</span>)</span><br />
+      Write a Gnuplot script file to generate an incumbent path image.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.WriteIncumbentPathScript">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#WriteAllIncumbentPathsScript" class="summary-sig-name">WriteAllIncumbentPathsScript</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return a Gnuplot script string to generate an incumbent path image.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.WriteAllIncumbentPathsScript">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#GenerateIncumbentPath" class="summary-sig-name">GenerateIncumbentPath</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Generate files necessary for an incumbent scatterplot path image.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.GenerateIncumbentPath">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#GenerateAllIncumbentPaths" class="summary-sig-name">GenerateAllIncumbentPaths</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Generate file for a path image with all incumbent paths.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.GenerateAllIncumbentPaths">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#WriteTreeScript" class="summary-sig-name">WriteTreeScript</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">additional_lines</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Write a Gnuplot script file to generate a tree image.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.WriteTreeScript">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#GetTreeFixedHorizontalPositions" class="summary-sig-name">GetTreeFixedHorizontalPositions</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns horizontal positions for all nodes based on fixed positions.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.GetTreeFixedHorizontalPositions">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#GetTreeHorizontalPositions" class="summary-sig-name">GetTreeHorizontalPositions</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns horizontal positions for all nodes.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.GetTreeHorizontalPositions">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#WriteDataFileFromList" class="summary-sig-name">WriteDataFileFromList</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">filename</span>,
+        <span class="summary-sig-arg">data_list</span>)</span><br />
+      Write a list of string data to a file with one entry per line.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.WriteDataFileFromList">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#GenerateTreeImage" class="summary-sig-name">GenerateTreeImage</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">fixed_horizontal_positions</span>=<span class="summary-sig-default">False</span>)</span><br />
+      Generate files necessary for a tree image.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.GenerateTreeImage">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#ProcessLine" class="summary-sig-name">ProcessLine</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">line</span>)</span><br />
+      Process a line of the input file, generating images if appropriate.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.ProcessLine">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#ProcessHeuristicLine" class="summary-sig-name">ProcessHeuristicLine</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">remaining_tokens</span>)</span><br />
+      Core processing for a line of type 'heuristic'.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.ProcessHeuristicLine">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#ProcessIntegerLine" class="summary-sig-name">ProcessIntegerLine</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">node_id</span>,
+        <span class="summary-sig-arg">parent_id</span>,
+        <span class="summary-sig-arg">branch_direction</span>,
+        <span class="summary-sig-arg">remaining_tokens</span>)</span><br />
+      Core processing for a line of type 'integer'.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.ProcessIntegerLine">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#ProcessFathomedLine" class="summary-sig-name">ProcessFathomedLine</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">node_id</span>,
+        <span class="summary-sig-arg">parent_id</span>,
+        <span class="summary-sig-arg">branch_direction</span>,
+        <span class="summary-sig-arg">remaining_tokens</span>)</span><br />
+      Core processing for a line of type 'fathomed'.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.ProcessFathomedLine">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#ProcessPregnantLine" class="summary-sig-name">ProcessPregnantLine</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">node_id</span>,
+        <span class="summary-sig-arg">parent_id</span>,
+        <span class="summary-sig-arg">branch_direction</span>,
+        <span class="summary-sig-arg">remaining_tokens</span>)</span><br />
+      Core processing for a line of type 'pregnant'.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.ProcessPregnantLine">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#ProcessBranchedLine" class="summary-sig-name">ProcessBranchedLine</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">node_id</span>,
+        <span class="summary-sig-arg">parent_id</span>,
+        <span class="summary-sig-arg">branch_direction</span>,
+        <span class="summary-sig-arg">remaining_tokens</span>)</span><br />
+      Core processing for a line of type 'branched'.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.ProcessBranchedLine">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#ProcessInfeasibleLine" class="summary-sig-name">ProcessInfeasibleLine</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">node_id</span>,
+        <span class="summary-sig-arg">parent_id</span>,
+        <span class="summary-sig-arg">branch_direction</span>,
+        <span class="summary-sig-arg">remaining_tokens</span>)</span><br />
+      Core processing for a line of type 'infeasible'.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.ProcessInfeasibleLine">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#ProcessCandidateLine" class="summary-sig-name">ProcessCandidateLine</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">node_id</span>,
+        <span class="summary-sig-arg">parent_id</span>,
+        <span class="summary-sig-arg">branch_direction</span>,
+        <span class="summary-sig-arg">remaining_tokens</span>)</span><br />
+      Core processing for a line of type 'candidate'.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.ProcessCandidateLine">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="RunGnuplotOnAllFiles"></a><span class="summary-sig-name">RunGnuplotOnAllFiles</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Runs Gnuplot on all files in self._gnuplot_files.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.RunGnuplotOnAllFiles">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="CreateAnimatedImages"></a><span class="summary-sig-name">CreateAnimatedImages</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Create animated images based on the static images.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.CreateAnimatedImages">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="GeneratePredictionImages"></a><span class="summary-sig-name">GeneratePredictionImages</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.GeneratePredictionImages">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="GenerateForecastImages"></a><span class="summary-sig-name">GenerateForecastImages</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.GenerateForecastImages">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="coinor.grumpy.BB.BBTree-class.html#_get_fh" class="summary-sig-name" onclick="show_private();">_get_fh</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">path</span>,
+        <span class="summary-sig-arg">mode</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">r</code><code class="variable-quote">'</code></span>)</span><br />
+      Return a file handle for given path.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree._get_fh">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_is_string_like"></a><span class="summary-sig-name">_is_string_like</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">obj</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree._is_string_like">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="GenerateRandomMIP"></a><span class="summary-sig-name">GenerateRandomMIP</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">numVars</span>=<span class="summary-sig-default">40</span>,
+        <span class="summary-sig-arg">numCons</span>=<span class="summary-sig-default">20</span>,
+        <span class="summary-sig-arg">density</span>=<span class="summary-sig-default">0.2</span>,
+        <span class="summary-sig-arg">maxObjCoeff</span>=<span class="summary-sig-default">10</span>,
+        <span class="summary-sig-arg">maxConsCoeff</span>=<span class="summary-sig-default">10</span>,
+        <span class="summary-sig-arg">tightness</span>=<span class="summary-sig-default">2</span>,
+        <span class="summary-sig-arg">rand_seed</span>=<span class="summary-sig-default">2</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.GenerateRandomMIP">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="BranchAndBound"></a><span class="summary-sig-name">BranchAndBound</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">CONSTRAINTS</span>,
+        <span class="summary-sig-arg">VARIABLES</span>,
+        <span class="summary-sig-arg">OBJ</span>,
+        <span class="summary-sig-arg">MAT</span>,
+        <span class="summary-sig-arg">RHS</span>,
+        <span class="summary-sig-arg">branch_strategy</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">Most Fraction</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">search_strategy</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">Depth First</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">complete_enumeration</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">display_interval</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">binary_vars</span>=<span class="summary-sig-default">True</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.BranchAndBound">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>gimpy.tree.BinaryTree</code></b>:
+      <code>add_left_child</code>,
+      <code>add_right_child</code>,
+      <code>add_root</code>,
+      <code>bfs</code>,
+      <code>del_node</code>,
+      <code>dfs</code>,
+      <code>get_left_child</code>,
+      <code>get_right_child</code>,
+      <code>postordereval</code>,
+      <code>print_nodes</code>,
+      <code>printexp</code>,
+      <code>traverse</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>gimpy.tree.Tree</code></b>:
+      <code>add_child</code>,
+      <code>get_children</code>,
+      <code>get_parent</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>gimpy.graph.Graph</code></b>:
+      <code>__contains__</code>,
+      <code>__repr__</code>,
+      <code>add_edge</code>,
+      <code>add_node</code>,
+      <code>augment_cycle</code>,
+      <code>check_edge</code>,
+      <code>create</code>,
+      <code>create_cluster</code>,
+      <code>create_residual_graph</code>,
+      <code>cycle_canceling</code>,
+      <code>del_edge</code>,
+      <code>edge_to_string</code>,
+      <code>fifo_label_correcting</code>,
+      <code>find_cycle_capacity</code>,
+      <code>find_feasible_flow</code>,
+      <code>floyd_warshall</code>,
+      <code>floyd_warshall_get_cycle</code>,
+      <code>floyd_warshall_get_path</code>,
+      <code>get_degrees</code>,
+      <code>get_diameter</code>,
+      <code>get_edge_attr</code>,
+      <code>get_edge_cost</code>,
+      <code>get_edge_list</code>,
+      <code>get_edge_num</code>,
+      <code>get_in_degrees</code>,
+      <code>get_in_neighbors</code>,
+      <code>get_layout</code>,
+      <code>get_negative_cycle</code>,
+      <code>get_neighbors</code>,
+      <code>get_node</code>,
+      <code>get_node_attr</code>,
+      <code>get_node_list</code>,
+      <code>get_node_num</code>,
+      <code>get_out_degrees</code>,
+      <code>get_out_neighbors</code>,
+      <code>get_simplex_solution_graph</code>,
+      <code>label_components</code>,
+      <code>label_correcting_check_cycle</code>,
+      <code>label_correcting_get_cycle</code>,
+      <code>label_strong_component</code>,
+      <code>max_flow</code>,
+      <code>max_flow_preflowpush</code>,
+      <code>min_cost_flow</code>,
+      <code>minimum_spanning_tree_kruskal</code>,
+      <code>minimum_spanning_tree_prim</code>,
+      <code>network_simplex</code>,
+      <code>page_rank</code>,
+      <code>print_flow</code>,
+      <code>process_edge_dijkstra</code>,
+      <code>process_edge_flow</code>,
+      <code>process_edge_prim</code>,
+      <code>process_edge_search</code>,
+      <code>process_node_search</code>,
+      <code>random</code>,
+      <code>relabel</code>,
+      <code>search</code>,
+      <code>set_edge_attr</code>,
+      <code>set_layout</code>,
+      <code>set_node_attr</code>,
+      <code>show_flow</code>,
+      <code>simplex_augment_cycle</code>,
+      <code>simplex_compute_potentials</code>,
+      <code>simplex_connect</code>,
+      <code>simplex_determine_leaving_arc</code>,
+      <code>simplex_find_cycle</code>,
+      <code>simplex_find_tree</code>,
+      <code>simplex_identify_cycle</code>,
+      <code>simplex_mark_entering_arc</code>,
+      <code>simplex_mark_leaving_arc</code>,
+      <code>simplex_mark_st_arcs</code>,
+      <code>simplex_optimal</code>,
+      <code>simplex_redraw</code>,
+      <code>simplex_remove_arc</code>,
+      <code>simplex_search</code>,
+      <code>simplex_select_entering_arc</code>,
+      <code>strong_connect</code>,
+      <code>tarjan</code>,
+      <code>to_string</code>,
+      <code>write</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">**attrs</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+API: __init__(self, **attrs)
+Description:
+    Class constructor.
+Input:
+    attrs: Tree attributes in keyword arguments format. See Graph and
+    Tree class for details.
+
+</pre>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_display_mode"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_display_mode</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">mode</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.set_display_mode">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+API:
+    set_display_mode(self, value)
+Description:
+    Sets display mode to value.
+Input:
+    value: New display mode.
+Post:
+    Display mode attribute of graph is updated.
+
+</pre>
+  <dl class="fields">
+    <dt>Overrides:
+        gimpy.graph.Graph.set_display_mode
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="display"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">display</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">item</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">all</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">basename</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">graph</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">format</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">png</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">count</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.display">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Displays/Saves images requested. BranchAndBound method calls this 
+  method to visualize the branch and bound tree.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        gimpy.graph.Graph.display
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="AddOrUpdateNode"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">AddOrUpdateNode</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">id</span>,
+        <span class="sig-arg">parent_id</span>,
+        <span class="sig-arg">branch_direction</span>,
+        <span class="sig-arg">status</span>,
+        <span class="sig-arg">lp_bound</span>,
+        <span class="sig-arg">integer_infeasibility_count</span>,
+        <span class="sig-arg">integer_infeasibility_sum</span>,
+        <span class="sig-arg">**attrs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.AddOrUpdateNode">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>This method designed to update nodes (in BAK) but we use it for 
+  updating/adding arcs. This is because of the tree data structure the 
+  authors adopted in BAK. We can divide these attributes such that some 
+  will belong to the edge parent_id-&gt;id and the others belong to the id 
+  node. The following shows whether the attribute belongs to edge or node. 
+  branch direction -&gt; edge status -&gt; node lp_bound -&gt; node 
+  integer_infeasibility_count -&gt; node integer_infeasibility_sum -&gt; 
+  node parent_id -&gt; node</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="IsBetterThan"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">IsBetterThan</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">value1</span>,
+        <span class="sig-arg">value2</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.IsBetterThan">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Returns True if value1 is better than value2 as an objective value.
+This depends on the optimization sense of the instance.
+Args:
+  value1: Float.
+  value2: Float.
+Returns:
+  True if value1 is better than value2 as an objective value.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="IsBetterThanIncumbent"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">IsBetterThanIncumbent</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">value</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.IsBetterThanIncumbent">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Returns True if the passed value is better than current incumbent.
+Args:
+  value: Float to use for comparison.
+Returns:
+  True if the passed value is better than the current incumbent.
+  'Better' is determined by the sense of optimization.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="UpdateObjectiveValueLimits"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">UpdateObjectiveValueLimits</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">value</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.UpdateObjectiveValueLimits">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Updates the min and max objective values if appropriate.
+Args:
+  value: Float objective value.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="WriteHistogramScript"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">WriteHistogramScript</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">num_bins</span>,
+        <span class="sig-arg">bin_width</span>,
+        <span class="sig-arg">max_bin_count</span>,
+        <span class="sig-arg">lp_bound</span>,
+        <span class="sig-arg">data_filename</span>,
+        <span class="sig-arg">output_file</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.WriteHistogramScript">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Write a Gnuplot script file to generate a histogram image.
+Args:
+  num_bins: Integer number of bins for the histogram.
+  bin_width: Float width of the bins in terms of objective values.
+  max_bin_count: Integer number of the highest bin count.
+  lp_bound: Float value of the current LP bound.
+  data_filename: String name of the file; used for display purposes.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="AdjustHistogramEndBins"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">AdjustHistogramEndBins</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">objective_list</span>,
+        <span class="sig-arg">num_bins</span>,
+        <span class="sig-arg">bin_width</span>,
+        <span class="sig-arg">bin_counts</span>,
+        <span class="sig-arg">bin_centers</span>,
+        <span class="sig-arg">bin_widths</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.AdjustHistogramEndBins">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Adjusts the two end bins if necessary to make them narrower.
+The two end bins may need to be narrower than the other bins so that
+they do not go past the current incumbent value on one end and the
+current lp bound on the other.  So that the histogram is still correct
+in areas, the height of these bins needs to be adjusted so that the
+area does not change.
+
+Note that there is likely to be some bias toward taller bins on
+the ends since they always have a point at one end of their width.  It
+may be more accurate visually to ignore or discount that one point when
+determining the bin height, but that is not currently done.
+
+Args:
+  objective_list: List of float objective values.
+  num_bins: Integer number of bins.
+  bin_width: Float standard width of bins in terms of objective values.
+  bin_counts: List of integer counts for each bin.
+  bin_centers: List of float coordinates for the center of each bin.
+  bin_widths: List of float widths for bins, allowing for individualized
+    widths.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="GenerateHistogram"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">GenerateHistogram</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">output_file</span>=<span class="sig-default">False</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.GenerateHistogram">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Generate files necessary for a histogram image.
+Two files are necessary: a data file and a Gnuplot script file (which
+references the data file).
+Args:
+  time: Float number of seconds since the start of optimization.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="GetImageObjectiveBounds"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">GetImageObjectiveBounds</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">min_value</span>,
+        <span class="sig-arg">max_value</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.GetImageObjectiveBounds">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Return min and max bounds to be used for images.
+Images should use bounds that are slightly wider than observed
+objective values.  Also, the special case of a single value must be
+handled.
+Args:
+  min_value: Float minimum objective value.
+  max_value: Float maximum objective value.
+Returns:
+  A tuple of two float values (lower_bound, upper_bound).
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="WriteScatterplotScript"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">WriteScatterplotScript</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">data_filename</span>,
+        <span class="sig-arg">output_file</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.WriteScatterplotScript">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Write a Gnuplot script file to generate a scatterplot image.
+Args:
+  data_filename: String name of the file; used for display purposes.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="GenerateScatterplot"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">GenerateScatterplot</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">output_file</span>=<span class="sig-default">False</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.GenerateScatterplot">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Generate files necessary for a scatterplot image.
+Two files are necessary: a data file and a Gnuplot script file (which
+references the data file).
+Args:
+    output_file: if not given the gnuplot image will not be written
+to disk but returned (to be displayed in pygame window)
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="WriteIncumbentPathScript"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">WriteIncumbentPathScript</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">data_filename</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.WriteIncumbentPathScript">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Write a Gnuplot script file to generate an incumbent path image.
+Args:
+  data_filename: String name of the file; used for display purposes.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="WriteAllIncumbentPathsScript"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">WriteAllIncumbentPathsScript</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.WriteAllIncumbentPathsScript">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Return a Gnuplot script string to generate an incumbent path image.
+Args:
+  data_filenames: List of string names of files.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="GenerateIncumbentPath"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">GenerateIncumbentPath</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.GenerateIncumbentPath">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Generate files necessary for an incumbent scatterplot path image. Two 
+  files are necessary: a data file and a Gnuplot script file (which 
+  references the data file).</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="GenerateAllIncumbentPaths"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">GenerateAllIncumbentPaths</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.GenerateAllIncumbentPaths">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Generate file for a path image with all incumbent paths. Data files 
+  were previously generated for each incumbent.  This re-uses those 
+  files.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="WriteTreeScript"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">WriteTreeScript</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">additional_lines</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.WriteTreeScript">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Write a Gnuplot script file to generate a tree image.
+Args:
+  additional_lines: String with additional lines to be added to the
+    script file.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="GetTreeFixedHorizontalPositions"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">GetTreeFixedHorizontalPositions</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.GetTreeFixedHorizontalPositions">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Returns horizontal positions for all nodes based on fixed positions.
+Returns:
+  Dictionary of float horizontal positions, keyed by node id.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="GetTreeHorizontalPositions"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">GetTreeHorizontalPositions</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.GetTreeHorizontalPositions">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Returns horizontal positions for all nodes.
+Each node is given equal horizontal space.
+Returns:
+  Dictionary of float horizontal positions, keyed by node id.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="WriteDataFileFromList"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">WriteDataFileFromList</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">filename</span>,
+        <span class="sig-arg">data_list</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.WriteDataFileFromList">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Write a list of string data to a file with one entry per line.
+Args:
+  filename: String filename to open.
+  data_list: List of string values to write.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="GenerateTreeImage"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">GenerateTreeImage</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">fixed_horizontal_positions</span>=<span class="sig-default">False</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.GenerateTreeImage">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Generate files necessary for a tree image. Two files are necessary: a 
+  data file and a Gnuplot script file (which references the data file).</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="ProcessLine"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ProcessLine</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">line</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.ProcessLine">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Process a line of the input file, generating images if appropriate.
+Parses the line, updates internal data structures, and creates images
+if appropriate.
+Args:
+  line: String input line to process.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="ProcessHeuristicLine"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ProcessHeuristicLine</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">remaining_tokens</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.ProcessHeuristicLine">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Core processing for a line of type 'heuristic'.
+Args:
+  remaining_tokens: List of string tokens. These are those that remain
+    after any common tokens are processed.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="ProcessIntegerLine"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ProcessIntegerLine</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">node_id</span>,
+        <span class="sig-arg">parent_id</span>,
+        <span class="sig-arg">branch_direction</span>,
+        <span class="sig-arg">remaining_tokens</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.ProcessIntegerLine">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Core processing for a line of type 'integer'.
+Args:
+  node_id: String node id.
+  parent_id: String node id of parent.
+  branch_direction: String of 'L' or 'R' indicating whether this node
+  is the left or right child of its parent.
+  remaining_tokens: List of string tokens. These are those that remain
+    after any common tokens are processed.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="ProcessFathomedLine"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ProcessFathomedLine</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">node_id</span>,
+        <span class="sig-arg">parent_id</span>,
+        <span class="sig-arg">branch_direction</span>,
+        <span class="sig-arg">remaining_tokens</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.ProcessFathomedLine">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Core processing for a line of type 'fathomed'.
+Args:
+  node_id: String node id.
+  parent_id: String node id of parent.
+  branch_direction: String of 'L' or 'R' indicating whether this node is
+    the left or right child of its parent.
+  remaining_tokens: List of string tokens. These are those that remain
+    after any common tokens are processed.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="ProcessPregnantLine"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ProcessPregnantLine</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">node_id</span>,
+        <span class="sig-arg">parent_id</span>,
+        <span class="sig-arg">branch_direction</span>,
+        <span class="sig-arg">remaining_tokens</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.ProcessPregnantLine">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Core processing for a line of type 'pregnant'.
+Args:
+  node_id: String node id.
+  parent_id: String node id of parent.
+  branch_direction: String of 'L' or 'R' indicating whether this node is
+    the left or right child of its parent.
+  remaining_tokens: List of string tokens. These are those that remain
+    after any common tokens are processed.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="ProcessBranchedLine"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ProcessBranchedLine</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">node_id</span>,
+        <span class="sig-arg">parent_id</span>,
+        <span class="sig-arg">branch_direction</span>,
+        <span class="sig-arg">remaining_tokens</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.ProcessBranchedLine">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Core processing for a line of type 'branched'.
+Args:
+  node_id: String node id.
+  parent_id: String node id of parent.
+  branch_direction: String of 'L' or 'R' indicating whether this node
+  is the left or right child of its parent.
+  remaining_tokens: List of string tokens. These are those that remain
+    after any common tokens are processed.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="ProcessInfeasibleLine"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ProcessInfeasibleLine</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">node_id</span>,
+        <span class="sig-arg">parent_id</span>,
+        <span class="sig-arg">branch_direction</span>,
+        <span class="sig-arg">remaining_tokens</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.ProcessInfeasibleLine">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Core processing for a line of type 'infeasible'.
+Args:
+  node_id: String node id.
+  parent_id: String node id of parent.
+  branch_direction: String of 'L' or 'R' indicating whether this node is
+    the left or right child of its parent.
+  remaining_tokens: List of string tokens. These are those that remain
+    after any common tokens are processed.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="ProcessCandidateLine"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ProcessCandidateLine</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">node_id</span>,
+        <span class="sig-arg">parent_id</span>,
+        <span class="sig-arg">branch_direction</span>,
+        <span class="sig-arg">remaining_tokens</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree.ProcessCandidateLine">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+
+Core processing for a line of type 'candidate'.
+Args:
+  node_id: String node id.
+  parent_id: String node id of parent.
+  branch_direction: String of 'L' or 'R' indicating whether this node
+  is the left or right child of its parent.
+  remaining_tokens: List of string tokens. These are those that remain
+    after any common tokens are processed.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="_get_fh"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_get_fh</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">path</span>,
+        <span class="sig-arg">mode</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">r</code><code class="variable-quote">'</code></span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="coinor.grumpy.BB-pysrc.html#BBTree._get_fh">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return a file handle for given path. Path can be a string or a file 
+  handle. Attempt to uncompress/compress files ending in '.gz' and 
+  '.bz2'.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="coinor.grumpy-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed Apr 27 01:28:38 2016
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
