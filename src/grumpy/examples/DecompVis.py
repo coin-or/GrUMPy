@@ -3,14 +3,6 @@ try:
 except ImportError:
     from coinor.grumpy.polyhedron2D import Polyhedron2D, Figure
 
-CYLP_INSTALLED = True
-try:
-    import numpy as np
-    from cylp.cy import CyClpSimplex
-    from cylp.py.modeling import CyLPArray, CyLPModel
-except ImportError:
-    CYLP_INSTALLED = False
-
 numVars = 2
 numCons = 4
 #points = [[0, 0], [3, 4], [8, 6], [6, 1]]
