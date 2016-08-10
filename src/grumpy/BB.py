@@ -279,6 +279,23 @@ class BBTree(BinaryTree):
         to visualize the branch and bound tree.
         '''
         if self.attr['layout'] != 'bak':
+            if 'init_log_cond' in self.root.attr:
+                max_log_cond = 0
+                for n in self.nodes.values():
+                    if 'init_log_cond' in n.attr:
+                         max_log_cond = max(n.attr['init_log_cond'], max_log_cond)
+                for n in self.nodes.values():
+                    if 'init_log_cond' in n.attr:
+                        log_begin = n.attr['init_log_cond']      
+                        log_end = n.attr['final_log_cond']
+                        normalized_cond = (1-log_begin/max_log_cond)
+                        color = str(hex(int(normalized_cond*256))[2:]) if normalized_cond >= .0625 else '0' + str(hex(int(normalized_cond*256))[2:])
+                        n.attr['label'] = '%.0f \n %.0f' % (log_begin, log_end)
+                        n.attr['color'] = '#' + color*3
+                        n.attr['fillcolor'] = '#' + color*3
+                        n.attr['style'] = 'filled'
+                    else:
+                        n.attr['label'] = ' '
             BinaryTree.display(self)
             return
         if self.attr['display'] is 'off':
@@ -458,6 +475,7 @@ class BBTree(BinaryTree):
 
     def AddOrUpdateNode(self, id, parent_id, branch_direction, status, lp_bound,
                         integer_infeasibility_count, integer_infeasibility_sum,
+                        condition_begin = None, condition_end = None,
                         **attrs):
         '''
         This method designed to update nodes (in BAK) but we use it for
@@ -473,6 +491,10 @@ class BBTree(BinaryTree):
         integer_infeasibility_sum -> node
         parent_id -> node
         '''
+        if (condition_begin is not None) and (condition_end is not None):
+            #Figure out the color
+            attrs['init_log_cond'] = math.log(condition_begin, 10)
+            attrs['final_log_cond'] = math.log(condition_end, 10)
         if parent_id is not None:
             if id in self.get_node_list():
                 self.set_node_attr(id, 'status', status)
@@ -482,6 +504,9 @@ class BBTree(BinaryTree):
                 self.set_node_attr(id, 'integer_infeasibility_sum',
                                    integer_infeasibility_sum)
                 self.set_node_attr(id, 'subtree_root', None)
+                if (condition_begin is not None) and (condition_end is not None):
+                    self.set_node_attr(id, 'init_log_cond', math.log(condition_begin, 10))
+                    self.set_node_attr(id, 'final_log_cond', math.log(condition_end, 10))
             elif branch_direction == 'L':
                 self.add_left_child(id, parent_id, status = status,
                     lp_bound = lp_bound,
@@ -1644,7 +1669,7 @@ class BBTree(BinaryTree):
             after any common tokens are processed.
         """
         # Parse remaining tokens
-        if len(remaining_tokens) != 3:
+        if len(remaining_tokens) not in [3, 5]:
             print 'Invalid line: %s branched %s %s %s %s' % (
                     self._time, node_id, parent_id, branch_direction,
                     ' '.join(remaining_tokens))
@@ -1656,9 +1681,16 @@ class BBTree(BinaryTree):
         lp_bound = float(remaining_tokens[0])
         integer_infeasibility_sum = float(remaining_tokens[1])
         integer_infeasibility_count = int(remaining_tokens[2])
+        condition_begin = None
+        condition_end = None
+        if len(remaining_tokens) == 5:
+            # In this case, we must also be printing conditions numbers
+            condition_begin = int(remaining_tokens[3])
+            condition_end = int(remaining_tokens[4])
         self.AddOrUpdateNode(node_id, parent_id, branch_direction, 'branched',
                              lp_bound, integer_infeasibility_count,
-                             integer_infeasibility_sum)
+                             integer_infeasibility_sum, condition_begin,
+                             condition_end)
 
     def ProcessInfeasibleLine(self, node_id, parent_id, branch_direction,
                               remaining_tokens):
@@ -1673,7 +1705,7 @@ class BBTree(BinaryTree):
             after any common tokens are processed.
         """
         # Parse remaining tokens
-        if len(remaining_tokens) != 0:
+        if len(remaining_tokens) not in [0, 2]:
             print 'Invalid line: %s infeasible %s %s %s %s' % (
                     self._time, node_id, parent_id, branch_direction,
                     ' '.join(remaining_tokens))
@@ -1694,8 +1726,13 @@ class BBTree(BinaryTree):
             if (self.get_node_attr(node_id, 'integer_infeasibility_sum')
                 is not None):
                 ii_sum = self.get_node_attr(node_id,'integer_infeasibility_sum')
+        if len(remaining_tokens) == 2:
+            # In this case, we must also be printing conditions numbers
+            condition_begin = int(remaining_tokens[0])
+            condition_end = int(remaining_tokens[1])
         self.AddOrUpdateNode(node_id, parent_id, branch_direction, 'infeasible',
-                             lp_bound, ii_count, ii_sum)
+                             lp_bound, ii_count, ii_sum, condition_begin,
+                             condition_end)
 
     def ProcessCandidateLine(self, node_id, parent_id, branch_direction,
                              remaining_tokens):
@@ -2438,8 +2475,8 @@ if __name__ == '__main__':
     #T.set_display_mode('file')
     T.set_display_mode('xdot')
     #T.set_display_mode('pygame')
-    CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP(rand_seed = 19)
+    CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = T.GenerateRandomMIP(rand_seed = 120)
     T.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
-                     branch_strategy = PSEUDOCOST_BRANCHING,
+                     branch_strategy = MOST_FRACTIONAL,
                      search_strategy = BEST_FIRST,
-                     display_interval = 10)
+                     display_interval = 10000)
