@@ -1,3 +1,4 @@
+
 #============================================================================#
 # This file is part of the GrUMPy library                                    #
 #                                                                            #
@@ -21,4 +22,4 @@
 
 GRUMPYdir = $(pythondir)/grumpy
 
-GRUMPY_PYTHON = __init__.py forecasting.py BB.py polyhedron2D.py
+GRUMPY_PYTHON = __init__.py __main__.py forecasting.py BB.py polyhedron2D.py

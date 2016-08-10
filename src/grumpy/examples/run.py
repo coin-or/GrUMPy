@@ -1,4 +1,4 @@
-from src.grumpy import BBTree
+from coinor.grumpy import BBTree
 import sys
 import StringIO
 

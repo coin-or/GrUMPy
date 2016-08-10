@@ -490,7 +490,26 @@ class BBTree(BinaryTree):
             #Figure out the color
             attrs['init_log_cond'] = math.log(condition_begin, 10)
             attrs['final_log_cond'] = math.log(condition_end, 10)
-        if parent_id is not None:
+        if id==self.root:
+            print 'id is same as self.root'
+            self.set_node_attr(id, 'status', status)
+            self.set_node_attr(id, 'lp_bound', lp_bound)
+            self.set_node_attr(id, 'integer_infeasibility_count',
+                               integer_infeasibility_count)
+            self.set_node_attr(id, 'integer_infeasibility_sum',
+                               integer_infeasibility_sum)
+            if (condition_begin is not None) and (condition_end is not None):
+                self.set_node_attr(id, 'init_log_cond',
+                                   math.log(condition_begin, 10))
+                self.set_node_attr(id, 'final_log_cond',
+                                   math.log(condition_end, 10))
+        elif self.root is None:
+            print 'adding root', id
+            self.add_root(id, status = status, lp_bound = lp_bound,
+                          integer_infeasibility_count = integer_infeasibility_count,
+                          integer_infeasibility_sum = integer_infeasibility_sum,
+                          subtree_root = None, **attrs)
+        elif parent_id is not None:
             if id in self.get_node_list():
                 self.set_node_attr(id, 'status', status)
                 self.set_node_attr(id, 'lp_bound', lp_bound)
@@ -515,10 +534,8 @@ class BBTree(BinaryTree):
                     integer_infeasibility_sum = integer_infeasibility_sum,
                     subtree_root = None, **attrs)
         else:
-            self.add_root(id, status = status, lp_bound = lp_bound,
-                    integer_infeasibility_count = integer_infeasibility_count,
-                    integer_infeasibility_sum = integer_infeasibility_sum,
-                    subtree_root = None, **attrs)
+            print 'this should not happen.'
+            raise Exception()
         if lp_bound is not None:
             self.UpdateObjectiveValueLimits(lp_bound)
             # Set optimization sense if not yet set
@@ -1474,17 +1491,17 @@ class BBTree(BinaryTree):
             self.ProcessHeuristicLine(remaining_tokens)
         else:
             # Other node types share common tokens
-            node_id = tokens[2]
-            parent_id = tokens[3]
+            node_id = int(tokens[2])
+            parent_id = int(tokens[3])
             branch_direction = tokens[4]
             remaining_tokens = tokens[5:]
             # TODO(aykut):parent id of root node is 0 when we read from file.
-            if parent_id is '0':
+            if id==self.root:
                 parent_id = None
             # Check that the parent node id is valid
-            if parent_id not in self.get_node_list() and self.root is not None:
-                print 'Parent id does not exist: %s' % line
-                sys.exit(1)
+            # elif parent_id not in self.get_node_list() and self.root is not None:
+            #     print 'Parent id does not exist: %s' % line
+            #     sys.exit(1)
             if line_type == 'integer':
                 self._optimal_soln_time = self._time
                 self.ProcessIntegerLine(node_id, parent_id,
@@ -1751,9 +1768,9 @@ class BBTree(BinaryTree):
             print '[<sum of integer infeasibilities> <number of integer '
             print 'infeasibilities>]'
             sys.exit(1)
-        if parent_id not in self.get_node_list():
-            print 'Error: node %s not in set' % parent_id
-            sys.exit(1)
+        # if parent_id not in self.get_node_list():
+        #     print 'Error: node %s not in set' % parent_id
+        #     sys.exit(1)
         # TODO(bhunsaker): Check that we handle the cases of updating a
         #candidate.
         if len(remaining_tokens) > 0:
@@ -1942,7 +1959,6 @@ class BBTree(BinaryTree):
         except (TypeError, ValueError):
             return False
         return True
-
 
 def CreatePerlStyleBooleanFlag(parser, flag_text, variable_name, help_text):
     """
