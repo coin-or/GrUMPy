@@ -1,4 +1,4 @@
-#GrUMPy 0.8
+#GrUMPy 0.85
 
 Graphics for Understanding Mathematical Programming in Python (GrUMPy) is a
 Python library for visualizing various aspects of mathematical programming,
