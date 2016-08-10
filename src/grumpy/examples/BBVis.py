@@ -26,5 +26,5 @@ im = PIL_Image.open(gnuplot_image)
 im.show()
 #bt.display_all()
 
-bt.set_display_mode('xdot')
+bt.set_display_mode('file')
 bt.display()
