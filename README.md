@@ -1,5 +1,7 @@
 #GrUMPy 0.85
 
+[![DOI](https://zenodo.org/badge/18217673.svg)](https://zenodo.org/badge/latestdoi/18217673)
+
 Graphics for Understanding Mathematical Programming in Python (GrUMPy) is a
 Python library for visualizing various aspects of mathematical programming,
 including visualizations of the branch-and process, branch-and-bound trees,
@@ -10,6 +12,10 @@ thus appropriate for use in the classroom.
 Documentation for the API is here:
 
 https://tkralphs.github.io/GrUMPy
+
+Pypi download page is here:
+
+https://pypi.python.org/pypi/coinor.grumpy
 
 See below for brief documentation of usage
 
@@ -24,8 +30,6 @@ or
 ```
 pip install coinor.grumpy
 ```
-
-## Installation Notes
 
 1. GrUMPy depends on [GiMPy](https://github.com/coin-or/GiMPy), which will be 
   automatically installed as part of the setup. However, in order for GiMPy to
