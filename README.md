@@ -20,15 +20,21 @@ To install, do:
 ```
 easy_install coinor.grumpy
 ```
+or
+```
+pip install coinor.grumpy
+```
 
-Some notes:
+## Installation Notes
 
 1. GrUMPy depends on [GiMPy](https://github.com/coin-or/GiMPy), which will be 
   automatically installed as part of the setup. However, in order for GiMPy to
   visualize the branch-and-bound tree, it's necessary to install 
-  [GraphViz](http://www.graphviz.org/Download.php) and choose one of these 
-  additional methods for display:
-  * Recommanded: [xdot](https://pypi.python.org/pypi/xdot) along with 
+  [GraphViz](http://www.graphviz.org/Download.php) (**Important**: after installing
+  graphviz, you must add the graphviz `bin` directory, usually 
+  `C:\Program Files (x86)\Graphviz2.38\bin`, to your `PATH`) 
+  and choose one of these additional methods for display:
+  * Recommended: [xdot](https://pypi.python.org/pypi/xdot) along with 
     [PyGtk](http://www.pygtk.org/) and call `set_display_mode('xdot')`
   * [Python Imaging Library](http://www.pythonware.com/products/pil/) and 
     call `set_display_mode('PIL')`
@@ -37,7 +43,8 @@ Some notes:
     then be opened manually. 
   
   It is also possible to typeset labels in LaTex and to output the graph in 
-  LaTex format using `dot2tex`. After installing `dot2tex`, this can be done 
+  LaTex format using `dot2tex` (**Warning**: recent versions of `dot2tex` have not
+  perfectly, your mileage may vary). After installing `dot2tex`, this can be done 
   by simply calling the method `write(basename='fileName', format='dot')`, and 
   then doing `dot2tex --tmath fileName.dot` or by calling 
   `set_display_mode('dot2tex')` and then `display()` as usual. At the moment,
@@ -47,6 +54,17 @@ Some notes:
 2. GrUMPy can also visualize 2D polyhedra with the installation of 
   [pypolyhedron](https://github.com/rdeits/pypolyhedron), which must be
   installed from source.
+  
+# Additional Notes for Windows Users
+
+On Windows, if you want to use `xdot`, there are some additional particulars.
+  * You must install the 32-bit version of Python 2.7
+  * You must install the [PyGtk version 2.22.6](http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/2.22/pygtk-all-in-one-2.22.6.win32-py2.7.msi). Version 2.24 is buggy on Windows.
+  * You must install version 0.6 of xdot with e.g., `pip install xdot==0.6` 
+  
+# Additional Notes for Linux and OS X Users
+
+There have been reports of incompatibilities with recent versions of PyGtk, but I have not attempted yet to track this down. If things break, you may try some variant of the instructions above for installing on Windows.
 
 ##Examples of Visualizations
 
