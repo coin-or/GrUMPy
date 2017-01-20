@@ -34,12 +34,12 @@ pip install coinor.grumpy
 1. GrUMPy depends on [GiMPy](https://github.com/coin-or/GiMPy), which will be 
   automatically installed as part of the setup. However, in order for GiMPy to
   visualize the branch-and-bound tree, it's necessary to install 
-  [GraphViz](http://www.graphviz.org/Download.php) (**Important**: after installing
-  graphviz, you must add the graphviz `bin` directory, usually 
-  `C:\Program Files (x86)\Graphviz2.38\bin`, to your `PATH`) 
+  [GraphViz](http://www.graphviz.org) 
   and choose one of these additional methods for display:
-  * Recommended: [xdot](https://pypi.python.org/pypi/xdot) along with 
-    [PyGtk](http://www.pygtk.org/) and call `set_display_mode('xdot')`
+  * Recommended: [xdot 0.6](https://pypi.python.org/pypi/xdot). 
+    * Install with `pip install xdot==0.6`
+    * Call `set_display_mode('xdot')`
+  Note that xdot 0.6 depends on [PyGtk](http://www.pygtk.org/) (see below for platform-specific installation instructions for installing). 
   * [Python Imaging Library](http://www.pythonware.com/products/pil/) and 
     call `set_display_mode('PIL')`
   * [Pygame](pygame.org) and call `set_display_mode('pygame')`
@@ -59,14 +59,24 @@ pip install coinor.grumpy
   [pypolyhedron](https://github.com/rdeits/pypolyhedron), which must be
   installed from source.
   
-# Additional Notes for Windows Users
+# Additional Notes for Windows Installation
 
-On Windows, if you want to use `xdot`, there are some additional particulars.
-  * You must install the 32-bit version of Python 2.7
-  * You must install the [PyGtk version 2.22.6](http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/2.22/pygtk-all-in-one-2.22.6.win32-py2.7.msi). Version 2.24 is buggy on Windows.
-  * You must install version 0.6 of xdot with e.g., `pip install xdot==0.6` 
+  * To install Graphviz, download the installer [here](http://www.graphviz.org/Download.php). 
+  **Important**: after installing, you must manually add the graphviz `bin` directory (usually 
+  `C:\Program Files (x86)\Graphviz2.38\bin`) to your `PATH` 
+  * If you want to use `xdot`, there are some more requirements: 
+     * Unfortunately, you must have a 32-bit version of Python 2.7
+     * You must install the [PyGtk version 2.22.6](http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/2.22/pygtk-all-in-one-2.22.6.win32-py2.7.msi). Version 2.24 is buggy on Windows.
   
-# Additional Notes for Linux and OS X Users
+# Additional Notes for Linux Installation
+
+  * Graphviz can be installed as a package on most Linux distros, e.g., `sudo apt-get install graphviz`
+  * To use `xdot`, you need to install PyGtk. On Debian/Ubuntu, do `sudo apt-get install python-gtk2` 
+  
+# Additional Notes for OS X Users
+
+  * The situation with Python on OS X is a bit of a mess. It is recommended to install python using [homebrew](http://brew.sh) with `brew install python`).
+  * With homebbrew, one can also easily install graphviz (`brew install graphviz`) and PyGtk (`brew install pygtk`). 
 
 There have been reports of incompatibilities with recent versions of PyGtk, but I have not attempted yet to track this down. If things break, you may try some variant of the instructions above for installing on Windows.
 
