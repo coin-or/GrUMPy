@@ -1,16 +1,19 @@
-from coinor.grumpy import BBTree
+try:
+    from coinor.grumpy import BBTree
+except ImportError:
+    from src.grumpy import BBTree
 import sys
 import StringIO
 from PIL import Image as PIL_Image
 
 bt = BBTree()
 bt.set_display_mode('pygame')
-line_number = 0
-file_ = open('p0201_GLPK.in', 'r')
+line_number = 1
+file_ = open('p0201_GLPK.vbc', 'r')
 #for line in sys.stdin:
 for line in file_:
     bt.ProcessLine(line)
-    #To print out snapshots of the three
+    #To print out snapshots of the tree
     if line_number%100000 != 0:
         continue
     imagefile = open('tree-'+str(line_number)+'.png','w')
