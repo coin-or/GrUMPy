@@ -1,4 +1,4 @@
-#GrUMPy 0.85
+# GrUMPy 0.85
 
 [![DOI](https://zenodo.org/badge/18217673.svg)](https://zenodo.org/badge/latestdoi/18217673)
 
@@ -19,7 +19,7 @@ https://pypi.python.org/pypi/coinor.grumpy
 
 See below for brief documentation of usage
 
-##Installation Notes
+## Installation Notes
 
 To install, do:
 
@@ -65,7 +65,7 @@ pip install coinor.grumpy
 
 There have been reports of incompatibilities with recent versions of PyGtk, but I have not attempted yet to track this down. If things break, you may try some variant of the instructions above for installing on Windows.
 
-##Examples of Visualizations
+## Examples of Visualizations
 
 ![Branch and bound tree](https://github.com/coin-or/GrUMPy/raw/master/images/BranchAndBound.png)
 
@@ -75,9 +75,9 @@ There have been reports of incompatibilities with recent versions of PyGtk, but 
 
 ![Figure 3 made with GrUMPy](https://raw.githubusercontent.com/tkralphs/GrUMPy/master/images/GMI-Row3.png)
 
-##Usage
+## Usage
 
-###Visualizing Branch and Bound Trees
+### Visualizing Branch and Bound Trees
 
 There are two separate modes for visualizing branch and bound trees. One uses
 [GiMPy](https://github.com/coin-or/GiMPy) to visualize the tree (which in turn
