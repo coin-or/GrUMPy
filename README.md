@@ -11,7 +11,7 @@ thus appropriate for use in the classroom.
 
 Documentation for the API is here:
 
-https://tkralphs.github.io/GrUMPy
+https://coin-or.github.io/GrUMPy
 
 Pypi download page is here:
 
