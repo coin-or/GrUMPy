@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type = "text/xsl" href = "https://projects.coin-or.org/svn/CoinWeb/trunk/projects/autoGen.xsl"?>
+<projectData xmlns="coin-or.org" 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://projects.coin-or.org/svn/CoinWeb/trunk/projects/autoGen.xsd">
+
+  <projectBasics>
+
+      <projectName> GrUMPy </projectName>
+
+      <projectRepo> GrUMPy </projectRepo>
+
+      <projectDescription>
+        Graphics for Understanding Mathematical Programming in Python (GrUMPy)
+        is a Python library for visualizing various aspects of mathematical programming,
+        including visualizations of the branch-and process, branch-and-bound trees,
+        polyhedra, cutting plane methods, etc. The goal is clarity in implementation rather
+        than efficiency. Most methods have an accompanying visualization and are
+        thus appropriate for use in the classroom.
+      </projectDescription>
+
+      <projectShortDescription>
+        A Python library for visualizing algorithms for solving mathematical
+        optimization problems. 
+      </projectShortDescription>
+
+      <projectManager> Ted Ralphs, ted at lehigh.edu </projectManager>
+
+      <projectHomePage> https://github.com/coin-or/GrUMPy </projectHomePage>
+
+      <projectLicense> Eclipse Public License 1.0 </projectLicense>
+      <projectLicenseURL>
+        http://www.opensource.org/licenses/eclipse-1.0
+      </projectLicenseURL>
+
+      <coinLinkedProjects>
+      </coinLinkedProjects>
+
+      <otherLinkedPackages>
+      </otherLinkedPackages>
+
+      <projectLanguage> Python </projectLanguage>
+
+      <developmentStatus>
+
+          <activityStatus>Active</activityStatus>
+
+          <maturityLevel>5</maturityLevel>
+
+      </developmentStatus>
+
+      <testedPlatforms>
+      <platform>                                              
+         <operatingSystem>Microsoft Windows</operatingSystem> 
+         <compiler>Python 2.7</compiler>                       
+      </platform>                                             
+                                                              
+      <platform>                                              
+         <operatingSystem>Linux</operatingSystem> 
+         <compiler>Python 2.7</compiler>                       
+      </platform>                                             
+
+      <platform>                                              
+         <operatingSystem>OS X</operatingSystem> 
+         <compiler>Python 2.7</compiler>                       
+      </platform>                                             
+
+      </testedPlatforms>
+
+      <projectCategories>
+
+          <category> Optimization utility </category>
+          
+          <category> Optimization deterministic linear discrete </category>
+          
+      </projectCategories>
+      
+  </projectBasics>
+
+  <leftMenuLinks>
+
+          <documentation> https://coin-or.github.io/GrUMPy </documentation>
+
+          <sourceCodeDownload>
+            https://github.com/coin-or/GrUMPy
+          </sourceCodeDownload>
+
+          <binaryDownload>
+            https://pypi.python.org/pypi/coinor.grumpy
+          </binaryDownload>
+
+          <mailingList> https://github.com/coin-or/GrUMPy/issues </mailingList>
+
+  </leftMenuLinks>
+
+</projectData>
