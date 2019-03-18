@@ -131,7 +131,7 @@ class Figure:
                        show_int_points = False):
         if self.fig is None:
             self.initialize()
-        if p.xlim == None or p.ylim == None:
+        if p.xlim is None or p.ylim is None:
             p.determine_plot_size()
         x, y = [], []
         if len(p.ray_indices) > 0:
@@ -230,7 +230,7 @@ class Figure:
                  color = 'blue', linestyle = 'solid', label = None):
         if self.fig is None:
             self.initialize()
-        if xlim == None or ylim == None:
+        if xlim is None or ylim is None:
             print 'Must have plot_max and plot_min set in order to add line'
             return
         x_intercept = None
