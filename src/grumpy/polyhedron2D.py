@@ -1,10 +1,15 @@
+from __future__ import division
+from __future__ import print_function
+from builtins import range
+from builtins import object
+from past.utils import old_div
 import numpy as np
 from polyhedron import Vrep, Hrep
 import matplotlib.pyplot as plt
 import matplotlib.lines as lines
 from math import ceil, floor
 
-class Polyhedron2D:
+class Polyhedron2D(object):
     def __init__(self, points = None, rays = None, A = None, b = None):
         have_rep = False
         if points is not None or rays is not None:
@@ -66,15 +71,15 @@ class Polyhedron2D:
                     self.hrep.adj[self.ray_indices[0]][1]]
                 next_point = self.hrep.adj[self.ray_indices[0]][1]
             if ray[0] < 0:
-                x_lim = (vertex[0] - self.min_point[0])/-float(ray[0])
+                x_lim = old_div((vertex[0] - self.min_point[0]),-float(ray[0]))
             elif ray[0] > 0:
-                x_lim = (self.max_point[0] - vertex[0])/-float(ray[0])
+                x_lim = old_div((self.max_point[0] - vertex[0]),-float(ray[0]))
             else:
                 x_lim = 10000
             if ray[1] < 0:
-                y_lim = (vertex[1] - self.min_point[1])/-float(ray[1])
+                y_lim = old_div((vertex[1] - self.min_point[1]),-float(ray[1]))
             elif ray[1] > 0:
-                y_lim = (self.max_point[1] - vertex[1])/-float(ray[1]) 
+                y_lim = old_div((self.max_point[1] - vertex[1]),-float(ray[1])) 
             else:
                 y_lim = 10000
             lim = min(x_lim, y_lim) + 1
@@ -92,15 +97,15 @@ class Polyhedron2D:
                 ray = self.hrep.generators[current_point]
                 vertex = self.hrep.generators[prev_point]
                 if ray[0] < 0:
-                    x_lim = (vertex[0] - self.min_point[0])/-float(ray[0])
+                    x_lim = old_div((vertex[0] - self.min_point[0]),-float(ray[0]))
                 elif ray[0] > 0:
-                    x_lim = (self.max_point[0] - vertex[0])/float(ray[0])
+                    x_lim = old_div((self.max_point[0] - vertex[0]),float(ray[0]))
                 else:
                     x_lim = 10000
                 if ray[1] < 0:
-                    y_lim = (vertex[1] - self.min_point[1])/-float(ray[1])
+                    y_lim = old_div((vertex[1] - self.min_point[1]),-float(ray[1]))
                 elif ray[1] > 0:
-                    y_lim = (self.max_point[1] - vertex[1])/float(ray[1])
+                    y_lim = old_div((self.max_point[1] - vertex[1]),float(ray[1]))
                 else:
                     y_lim = 10000 
                 lim = min(x_lim, y_lim) + 1
@@ -117,7 +122,7 @@ class Polyhedron2D:
         self.xlim = np.array(np.floor([self.xlim[i] + padding[i] for i in [0,1]]))
         self.ylim = np.array(np.floor([self.ylim[i] + padding[i] for i in [0,1]]))
 
-class Figure:
+class Figure(object):
 
     def __init__(self):
         self.fig = None
@@ -146,15 +151,15 @@ class Figure:
                     p.hrep.adj[p.ray_indices[0]][1]]
                 next_point = p.hrep.adj[p.ray_indices[0]][1]
             if ray[0] < 0:
-                x_lim = (vertex[0] - p.xlim[0])/-float(ray[0])
+                x_lim = old_div((vertex[0] - p.xlim[0]),-float(ray[0]))
             elif ray[0] > 0:
-                x_lim = (p.xlim[1] - vertex[0])/float(ray[0])
+                x_lim = old_div((p.xlim[1] - vertex[0]),float(ray[0]))
             else:
                 x_lim = 10000
             if ray[1] < 0:
-                y_lim = (vertex[1] - p.ylim[0])/-float(ray[1])
+                y_lim = old_div((vertex[1] - p.ylim[0]),-float(ray[1]))
             elif ray[1] > 0:
-                y_lim = (p.ylim[1] - vertex[1])/float(ray[1]) 
+                y_lim = old_div((p.ylim[1] - vertex[1]),float(ray[1])) 
             else:
                 y_lim = 10000
             lim = min(x_lim, y_lim)*0.95
@@ -174,15 +179,15 @@ class Figure:
                 ray = p.hrep.generators[current_point]
                 vertex = p.hrep.generators[prev_point]
                 if ray[0] < 0:
-                    x_lim = (vertex[0] - p.xlim[0])/-float(ray[0])
+                    x_lim = old_div((vertex[0] - p.xlim[0]),-float(ray[0]))
                 elif ray[0] > 0:
-                    x_lim = (p.xlim[1] - vertex[0])/float(ray[0])
+                    x_lim = old_div((p.xlim[1] - vertex[0]),float(ray[0]))
                 else:
                     x_lim = 10000
                 if ray[1] < 0:
-                    y_lim = (vertex[1] - p.ylim[0])/-float(ray[1])
+                    y_lim = old_div((vertex[1] - p.ylim[0]),-float(ray[1]))
                 elif ray[1] > 0:
-                    y_lim = (p.ylim[1] - vertex[1])/float(ray[1])
+                    y_lim = old_div((p.ylim[1] - vertex[1]),float(ray[1]))
                 else:
                     y_lim = 10000 
                 lim = min(x_lim, y_lim)*0.95
@@ -231,63 +236,63 @@ class Figure:
         if self.fig is None:
             self.initialize()
         if xlim is None or ylim is None:
-            print 'Must have plot_max and plot_min set in order to add line'
+            print('Must have plot_max and plot_min set in order to add line')
             return
         x_intercept = None
         y_intercept = None
         x = []
         y = []
         if coeffs[0] == 0 and coeffs[1] == 0:
-            print 'Trying to plot line with zero coefficients...'
+            print('Trying to plot line with zero coefficients...')
             return
         if coeffs[0] == 0:
             x = [xlim[0], xlim[1]]
-            y = [level/coeffs[1], level/coeffs[1]]
+            y = [old_div(level,coeffs[1]), old_div(level,coeffs[1])]
         else:
-            x_intercept = [float(level - ylim[0]*coeffs[1])/coeffs[0],
-                           float(level - ylim[1]*coeffs[1])/coeffs[0]]
+            x_intercept = [old_div(float(level - ylim[0]*coeffs[1]),coeffs[0]),
+                           old_div(float(level - ylim[1]*coeffs[1]),coeffs[0])]
         if coeffs[1] == 0:
-            x = [level/coeffs[0], level/coeffs[0]]
+            x = [old_div(level,coeffs[0]), old_div(level,coeffs[0])]
             y = [ylim[0], ylim[1]]
         else:
-            y_intercept = [float(level - xlim[0]*coeffs[0])/coeffs[1],
-                           float(level - xlim[1]*coeffs[0])/coeffs[1]]
+            y_intercept = [old_div(float(level - xlim[0]*coeffs[0]),coeffs[1]),
+                           old_div(float(level - xlim[1]*coeffs[0]),coeffs[1])]
         
         if x_intercept is not None and y_intercept is not None:
-            if coeffs[0]/coeffs[1] < 0:
+            if old_div(coeffs[0],coeffs[1]) < 0:
                 if y_intercept[1] > ylim[1]:
                     y.append(ylim[1])
-                    x.append(float(level - ylim[1]*coeffs[1])/coeffs[0])
+                    x.append(old_div(float(level - ylim[1]*coeffs[1]),coeffs[0]))
                 elif y_intercept[1] < ylim[0]:
                     return
                 else:
                     x.append(xlim[1])
-                    y.append(float(level - xlim[1]*coeffs[0])/coeffs[1])
+                    y.append(old_div(float(level - xlim[1]*coeffs[0]),coeffs[1]))
                 if y_intercept[0] < ylim[0]:
                     y.append(ylim[0])
-                    x.append(float(level - ylim[0]*coeffs[1])/coeffs[0])
+                    x.append(old_div(float(level - ylim[0]*coeffs[1]),coeffs[0]))
                 elif y_intercept[0] > ylim[1]:
                     return
                 else:
                     x.append(xlim[0])
-                    y.append(float(level - xlim[0]*coeffs[0])/coeffs[1])
+                    y.append(old_div(float(level - xlim[0]*coeffs[0]),coeffs[1]))
             else:
                 if y_intercept[1] < ylim[0]:
                     y.append(ylim[0])
-                    x.append(float(level - ylim[0]*coeffs[1])/coeffs[0])
+                    x.append(old_div(float(level - ylim[0]*coeffs[1]),coeffs[0]))
                 elif y_intercept[1] > ylim[1]:
                     return
                 else:
                     x.append(xlim[1])
-                    y.append(float(level - xlim[1]*coeffs[0])/coeffs[1])
+                    y.append(old_div(float(level - xlim[1]*coeffs[0]),coeffs[1]))
                 if y_intercept[1] > ylim[1]:
                     y.append(ylim[1])
-                    x.append(float(level - ylim[1]*coeffs[1])/coeffs[0])
+                    x.append(old_div(float(level - ylim[1]*coeffs[1]),coeffs[0]))
                 elif y_intercept[0] < ylim[0]:
                     return
                 else:
                     x.append(xlim[0])
-                    y.append(float(level - xlim[0]*coeffs[0])/coeffs[1])
+                    y.append(old_div(float(level - xlim[0]*coeffs[0]),coeffs[1]))
     
         if linestyle == 'dashed':
             linestyle = '--'

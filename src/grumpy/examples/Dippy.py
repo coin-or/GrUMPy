@@ -1,3 +1,4 @@
+from __future__ import print_function
 DEBUGGING = False
 
 import sys
@@ -30,6 +31,6 @@ dippy.Solve(prob, {
     })
 
 for var in prob.variables():
-    print var.name, "=", var.value()
+    print(var.name, "=", var.value())
 
 prob.Tree.display()

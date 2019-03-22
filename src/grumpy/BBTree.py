@@ -1,3 +1,12 @@
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import hex
+from builtins import range
+from past.utils import old_div
 # BB.py
 #
 #  Copyright 2009, 2010 Google Inc.
@@ -59,11 +68,11 @@ except ImportError:
     from coinor.gimpy import BinaryTree, XDOT_INSTALLED, PYGAME_INSTALLED, DOT2TEX_INSTALLED
     from coinor.gimpy import PIL_INSTALLED, ETREE_INSTALLED
     from coinor.gimpy import quote_if_necessary as quote
-from StringIO import StringIO
+from io import StringIO
 #from pygame.transform import scale
 from pulp import LpVariable, lpSum, LpProblem, LpMaximize, LpConstraint
 from pulp import LpStatus, value
-from forecasting import ForecastingChainedSequences
+from .forecasting import ForecastingChainedSequences
 
 if PYGAME_INSTALLED:
     import pygame
@@ -80,7 +89,7 @@ PSEUDOCOST_BRANCHING = 'Pseudocost Branching'
 DEPTH_FIRST = 'Depth First'
 BEST_FIRST = 'Best First'
 BEST_ESTIMATE = 'Best Estimate'
-INFINITY = sys.maxint
+INFINITY = sys.maxsize
 
 DOT2TEX_TEMPLATE = r'''
 \documentclass[landscape]{article}
@@ -202,7 +211,7 @@ class BBTree(BinaryTree):
 
     def write_as_dynamic_gexf(self, filename, mode = "Dot"):
         if not GEXF_INSTALLED:
-            print 'Gexf not installed. Exiting.'
+            print('Gexf not installed. Exiting.')
             return
         if mode == 'Dot':
             try:
@@ -237,8 +246,8 @@ class BBTree(BinaryTree):
                 output_file = open(filename + ".gexf", "w")
                 gexf.write(output_file)
             except Exception as e:
-                print e
-                print "No .gexf file created"
+                print(e)
+                print("No .gexf file created")
         else:
             raise Exception("Only Dot mode supported in write_as_dynamic_gexf")
 
@@ -249,19 +258,19 @@ class BBTree(BinaryTree):
             if PYGAME_INSTALLED:
                 self.attr['display'] = 'pygame'
             else:
-                print 'Pygame is not installed. Display is set to off.'
+                print('Pygame is not installed. Display is set to off.')
                 self.attr['display'] = 'off'
         elif mode is 'PIL':
             if PIL_INSTALLED:
                 self.attr['display'] = 'PIL'
             else:
-                print 'PIL is not installed. Display is set to off.'
+                print('PIL is not installed. Display is set to off.')
                 self.attr['display'] = 'off'
         elif mode is 'xdot':
             if XDOT_INSTALLED:
                 self.attr['display'] = 'xdot'
             else:
-                print 'Xdot is not installed. Display is set to off.'
+                print('Xdot is not installed. Display is set to off.')
                 self.attr['display'] = 'off'
         elif mode is 'file':
             self.attr['display'] = 'file'
@@ -276,14 +285,14 @@ class BBTree(BinaryTree):
         if self.attr['layout'] != 'bak':
             if 'init_log_cond' in self.root.attr:
                 max_log_cond = 0
-                for n in self.nodes.values():
+                for n in list(self.nodes.values()):
                     if 'init_log_cond' in n.attr:
                         max_log_cond = max(n.attr['init_log_cond'], max_log_cond)
-                for n in self.nodes.values():
+                for n in list(self.nodes.values()):
                     if 'init_log_cond' in n.attr:
                         log_begin = n.attr['init_log_cond']
                         log_end = n.attr['final_log_cond']
-                        normalized_cond = (1-log_begin/max_log_cond)
+                        normalized_cond = (1-old_div(log_begin,max_log_cond))
                         color = str(hex(int(normalized_cond*256))[2:]) if normalized_cond >= .0625 else '0' + str(hex(int(normalized_cond*256))[2:])
                         n.attr['label'] = '%.0f \n %.0f' % (log_begin, log_end)
                         n.attr['color'] = '#' + color*3
@@ -327,7 +336,7 @@ class BBTree(BinaryTree):
             bak_filelist = (histogram_files + incumbent_files +
                             scatterplot_files + t_fathomed_files +
                             t_integer_files)
-            print bak_filelist
+            print(bak_filelist)
             for f in bak_filelist:
                 os.remove(f)
         elif self.attr['display'] is 'xdot':
@@ -337,7 +346,7 @@ class BBTree(BinaryTree):
                 window.connect('destroy', gtk.main_quit)
                 gtk.main()
             else:
-                print 'Error: xdot not installed. Display disabled.'
+                print('Error: xdot not installed. Display disabled.')
                 self.attr['display'] = 'off'
         elif self.attr['display'] is 'file':
             if count is not None:
@@ -345,8 +354,8 @@ class BBTree(BinaryTree):
             if self.attr['layout'] is 'dot2tex':
                 if DOT2TEX_INSTALLED:
                     if format != 'pdf' or format != 'ps':
-                        print "Dot2tex only supports pdf and ps formats,"+\
-                            "falling back to pdf"
+                        print("Dot2tex only supports pdf and ps formats,"+\
+                            "falling back to pdf")
                         format = 'pdf'
                     self.set_layout('dot')
                     tex = dot2tex.dot2tex(self.to_string(), autosize=True,
@@ -367,7 +376,7 @@ class BBTree(BinaryTree):
                     for f in aux_filelist:
                         os.remove(f)
             else:
-                print "Dot2tex not installed, falling back to graphviz"
+                print("Dot2tex not installed, falling back to graphviz")
                 self.set_layout('dot')
                 self.write(basename+'.'+format, self.get_layout(), format)
         else:
@@ -378,7 +387,7 @@ class BBTree(BinaryTree):
         Assumes all the images have the same size.
         '''
         if not PYGAME_INSTALLED:
-            print 'Pygame not installed. Display disabled'
+            print('Pygame not installed. Display disabled')
             return
         tree = self.GenerateTreeImage()
         scatterplot = self.GenerateScatterplot()
@@ -418,7 +427,7 @@ class BBTree(BinaryTree):
         pygame.display.flip()
         if self._wait_for_keypress:
             pause = True
-            print "Press any key to continue to next image (ESCAPE to disable pausing)"
+            print("Press any key to continue to next image (ESCAPE to disable pausing)")
         else:
             pause = False
         while pause:
@@ -437,7 +446,7 @@ class BBTree(BinaryTree):
 
     def display_image(self, gnuplot):
         if not PYGAME_INSTALLED:
-            print 'Pygame not installed. Display disabled'
+            print('Pygame not installed. Display disabled')
             return
         im = StringIO(gnuplot)
         picture = pygame.image.load(im, 'png')
@@ -504,7 +513,7 @@ class BBTree(BinaryTree):
                 self.set_node_attr(id, 'final_log_cond',
                                    math.log(condition_end, 10))
         elif self.root is None:
-            print 'adding root', id
+            print('adding root', id)
             self.add_root(id, status = status, lp_bound = lp_bound,
                           integer_infeasibility_count = integer_infeasibility_count,
                           integer_infeasibility_sum = integer_infeasibility_sum,
@@ -523,7 +532,7 @@ class BBTree(BinaryTree):
                     integer_infeasibility_sum = integer_infeasibility_sum,
                     subtree_root = None, **attrs)
         else:
-            print 'this should not happen.'
+            print('this should not happen.')
             raise Exception()
         if lp_bound is not None:
             self.UpdateObjectiveValueLimits(lp_bound)
@@ -534,10 +543,10 @@ class BBTree(BinaryTree):
                 elif lp_bound > self.root.get_attr('lp_bound'):
                     self._optimization_sense = 'min'
             if self._optimization_sense == 'min' and lp_bound < self.root.get_attr('lp_bound'):
-                print "Switching guess about objective sense to maximization based on bound change"
+                print("Switching guess about objective sense to maximization based on bound change")
                 self._optimization_sense = 'max'
             if self._optimization_sense == 'max' and lp_bound > self.root.get_attr('lp_bound'):
-                print "Switching guess about objective sense to minimization based on bound change"
+                print("Switching guess about objective sense to minimization based on bound change")
                 self._optimization_sense = 'max'
         if integer_infeasibility_sum is not None:
             if (self._max_integer_infeasibility_sum is None or
@@ -556,7 +565,7 @@ class BBTree(BinaryTree):
           True if value1 is better than value2 as an objective value.
         """
         if self._optimization_sense is None:
-            print "Optimization sense is not set, assuming sense is miniminzation"
+            print("Optimization sense is not set, assuming sense is miniminzation")
             self._optimization_sense = 'min'
         if self._optimization_sense == 'min':
             return value1 < value2
@@ -626,13 +635,13 @@ class BBTree(BinaryTree):
         else:
             reference_value = self._incumbent_value
         sum_subtree_gaps = 0
-        for lp_bound in subtree_bounds.values():
+        for lp_bound in list(subtree_bounds.values()):
             sum_subtree_gaps += abs(reference_value - lp_bound)
         # Start a new sequence if a new integer solution was just found
         if self._new_integer_solution:
             if new_integer_ssg >= 1e-6:
-                scale_factor = (float(sum_subtree_gaps) /
-                                float(new_integer_ssg))
+                scale_factor = (old_div(float(sum_subtree_gaps),
+                                float(new_integer_ssg)))
             else:
                 scale_factor = 1.0
             self._sum_subtree_gaps_forecaster.StartNewSequence(scale_factor)
@@ -676,13 +685,13 @@ class BBTree(BinaryTree):
         if self._incumbent_value is not None:
             incumbent_bin = 1 + ((self._incumbent_value -
                                   self._histogram_lower_bound) // bin_width)
-            incumbent_x_coord = 0.5 + ((self._incumbent_value -
-                                        self._histogram_lower_bound) /
-                                       bin_width)
+            incumbent_x_coord = 0.5 + (old_div((self._incumbent_value -
+                                        self._histogram_lower_bound),
+                                       bin_width))
         lp_bound_bin = 1 + ((lp_bound - self._histogram_lower_bound) //
                             bin_width)
-        lp_bound_x_coord = 0.5 + ((lp_bound - self._histogram_lower_bound) /
-                                  bin_width)
+        lp_bound_x_coord = 0.5 + (old_div((lp_bound - self._histogram_lower_bound),
+                                  bin_width))
         # TODO(bhunsaker): Ask Osman about adjust_xcoord option, which appears
         #    to put the vertical lines at the edge of bins rather than the
         #    true location.
@@ -785,27 +794,27 @@ class BBTree(BinaryTree):
                                     self._histogram_lower_bound) // bin_width)
         if (highest_nonempty_bin < num_bins and
             bin_counts[highest_nonempty_bin] > 0):
-            highest_x_coord = 0.5 + ((upper_bound -
-                                      self._histogram_lower_bound) / bin_width)
+            highest_x_coord = 0.5 + (old_div((upper_bound -
+                                      self._histogram_lower_bound), bin_width))
             highest_nonempty_bin_width, unused_int = math.modf(0.5 +
                                                                highest_x_coord)
             if highest_nonempty_bin_width == 0.0:
                 highest_nonempty_bin_width = 1.0
             bin_widths[highest_nonempty_bin] = highest_nonempty_bin_width
             bin_centers[highest_nonempty_bin] = highest_x_coord - (
-                highest_nonempty_bin_width / 2)
+                old_div(highest_nonempty_bin_width, 2))
             # Scale the height appropriately
             bin_counts[highest_nonempty_bin] /= bin_widths[highest_nonempty_bin]
         lowest_nonempty_bin = int((lower_bound -
                                    self._histogram_lower_bound) // bin_width)
         if bin_counts[lowest_nonempty_bin] > 0:
-            lowest_x_coord = 0.5 + ((lower_bound -
-                                     self._histogram_lower_bound) / bin_width)
+            lowest_x_coord = 0.5 + (old_div((lower_bound -
+                                     self._histogram_lower_bound), bin_width))
             lowest_nonempty_bin_excess, unused_int = math.modf(0.5 +
                                                                lowest_x_coord)
             bin_widths[lowest_nonempty_bin] = 1.0 - lowest_nonempty_bin_excess
             bin_centers[lowest_nonempty_bin] = (
-                lowest_x_coord + bin_widths[lowest_nonempty_bin] / 2)
+                lowest_x_coord + old_div(bin_widths[lowest_nonempty_bin], 2))
             # Scale the height appropriately
             bin_counts[lowest_nonempty_bin] /= bin_widths[lowest_nonempty_bin]
 
@@ -849,12 +858,12 @@ class BBTree(BinaryTree):
                     self._histogram_lower_bound = self._incumbent_value
                 else:
                     self._histogram_lower_bound = min(objective_list)
-        bin_width = (self._histogram_upper_bound -
-                     self._histogram_lower_bound) / float(num_bins)
+        bin_width = old_div((self._histogram_upper_bound -
+                     self._histogram_lower_bound), float(num_bins))
         bin_counts = [0.0 for i in range(num_bins)]
         for value in objective_list:
-            bin = int(math.floor((value - self._histogram_lower_bound) /
-                                 bin_width))
+            bin = int(math.floor(old_div((value - self._histogram_lower_bound),
+                                 bin_width)))
             # Special case for the largest value.
             if (value >= self._histogram_upper_bound and
                 value < self._histogram_upper_bound + 1e-6):
@@ -1190,14 +1199,14 @@ class BBTree(BinaryTree):
                 horizontal_upper_bound[node_id] = horizontal_positions[
                     parent_id]
             else:
-                print 'Error: node %s has unsupported branching direction.'\
-                    %node_id
-                print 'Fixed-position tree images only support L and R '
-                print 'branching.'
+                print('Error: node %s has unsupported branching direction.'\
+                    %node_id)
+                print('Fixed-position tree images only support L and R ')
+                print('branching.')
                 sys.exit(1)
-            horizontal_positions[node_id] = (
+            horizontal_positions[node_id] = old_div((
                 horizontal_upper_bound[node_id] +
-                horizontal_lower_bound[node_id]) / 2
+                horizontal_lower_bound[node_id]), 2)
         return horizontal_positions
 
     def GetTreeHorizontalPositions(self):
@@ -1273,7 +1282,7 @@ class BBTree(BinaryTree):
             sorted_child_labels = sorted(children_list)
             # Determine where to place this node with respect to its children.
             # Put the node in the center, or have more children on the left.
-            before_index = int(math.ceil(number_of_children/2.0))
+            before_index = int(math.ceil(old_div(number_of_children,2.0)))
             # Exception with a single node that is 'L'
             if number_of_children == 1:
                 if direction != 'L':
@@ -1282,8 +1291,8 @@ class BBTree(BinaryTree):
             for i, label in enumerate(sorted_child_labels):
                 if before_index == i:
                     # Determine the relative position for the current node
-                    relative_position = (cumulative_descendants + 0.5) / (
-                        total_descendants)
+                    relative_position = old_div((cumulative_descendants + 0.5), (
+                        total_descendants))
                     cumulative_descendants += 1
                 # Set bounds for this child
                 horizontal_lower_bound[quote(label)] = (
@@ -1298,8 +1307,8 @@ class BBTree(BinaryTree):
             # Catch the case that the node comes after all its children.
             # This must also work for the case that this is the only node.
             if before_index == len(sorted_child_labels):
-                relative_position = (cumulative_descendants + 0.5) / (
-                    total_descendants)
+                relative_position = old_div((cumulative_descendants + 0.5), (
+                    total_descendants))
             # Finally set the position for the current node
             horizontal_positions[quote(node)] = (
                 horizontal_lower_bound[quote(node)] + relative_position * (
@@ -1468,7 +1477,7 @@ class BBTree(BinaryTree):
             return
         tokens = line.split()
         if len(tokens) < 3:
-            print 'Incomplete or invalid line: %s' %' '.join(tokens)
+            print('Incomplete or invalid line: %s' %' '.join(tokens))
             sys.exit(1)
         # Tokens shared by all line types
         self._time = float(tokens[0])
@@ -1511,8 +1520,8 @@ class BBTree(BinaryTree):
                 self.ProcessInfeasibleLine(node_id, parent_id,
                                            branch_direction, remaining_tokens)
             else:
-                print 'Unexpected line type "%s": %s' % (line_type,
-                                                         ' '.join(tokens))
+                print('Unexpected line type "%s": %s' % (line_type,
+                                                         ' '.join(tokens)))
                 sys.exit(1)
 
     def ProcessHeuristicLine(self, remaining_tokens):
@@ -1524,10 +1533,10 @@ class BBTree(BinaryTree):
         """
         # Parse remaining tokens
         if len(remaining_tokens) < 1 or len(remaining_tokens) > 2:
-            print 'Invalid line: %s heuristic %s' % (
-                    self._time, ' '.join(remaining_tokens))
-            print 'Should match: <time> heuristic <obj value>'+\
-                ' [<associated node id>]'
+            print('Invalid line: %s heuristic %s' % (
+                    self._time, ' '.join(remaining_tokens)))
+            print('Should match: <time> heuristic <obj value>'+\
+                ' [<associated node id>]')
             sys.exit(1)
         objective_value = float(remaining_tokens[0])
         if len(remaining_tokens) == 2:
@@ -1537,10 +1546,10 @@ class BBTree(BinaryTree):
         # Check that this is actually an improvement
         if self._incumbent_value is not None and self._optimization_sense is None:
             if objective_value > self._incumbent_value:
-                print "Objective sense unset, guessing maximization"
+                print("Objective sense unset, guessing maximization")
                 self._optimization_sense = 'max'
             else:
-                print "Objective sense unset, guessing minimization"
+                print("Objective sense unset, guessing minimization")
                 self._optimization_sense = 'min'
         if not self.IsBetterThanIncumbent(objective_value):
             return
@@ -1565,11 +1574,11 @@ class BBTree(BinaryTree):
         """
         # Parse remaining tokens
         if len(remaining_tokens) != 1:
-            print 'Invalid line: %s integer %s %s %s %s' % (
+            print('Invalid line: %s integer %s %s %s %s' % (
                     self._time, node_id, parent_id, branch_direction,
-                    ' '.join(remaining_tokens))
-            print 'Should match: <time> integer <node id> <parent id>'+\
-                '<branch direction> <obj value>'
+                    ' '.join(remaining_tokens)))
+            print('Should match: <time> integer <node id> <parent id>'+\
+                '<branch direction> <obj value>')
             sys.exit(1)
         objective_value = float(remaining_tokens[0])
         self.AddOrUpdateNode(node_id, parent_id, branch_direction, 'integer',
@@ -1593,15 +1602,15 @@ class BBTree(BinaryTree):
         """
         # Print a warning if there is no current incumbent.
         if self._incumbent_value is None:
-            print 'WARNING: Encountered "fathom" line before first incumbent.'
-            print '  This may indicate an error in the input file.'
+            print('WARNING: Encountered "fathom" line before first incumbent.')
+            print('  This may indicate an error in the input file.')
         # Parse remaining tokens
         if len(remaining_tokens) > 1:
-            print 'Invalid line: %s fathomed %s %s %s %s' % (
+            print('Invalid line: %s fathomed %s %s %s %s' % (
                     self._time, node_id, parent_id, branch_direction,
-                    ' '.join(remaining_tokens))
-            print 'Should match: <time> fathomed <node id> <parent id>'+\
-                '<branch direction> [<lp bound>]'
+                    ' '.join(remaining_tokens)))
+            print('Should match: <time> fathomed <node id> <parent id>'+\
+                '<branch direction> [<lp bound>]')
             sys.exit(1)
         if len(remaining_tokens) == 1:
             lp_bound = float(remaining_tokens[0])
@@ -1641,13 +1650,13 @@ class BBTree(BinaryTree):
         """
         # Parse remaining tokens
         if len(remaining_tokens) != 3:
-            print 'Invalid line: %s pregnant %s %s %s %s' % (
+            print('Invalid line: %s pregnant %s %s %s %s' % (
                     self._time, node_id, parent_id, branch_direction,
-                    ' '.join(remaining_tokens))
-            print 'Should match: <time> pregnant <node id> <parent id> '
-            print '<branch direction> <lp bound> '
-            print '<sum of integer infeasibilities> <number of integer '
-            print 'infeasibilities>'
+                    ' '.join(remaining_tokens)))
+            print('Should match: <time> pregnant <node id> <parent id> ')
+            print('<branch direction> <lp bound> ')
+            print('<sum of integer infeasibilities> <number of integer ')
+            print('infeasibilities>')
             sys.exit(1)
         lp_bound = float(remaining_tokens[0])
         integer_infeasibility_sum = float(remaining_tokens[1])
@@ -1671,13 +1680,13 @@ class BBTree(BinaryTree):
         """
         # Parse remaining tokens
         if len(remaining_tokens) not in [3, 5]:
-            print 'Invalid line: %s branched %s %s %s %s' % (
+            print('Invalid line: %s branched %s %s %s %s' % (
                     self._time, node_id, parent_id, branch_direction,
-                    ' '.join(remaining_tokens))
-            print 'Should match: <time> branched <node id> <parent id> '
-            print '<branch direction> <lp bound> '
-            print '<sum of integer infeasibilities> <number of integer '
-            print 'infeasibilities>'
+                    ' '.join(remaining_tokens)))
+            print('Should match: <time> branched <node id> <parent id> ')
+            print('<branch direction> <lp bound> ')
+            print('<sum of integer infeasibilities> <number of integer ')
+            print('infeasibilities>')
             sys.exit(1)
         lp_bound = float(remaining_tokens[0])
         integer_infeasibility_sum = float(remaining_tokens[1])
@@ -1707,11 +1716,11 @@ class BBTree(BinaryTree):
         """
         # Parse remaining tokens
         if len(remaining_tokens) not in [0, 2]:
-            print 'Invalid line: %s infeasible %s %s %s %s' % (
+            print('Invalid line: %s infeasible %s %s %s %s' % (
                     self._time, node_id, parent_id, branch_direction,
-                    ' '.join(remaining_tokens))
-            print 'Should match: <time> infeasible <node id> <parent id> '
-            print '<branch direction>'
+                    ' '.join(remaining_tokens)))
+            print('Should match: <time> infeasible <node id> <parent id> ')
+            print('<branch direction>')
             sys.exit(1)
         # Use parent values if the node does not have its own
         lp_bound = self.get_node_attr(parent_id, 'lp_bound')
@@ -1748,13 +1757,13 @@ class BBTree(BinaryTree):
         """
         # Parse remaining tokens
         if len(remaining_tokens) == 2 or len(remaining_tokens) > 3:
-            print 'Invalid line: %s branched %s %s %s %s' % (
+            print('Invalid line: %s branched %s %s %s %s' % (
                     self._time, node_id, parent_id, branch_direction,
-                    ' '.join(remaining_tokens))
-            print 'Should match: <time> candidate <node id> <parent id> '
-            print '<branch direction> [<lp bound>] '
-            print '[<sum of integer infeasibilities> <number of integer '
-            print 'infeasibilities>]'
+                    ' '.join(remaining_tokens)))
+            print('Should match: <time> candidate <node id> <parent id> ')
+            print('<branch direction> [<lp bound>] ')
+            print('[<sum of integer infeasibilities> <number of integer ')
+            print('infeasibilities>]')
             sys.exit(1)
         # if parent_id not in self.get_node_list():
         #     print 'Error: node %s not in set' % parent_id
@@ -1826,10 +1835,10 @@ class BBTree(BinaryTree):
         ssg_measures = self._sum_subtree_gaps_forecaster.GetAllMeasures()
         # Check that there are values to process.
         if len(gap_measures) == 0 or len(ssg_measures) == 0:
-            print 'WARNING: Not printing prediction images because at least'+\
-                ' one measure set is empty.'
-            print '  Gap measures: %d' % len(gap_measures)
-            print '  SSG measures: %d' % len(ssg_measures)
+            print('WARNING: Not printing prediction images because at least'+\
+                ' one measure set is empty.')
+            print('  Gap measures: %d' % len(gap_measures))
+            print('  SSG measures: %d' % len(ssg_measures))
             return
         # Gap measures
         gap_data_filename = 'gap_measures.dat'
@@ -1842,7 +1851,7 @@ class BBTree(BinaryTree):
         data_file = open(ssg_data_filename, 'w')
         # We need to scale the SSG measures so that it will make sense to
         # look at them on the same plot with gap measures.
-        scale_factor=float(gap_measures[0].value)/float(ssg_measures[0].value)
+        scale_factor=old_div(float(gap_measures[0].value),float(ssg_measures[0].value))
         for measure in ssg_measures:
             data_file.write('%0.6f %0.6f\n' % (measure.time,
                                                measure.value * scale_factor))
@@ -1890,7 +1899,7 @@ class BBTree(BinaryTree):
                                                    forecast.forecast))
             data_file.close()
         if not gap_forecasts and not ssg_forecasts:
-            print 'No forecasts made, so not creating forecast image.'
+            print('No forecasts made, so not creating forecast image.')
             return
         # Set terminal for the output files.
         forecast_script = 'set terminal png notransparent size 480,360\n\n'
@@ -2037,7 +2046,7 @@ def parse_options():
     if (not options.histogram and not options.scatterplot and
         not options.path and not options.tree and not options.fixed_tree and
         not options.predictions):
-        print 'No image types specified so not processing.'
+        print('No image types specified so not processing.')
         parser.print_usage()
         sys.exit(1)
     # Bounds for incumbent paths will be undefined without scatterplots.
@@ -2059,7 +2068,7 @@ def parse_options():
     if (not options.histogram and not options.scatterplot and
         not options.path and not options.tree and not options.fixed_tree and
         not options.predictions):
-        print 'No image types specified so not processing.'
+        print('No image types specified so not processing.')
         sys.exit(1)
     # Bounds for incumbent paths will be undefined without scatterplots.
     if options.path:
@@ -2068,7 +2077,7 @@ def parse_options():
 
 
 if __name__ == '__main__':
-    from BranchAndBound import GenerateRandomMIP, BranchAndBound
+    from .BranchAndBound import GenerateRandomMIP, BranchAndBound
 
     T = BBTree()
     #T.set_layout('dot2tex')

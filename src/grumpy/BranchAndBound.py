@@ -1,3 +1,9 @@
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import str
+from builtins import range
+from past.utils import old_div
 __author__ = 'Ted Ralphs'
 __maintainer__ = 'Ted Ralphs (ted@lehigh.edu)'
 
@@ -9,9 +15,9 @@ except ImportError:
 import time
 from pulp import LpVariable, lpSum, LpProblem, LpMaximize, LpConstraint
 from pulp import LpStatus, value
-from BBTree import BBTree
-from BBTree import MOST_FRACTIONAL, FIXED_BRANCHING, PSEUDOCOST_BRANCHING
-from BBTree import DEPTH_FIRST, BEST_FIRST, BEST_ESTIMATE, INFINITY
+from .BBTree import BBTree
+from .BBTree import MOST_FRACTIONAL, FIXED_BRANCHING, PSEUDOCOST_BRANCHING
+from .BBTree import DEPTH_FIRST, BEST_FIRST, BEST_ESTIMATE, INFINITY
 
 def GenerateRandomMIP(numVars = 40, numCons = 20, density = 0.2,
                       maxObjCoeff = 10, maxConsCoeff = 10, 
@@ -85,23 +91,23 @@ def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
     opt = dict([(i, 0) for i in VARIABLES])
     pseudo_u = dict((i, (OBJ[i], 0)) for i in VARIABLES)
     pseudo_d = dict((i, (OBJ[i], 0)) for i in VARIABLES)
-    print "==========================================="
-    print "Starting Branch and Bound"
+    print("===========================================")
+    print("Starting Branch and Bound")
     if branch_strategy == MOST_FRACTIONAL:
-        print "Most fractional variable"
+        print("Most fractional variable")
     elif branch_strategy == FIXED_BRANCHING:
-        print "Fixed order"
+        print("Fixed order")
     elif branch_strategy == PSEUDOCOST_BRANCHING:
-        print "Pseudocost brancing"
+        print("Pseudocost brancing")
     else:
-        print "Unknown branching strategy %s" %branch_strategy
+        print("Unknown branching strategy %s" %branch_strategy)
     if search_strategy == DEPTH_FIRST:
-        print "Depth first search strategy"
+        print("Depth first search strategy")
     elif search_strategy == BEST_FIRST:
-        print "Best first search strategy"
+        print("Best first search strategy")
     else:
-        print "Unknown search strategy %s" %search_strategy
-    print "==========================================="
+        print("Unknown search strategy %s" %search_strategy)
+    print("===========================================")
     # List of candidate nodes
     Q = PriorityQueue()
     # The current tree depth
@@ -120,15 +126,15 @@ def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
             cur_depth = T.get_node_attr(parent, 'level') + 1
         else:
             cur_depth = 0
-        print ""
-        print "----------------------------------------------------"
-        print ""
+        print("")
+        print("----------------------------------------------------")
+        print("")
         if LB > -INFINITY:
-            print "Node: %s, Depth: %s, LB: %s" %(cur_index,cur_depth,LB)
+            print("Node: %s, Depth: %s, LB: %s" %(cur_index,cur_depth,LB))
         else:
-            print "Node: %s, Depth: %s, LB: %s" %(cur_index,cur_depth,"None")
+            print("Node: %s, Depth: %s, LB: %s" %(cur_index,cur_depth,"None"))
         if relax is not None and relax <= LB:
-            print "Node pruned immediately by bound"
+            print("Node pruned immediately by bound")
             T.set_node_attr(parent, 'color', 'red')
             continue
         #====================================
@@ -149,7 +155,7 @@ def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                 prob += LpConstraint(lpSum(var[branch_var]) >= rhs)
             else:
                 prob += LpConstraint(lpSum(var[branch_var]) <= rhs)
-            print branch_var,
+            print(branch_var, end=' ')
             pred = parent
             while str(pred) is not '0':
                 pred_branch_var = T.get_node_attr(pred, 'branch_var')
@@ -161,10 +167,10 @@ def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                 else:
                     prob += LpConstraint(lpSum(var[pred_branch_var])
                                          >= pred_rhs)
-                print pred_branch_var,
+                print(pred_branch_var, end=' ')
                 branch_vars.append(pred_branch_var)
                 pred = T.get_node_attr(pred, 'parent')
-            print
+            print()
         # Solve the LP relaxation
         prob.solve()
         lp_count = lp_count +1
@@ -173,25 +179,25 @@ def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
             LpStatus[prob.status] == "Undefined"
         # Print status
         if infeasible:
-            print "LP Solved, status: Infeasible"
+            print("LP Solved, status: Infeasible")
         else:
-            print "LP Solved, status: %s, obj: %s" %(LpStatus[prob.status],
-                                                     value(prob.objective))
+            print("LP Solved, status: %s, obj: %s" %(LpStatus[prob.status],
+                                                     value(prob.objective)))
         if(LpStatus[prob.status] == "Optimal"):
             relax = value(prob.objective)
             # Update pseudocost
             if branch_var != None:
                 if sense == '<=':
                     pseudo_d[branch_var] = (
-                    (pseudo_d[branch_var][0]*pseudo_d[branch_var][1] +
-                    (T.get_node_attr(parent, 'obj') - relax)/
-                    (branch_var_value - rhs))/(pseudo_d[branch_var][1]+1),
+                    old_div((pseudo_d[branch_var][0]*pseudo_d[branch_var][1] +
+                    old_div((T.get_node_attr(parent, 'obj') - relax),
+                    (branch_var_value - rhs))),(pseudo_d[branch_var][1]+1)),
                     pseudo_d[branch_var][1]+1)
                 else:
                     pseudo_u[branch_var] = (
-                    (pseudo_u[branch_var][0]*pseudo_d[branch_var][1] +
-                     (T.get_node_attr(parent, 'obj') - relax)/
-                     (rhs - branch_var_value))/(pseudo_u[branch_var][1]+1),
+                    old_div((pseudo_u[branch_var][0]*pseudo_d[branch_var][1] +
+                     old_div((T.get_node_attr(parent, 'obj') - relax),
+                     (rhs - branch_var_value))),(pseudo_u[branch_var][1]+1)),
                     pseudo_u[branch_var][1]+1)
             var_values = dict([(i, var[i].varValue) for i in VARIABLES])
             integer_solution = 1
@@ -214,42 +220,42 @@ def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                     # These two have different data structures first one
                     #list, second one dictionary
                     opt[i] = var_values[i]
-                print "New best solution found, objective: %s" %relax
+                print("New best solution found, objective: %s" %relax)
                 for i in VARIABLES:
                     if var_values[i] > 0:
-                        print "%s = %s" %(i, var_values[i])
+                        print("%s = %s" %(i, var_values[i]))
             elif (integer_solution and relax<=LB):
-                print "New integer solution found, objective: %s" %relax
+                print("New integer solution found, objective: %s" %relax)
                 for i in VARIABLES:
                     if var_values[i] > 0:
-                        print "%s = %s" %(i, var_values[i])
+                        print("%s = %s" %(i, var_values[i]))
             else:
-                print "Fractional solution:"
+                print("Fractional solution:")
                 for i in VARIABLES:
                     if var_values[i] > 0:
-                        print "%s = %s" %(i, var_values[i])
+                        print("%s = %s" %(i, var_values[i]))
             #For complete enumeration
             if complete_enumeration:
                 relax = LB - 1
         else:
             relax = INFINITY
         if integer_solution:
-            print "Integer solution"
+            print("Integer solution")
             BBstatus = 'S'
             status = 'integer'
             color = 'lightblue'
         elif infeasible:
-            print "Infeasible node"
+            print("Infeasible node")
             BBstatus = 'I'
             status = 'infeasible'
             color = 'orange'
         elif not complete_enumeration and relax <= LB:
-            print "Node pruned by bound (obj: %s, UB: %s)" %(relax,LB)
+            print("Node pruned by bound (obj: %s, UB: %s)" %(relax,LB))
             BBstatus = 'P'
             status = 'fathomed'
             color = 'red'
         elif cur_depth >= numVars :
-            print "Reached a leaf"
+            print("Reached a leaf")
             BBstatus = 'fathomed'
             status = 'L'
         else:
@@ -269,8 +275,8 @@ def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                 integer_infeasibility_sum = None
             if status is 'fathomed':
                 if T._incumbent_value is None:
-                    print 'WARNING: Encountered "fathom" line before '+\
-                        'first incumbent.'
+                    print('WARNING: Encountered "fathom" line before '+\
+                        'first incumbent.')
             T.AddOrUpdateNode(0, None, None, 'candidate', relax,
                              integer_infeasibility_count,
                              integer_infeasibility_sum,
@@ -297,9 +303,9 @@ def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                 relax = T.get_node_attr(parent, 'lp_bound')
             elif status is 'fathomed':
                 if T._incumbent_value is None:
-                    print 'WARNING: Encountered "fathom" line before'+\
-                        ' first incumbent.'
-                    print '  This may indicate an error in the input file.'
+                    print('WARNING: Encountered "fathom" line before'+\
+                        ' first incumbent.')
+                    print('  This may indicate an error in the input file.')
             elif status is 'integer':
                 integer_infeasibility_count = None
                 integer_infeasibility_sum = None
@@ -363,13 +369,13 @@ def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                         scores[i] = min(pseudo_u[i][0]*(1-var[i].varValue),
                                         pseudo_d[i][0]*var[i].varValue)
                     # sort the dictionary by value
-                branching_var = sorted(scores.items(),
+                branching_var = sorted(list(scores.items()),
                                        key=lambda x : x[1])[-1][0]
             else:
-                print "Unknown branching strategy %s" %branch_strategy
+                print("Unknown branching strategy %s" %branch_strategy)
                 exit()
             if branching_var >= 0:
-                print "Branching on variable %s" %branching_var
+                print("Branching on variable %s" %branching_var)
             #Create new nodes
             if search_strategy == DEPTH_FIRST:
                 priority = (-cur_depth - 1, -cur_depth - 1)
@@ -396,23 +402,23 @@ def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
             T.display(count=iter_count)
 
     timer = int(math.ceil((time.time()-timer)*1000))
-    print ""
-    print "==========================================="
-    print "Branch and bound completed in %sms" %timer
-    print "Strategy: %s" %branch_strategy
+    print("")
+    print("===========================================")
+    print("Branch and bound completed in %sms" %timer)
+    print("Strategy: %s" %branch_strategy)
     if complete_enumeration:
-        print "Complete enumeration"
-    print "%s nodes visited " %node_count
-    print "%s LP's solved" %lp_count
-    print "==========================================="
-    print "Optimal solution"
+        print("Complete enumeration")
+    print("%s nodes visited " %node_count)
+    print("%s LP's solved" %lp_count)
+    print("===========================================")
+    print("Optimal solution")
     #print optimal solution
     for i in sorted(VARIABLES):
         if opt[i] > 0:
-            print "%s = %s" %(i, opt[i])
-    print "Objective function value"
-    print LB
-    print "==========================================="
+            print("%s = %s" %(i, opt[i]))
+    print("Objective function value")
+    print(LB)
+    print("===========================================")
     if T.attr['display'] is not 'off':
         T.display(count=iter_count)
     T._lp_count = lp_count

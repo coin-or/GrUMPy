@@ -1,3 +1,6 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import str
 try:
     from src.grumpy.polyhedron2D import Polyhedron2D, Figure
 except ImportError:
@@ -11,7 +14,7 @@ try:
 except ImportError:
     CYLP_INSTALLED = False
     
-import LP9 as LP
+from . import LP9 as LP
 
 def disp_polyhedron(A = None, b = None, points = None, rays = None, c = None, obj_val = None,
                     opt = None, loc = None):
@@ -35,7 +38,7 @@ except AttributeError:
     try:
         p = Polyhedron2D(points = LP.points, rays = LP.rays)
     except AttributeError:
-        print 'Error: Must specify either A and b or points and rays'
+        print('Error: Must specify either A and b or points and rays')
         p = None
 
 if p is not None:
@@ -46,8 +49,8 @@ if p is not None:
         A = np.matrix(p.hrep.A)
         b = CyLPArray(p.hrep.b)
         
-        print A
-        print b
+        print(A)
+        print(b)
     
         if LP.numVars == 2:
             disp_polyhedron(A = A, b = b)
@@ -69,34 +72,34 @@ if p is not None:
         lp.logLevel = 0
         lp.primal(startFinishOptions = 'x')
         np.set_printoptions(precision = 2, linewidth = 200)
-        print 'Basic variables: ', lp.basicVariables
-        print "Current tableaux and reduced costs:"
-        print lp.reducedCosts
-        print np.around(lp.tableau, decimals = 3)
-        print 'Right-hand side of optimal tableaux:'
+        print('Basic variables: ', lp.basicVariables)
+        print("Current tableaux and reduced costs:")
+        print(lp.reducedCosts)
+        print(np.around(lp.tableau, decimals = 3))
+        print('Right-hand side of optimal tableaux:')
         #There is a bug in CyLP and this is wrong
         #print lp.rhs
         if LP.sense[0] == '<=':
-            print np.dot(lp.basisInverse, lp.constraintsUpper)
+            print(np.dot(lp.basisInverse, lp.constraintsUpper))
         else:
-            print np.dot(lp.basisInverse, lp.constraintsLower)
-        print 'Inverse of optimal basis:'
-        print np.around(lp.basisInverse, 3)
+            print(np.dot(lp.basisInverse, lp.constraintsLower))
+        print('Inverse of optimal basis:')
+        print(np.around(lp.basisInverse, 3))
         if LP.sense[1] == 'Min':
             obj_val = lp.objectiveValue
         else:
             obj_val = -lp.objectiveValue
             
         psol = np.around(lp.primalVariableSolution['x'], 2)
-        print 'Optimal Value:', obj_val
-        print 'Primal solution:', psol
-        print 'Dual solution:', lp.dualConstraintSolution['R_1']
+        print('Optimal Value:', obj_val)
+        print('Primal solution:', psol)
+        print('Dual solution:', lp.dualConstraintSolution['R_1'])
     
         if LP.numVars == 2:
             disp_polyhedron(A = A, b = b, c = c, obj_val = obj_val,
                             opt = psol.tolist(), loc = (psol[0]+0.1, psol[1]-0.1))
     else:
-        print LP.A
-        print LP.b
+        print(LP.A)
+        print(LP.b)
     
         disp_polyhedron(A = p.hrep.A, b = p.hrep.b)
