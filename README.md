@@ -1,4 +1,6 @@
-# GrUMPy 0.85
+# GrUMPy 0.9.0
+
+## Now with Python 3 support!
 
 [![DOI](https://zenodo.org/badge/18217673.svg)](https://zenodo.org/badge/latestdoi/18217673)
 
@@ -11,7 +13,7 @@ thus appropriate for use in the classroom.
 
 Documentation for the API is here:
 
-https://coin-or.github.io/GrUMPy
+https://tkralphs.github.io/GrUMPy
 
 Pypi download page is here:
 
@@ -19,14 +21,10 @@ https://pypi.python.org/pypi/coinor.grumpy
 
 See below for brief documentation of usage
 
-## Installation Notes
+##Installation Notes
 
 To install, do:
 
-```
-easy_install coinor.grumpy
-```
-or
 ```
 pip install coinor.grumpy
 ```
@@ -42,7 +40,7 @@ pip install coinor.grumpy
   
   It is also possible to typeset labels in LaTex and to output the graph in LaTex format using `dot2tex` (**Warning**: recent versions of `dot2tex` have not perfectly, your mileage may vary). After installing `dot2tex`, this can be done by simply calling the method `write(basename='fileName', format='dot')`, and then doing `dot2tex --tmath fileName.dot` or by calling `set_display_mode('dot2tex')` and then `display()` as usual. At the moment, the latter only seems to work with version `2.9.0dev` available [here](https://github.com/Alwnikrotikz/dot2tex). For the former method, just using `easy_install dot2tex` should work fine.
 1. GrUMPy also creates some visualizations with [gnuplot](https://sourceforge.net/projects/gnuplot/). For tips on installing `gnuplot`, see below.
-1. GrUMPy can also visualize 2D polyhedra with the installation of [pypolyhedron](https://github.com/rdeits/pypolyhedron), which must be installed from source.
+1. GrUMPy can also visualize 2D polyhedra with the installation of [pypolyhedron](https://github.com/tkralphs/pypolyhedron), which can be install with `pip install pypolyhedron`
   
 # Additional Notes for Windows Installation
 
@@ -65,7 +63,7 @@ pip install coinor.grumpy
 
 There have been reports of incompatibilities with recent versions of PyGtk, but I have not attempted yet to track this down. If things break, you may try some variant of the instructions above for installing on Windows.
 
-## Examples of Visualizations
+##Examples of Visualizations
 
 ![Branch and bound tree](https://github.com/coin-or/GrUMPy/raw/master/images/BranchAndBound.png)
 
@@ -75,9 +73,9 @@ There have been reports of incompatibilities with recent versions of PyGtk, but 
 
 ![Figure 3 made with GrUMPy](https://raw.githubusercontent.com/tkralphs/GrUMPy/master/images/GMI-Row3.png)
 
-## Usage
+##Usage
 
-### Visualizing Branch and Bound Trees
+###Visualizing Branch and Bound Trees
 
 There are two separate modes for visualizing branch and bound trees. One uses
 [GiMPy](https://github.com/coin-or/GiMPy) to visualize the tree (which in turn
