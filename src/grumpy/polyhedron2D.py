@@ -4,7 +4,7 @@ from builtins import range
 from builtins import object
 from past.utils import old_div
 import numpy as np
-from polyhedron import Vrep, Hrep
+from pypolyhedron.polyhedron import Vrep, Hrep
 import matplotlib.pyplot as plt
 import matplotlib.lines as lines
 from math import ceil, floor
