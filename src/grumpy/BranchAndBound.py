@@ -157,7 +157,7 @@ def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                 prob += LpConstraint(lpSum(var[branch_var]) <= rhs)
             print(branch_var, end=' ')
             pred = parent
-            while str(pred) is not '0':
+            while not str(pred) == '0':
                 pred_branch_var = T.get_node_attr(pred, 'branch_var')
                 pred_rhs = T.get_node_attr(pred, 'rhs')
                 pred_sense = T.get_node_attr(pred, 'sense')
@@ -341,7 +341,7 @@ def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
         if BBstatus == 'C':
             # Branching:
             # Choose a variable for branching
-            branching_var = -1
+            branching_var = None
             if branch_strategy == FIXED_BRANCHING:
                 #fixed order
                 for i in VARIABLES:
@@ -374,7 +374,7 @@ def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
             else:
                 print("Unknown branching strategy %s" %branch_strategy)
                 exit()
-            if branching_var >= 0:
+            if branching_var is not None:
                 print("Branching on variable %s" %branching_var)
             #Create new nodes
             if search_strategy == DEPTH_FIRST:
