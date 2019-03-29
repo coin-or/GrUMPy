@@ -1,0 +1,846 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.5.3" />
+<title>coinor.grumpy.forecasting API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.name small{font-weight:normal}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title"><code>coinor.grumpy.forecasting</code> module</h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">from __future__ import division
+from __future__ import print_function
+from past.utils import old_div
+from builtins import object
+# BAK_visual.py
+#
+#  Copyright 2009 Google Inc.
+#  Copyright 2007 University of Pittsburgh.
+#  Google coding done by Brady Hunsaker.
+#  U of Pittsburgh coding done by Osman Ozaltin and Brady Hunsaker.
+#
+#  This file is part of BAK (Branch-and-bound Analysis Kit).
+#
+#  The contents of this file are subject to the Common Public License
+#  1.0.  (the &#34;License&#34;); you may not use this file except in
+#  compliance with the License. You should have received a copy of
+#  the Common Public License along with STOP.
+#
+#  Software distributed under the License is distributed on an &#34;AS
+#  IS&#34; basis, WITHOUT WARRANTY OF ANY KIND, either express or
+#  implied. See the License for the specific language governing
+#  rights and limitations under the License.
+#
+#  Alternatively, the contents of this file may be used under the
+#  terms of the GNU General Public License Version 2 or later (the
+#  &#34;GPL&#34;), in which case the provisions of the GPL are applicable
+#  instead of those above. If you wish to allow use of your version
+#  of this file only under the terms of the GPL, and not to allow
+#  others to use your version of this file under the terms of the
+#  CPL, indicate your decision by deleting the provisions above and
+#  replace them with the notice and other provisions required by the
+#  GPL. If you do not delete the provisions above, a recipient may
+#  use your version of this file under the terms of either the CPL or
+#  the GPL.
+#
+
+# For developers: Please keep the code style consistent with the Python
+# style guide for Google&#39;s Summer of Code, except use 4 spaces to indent:
+#   http://code.google.com/p/soc/wiki/PythonStyleGuide
+
+__author__ = &#39;Brady Hunsaker, Osman Ozaltin&#39;
+__maintainer__ = &#39;Brady Hunsaker (bhunsaker@google.com)&#39;
+
+&#34;&#34;&#34;Double exponential smoothing forecasting in chained sequences.
+
+A single sequence is stored in a DoubleExponentialSmoothingForecaster, which
+also provides forecasts for time to completion based on the stored measures,
+which should be monotonically decreasing.
+
+Sequences are chained together in a ForecastingChainedSequences object.
+Such an object includes scale factors for each sequence.  The scale factors
+will be applied to the measurements, usually for the purpose of making the
+chained sequence monotonically decreasing.
+&#34;&#34;&#34;
+
+import math
+
+
+class ProgressMeasurement(object):
+    &#34;&#34;&#34;Key data recording progress.  Data members are public.
+    &#34;&#34;&#34;
+    def __init__(self, time, value, active_node_count, node_count):
+        self.time = float(time)
+        self.value = float(value)
+        self.active_node_count = int(active_node_count)
+        self.node_count = int(node_count)
+
+
+class TimeForecast(object):
+    &#34;&#34;&#34;Time-stamped forecast of time remaining.
+    &#34;&#34;&#34;
+    def __init__(self, time, forecast):
+        self.time = float(time)
+        self.forecast = float(forecast)
+
+
+class DoubleExponentialSmoothingForecaster(object):
+    &#34;&#34;&#34;Uses double exponential smoothing to forecast values.
+    &#34;&#34;&#34;
+    def __init__(self, scale_factor, first_value, first_time):
+        self._measures = []
+        self._forecasts = []
+
+        self._b_t = None
+        self._S_t = None
+
+        self._scale_factor = float(scale_factor)
+        self._first_time = -1
+
+        if first_value is None:
+            self._first_value = 1
+        else:
+            self._first_value = float(first_value)
+
+        self._alpha = 0.5
+        self._lambda = 0.5
+        self._gamma = 0.5
+
+        self._counter = 0
+
+    def AddMeasure(self, measurement):
+        self._measures.append(measurement)
+        self.ComputeForecast()
+
+    def ComputeForecast(self):
+        # Check if the forecast was already computed
+        if len(self._forecasts) == len(self._measures) - 3:
+            return
+        # Must have at least 4 measurements to make a forecast.
+        if len(self._measures) &lt; 4:
+            return
+
+        # Check that a minimum amount of time has passed
+        if self._measures[-1].time - self._measures[-2].time &lt; 1:
+            return
+
+        measure_value = self._measures[-1].value * self._scale_factor
+        previous_value = self._measures[-2].value * self._scale_factor
+        time = self._measures[-1].time
+        previous_time = self._measures[-2].time
+        delta = old_div(float((measure_value - previous_value)), float((time - previous_time)))
+        if -delta &lt; 0.00001 * measure_value:
+            delta = 0
+
+        # Set initial parameters if necessary otherwise update the estimators
+        if self._b_t is None:
+            if self._first_value &gt; 0:
+                self._b_t = delta
+                self._S_t = (measure_value * self._alpha +
+                             previous_value * (1 - self._alpha))
+            else:
+                self._b_t = self._first_value
+                self._S_t = (measure_value * self._alpha +
+                             previous_value * (1 - self._alpha))
+
+        if self._b_t &lt; -measure_value:
+            self._b_t = -measure_value
+            self._S_t = (measure_value * self._alpha +
+                         previous_value * (1 - self._alpha))
+
+        updated = False
+
+        if delta &lt; 0:
+            self._b_t = self._gamma * delta + (1 - self._gamma) * self._b_t
+            self._S_t = (self._alpha * measure_value +
+                         (1 - self._alpha) * self._S_t)
+            updated = True
+
+        print(&#39;delta: %f&#39; %delta)
+        print(&#39;self._lambda*self._b_t: %f&#39; %(self._lambda*self._b_t))
+        if delta &lt; self._lambda * self._b_t:
+            if not updated:
+                self._b_t = self._gamma * delta + (1 - self._gamma) * self._b_t
+                self._S_t = (self._alpha * measure_value +
+                             (1 - self._alpha) * self._S_t)
+                updated = True
+
+            forecast = (time + (old_div(float(-self._S_t), min(delta,self._b_t))))
+            print(&#39;A&#39;, time, previous_value, measure_value, end=&#39; &#39;)
+            print(self._S_t, self._b_t, forecast)
+            #cent = float(input(&#34;STOP&#34;))
+        elif len(self._forecasts) &gt;= 1:
+            # The measure didn&#39;t change but we have a previous forecast
+            if self._forecasts[-1].forecast &gt;= time:
+                forecast = self._forecasts[-1].forecast
+            else:
+                forecast = (time +
+                            (old_div(float(self._measures[-1].active_node_count),
+                             self._measures[-2].active_node_count)) *
+                            (self._forecasts[-1].forecast -
+                             self._forecasts[-1].time))
+
+            print(&#39;B&#39;, time, previous_value, measure_value, forecast)
+            #cent = float(input(&#34;STOP&#34;))
+        else:
+            # The measure didn&#39;t change and we have no previous forecast
+            forecast = (time +
+                        old_div(float(self._measures[-1].active_node_count * time),
+                        (self._measures[-1].node_count -
+                         self._measures[-1].active_node_count)))
+            print(&#39;C&#39;, time, previous_value, measure_value, forecast)
+
+        self._forecasts.append(TimeForecast(time, forecast))
+
+        #if (time &gt;= 200):
+        #    cent = float(input(&#34;STOP&#34;))
+
+        #if (forecast &gt;= 60000):
+        #    cent = float(input(&#34;STOP&#34;))
+
+
+    def GetForecasts(self):
+        return self._forecasts
+
+    def GetMeasures(self):
+        return self._measures
+
+
+class ForecastingChainedSequences(object):
+    &#34;&#34;&#34;
+    &#34;&#34;&#34;
+    def __init__(self):
+        self._sequences = []
+        self._scale_factors = []
+        self._current_sequence = -1
+
+    def AddMeasure(self, time, value, active_node_count, node_count):
+        assert self._current_sequence &gt;= 0
+        self._sequences[self._current_sequence].AddMeasure(
+            ProgressMeasurement(time, value, active_node_count, node_count))
+
+    def StartNewSequence(self, scale_factor):
+        &#34;&#34;&#34;Starts a new sequence of measures.
+
+        The scale factor should compare only to the previous sequence.
+        &#34;&#34;&#34;
+        if self._scale_factors:
+            scale_factor *= self._scale_factors[-1]
+        self._scale_factors.append(scale_factor)
+
+        assert len(self._sequences) == self._current_sequence + 1
+
+        if self._current_sequence &lt; 0:
+            self._sequences.append(DoubleExponentialSmoothingForecaster(
+                scale_factor, -1, -1))
+        else:
+            self._sequences.append(DoubleExponentialSmoothingForecaster(
+                scale_factor, self._sequences[self._current_sequence]._b_t,
+                self._sequences[self._current_sequence]._first_time))
+
+        self._current_sequence += 1
+
+        assert len(self._scale_factors) == len(self._sequences)
+
+    def GetAllForecasts(self):
+        forecasts = []
+        for sequence in self._sequences:
+            forecasts.extend(sequence.GetForecasts())
+        return forecasts
+
+    def GetAllMeasures(self):
+        measures = []
+        for i, sequence in enumerate(self._sequences):
+            temp_measures = sequence.GetMeasures()
+            for measure in temp_measures:
+                measure.value *= self._scale_factors[i]
+            measures.extend(temp_measures)
+        return measures</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster"><code class="flex name class">
+<span>class <span class="ident">DoubleExponentialSmoothingForecaster</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>Uses double exponential smoothing to forecast values.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class DoubleExponentialSmoothingForecaster(object):
+    &#34;&#34;&#34;Uses double exponential smoothing to forecast values.
+    &#34;&#34;&#34;
+    def __init__(self, scale_factor, first_value, first_time):
+        self._measures = []
+        self._forecasts = []
+
+        self._b_t = None
+        self._S_t = None
+
+        self._scale_factor = float(scale_factor)
+        self._first_time = -1
+
+        if first_value is None:
+            self._first_value = 1
+        else:
+            self._first_value = float(first_value)
+
+        self._alpha = 0.5
+        self._lambda = 0.5
+        self._gamma = 0.5
+
+        self._counter = 0
+
+    def AddMeasure(self, measurement):
+        self._measures.append(measurement)
+        self.ComputeForecast()
+
+    def ComputeForecast(self):
+        # Check if the forecast was already computed
+        if len(self._forecasts) == len(self._measures) - 3:
+            return
+        # Must have at least 4 measurements to make a forecast.
+        if len(self._measures) &lt; 4:
+            return
+
+        # Check that a minimum amount of time has passed
+        if self._measures[-1].time - self._measures[-2].time &lt; 1:
+            return
+
+        measure_value = self._measures[-1].value * self._scale_factor
+        previous_value = self._measures[-2].value * self._scale_factor
+        time = self._measures[-1].time
+        previous_time = self._measures[-2].time
+        delta = old_div(float((measure_value - previous_value)), float((time - previous_time)))
+        if -delta &lt; 0.00001 * measure_value:
+            delta = 0
+
+        # Set initial parameters if necessary otherwise update the estimators
+        if self._b_t is None:
+            if self._first_value &gt; 0:
+                self._b_t = delta
+                self._S_t = (measure_value * self._alpha +
+                             previous_value * (1 - self._alpha))
+            else:
+                self._b_t = self._first_value
+                self._S_t = (measure_value * self._alpha +
+                             previous_value * (1 - self._alpha))
+
+        if self._b_t &lt; -measure_value:
+            self._b_t = -measure_value
+            self._S_t = (measure_value * self._alpha +
+                         previous_value * (1 - self._alpha))
+
+        updated = False
+
+        if delta &lt; 0:
+            self._b_t = self._gamma * delta + (1 - self._gamma) * self._b_t
+            self._S_t = (self._alpha * measure_value +
+                         (1 - self._alpha) * self._S_t)
+            updated = True
+
+        print(&#39;delta: %f&#39; %delta)
+        print(&#39;self._lambda*self._b_t: %f&#39; %(self._lambda*self._b_t))
+        if delta &lt; self._lambda * self._b_t:
+            if not updated:
+                self._b_t = self._gamma * delta + (1 - self._gamma) * self._b_t
+                self._S_t = (self._alpha * measure_value +
+                             (1 - self._alpha) * self._S_t)
+                updated = True
+
+            forecast = (time + (old_div(float(-self._S_t), min(delta,self._b_t))))
+            print(&#39;A&#39;, time, previous_value, measure_value, end=&#39; &#39;)
+            print(self._S_t, self._b_t, forecast)
+            #cent = float(input(&#34;STOP&#34;))
+        elif len(self._forecasts) &gt;= 1:
+            # The measure didn&#39;t change but we have a previous forecast
+            if self._forecasts[-1].forecast &gt;= time:
+                forecast = self._forecasts[-1].forecast
+            else:
+                forecast = (time +
+                            (old_div(float(self._measures[-1].active_node_count),
+                             self._measures[-2].active_node_count)) *
+                            (self._forecasts[-1].forecast -
+                             self._forecasts[-1].time))
+
+            print(&#39;B&#39;, time, previous_value, measure_value, forecast)
+            #cent = float(input(&#34;STOP&#34;))
+        else:
+            # The measure didn&#39;t change and we have no previous forecast
+            forecast = (time +
+                        old_div(float(self._measures[-1].active_node_count * time),
+                        (self._measures[-1].node_count -
+                         self._measures[-1].active_node_count)))
+            print(&#39;C&#39;, time, previous_value, measure_value, forecast)
+
+        self._forecasts.append(TimeForecast(time, forecast))
+
+        #if (time &gt;= 200):
+        #    cent = float(input(&#34;STOP&#34;))
+
+        #if (forecast &gt;= 60000):
+        #    cent = float(input(&#34;STOP&#34;))
+
+
+    def GetForecasts(self):
+        return self._forecasts
+
+    def GetMeasures(self):
+        return self._measures</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster.AddMeasure"><code class="name flex">
+<span>def <span class="ident">AddMeasure</span></span>(<span>self, measurement)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def AddMeasure(self, measurement):
+    self._measures.append(measurement)
+    self.ComputeForecast()</code></pre>
+</details>
+</dd>
+<dt id="coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster.ComputeForecast"><code class="name flex">
+<span>def <span class="ident">ComputeForecast</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def ComputeForecast(self):
+    # Check if the forecast was already computed
+    if len(self._forecasts) == len(self._measures) - 3:
+        return
+    # Must have at least 4 measurements to make a forecast.
+    if len(self._measures) &lt; 4:
+        return
+
+    # Check that a minimum amount of time has passed
+    if self._measures[-1].time - self._measures[-2].time &lt; 1:
+        return
+
+    measure_value = self._measures[-1].value * self._scale_factor
+    previous_value = self._measures[-2].value * self._scale_factor
+    time = self._measures[-1].time
+    previous_time = self._measures[-2].time
+    delta = old_div(float((measure_value - previous_value)), float((time - previous_time)))
+    if -delta &lt; 0.00001 * measure_value:
+        delta = 0
+
+    # Set initial parameters if necessary otherwise update the estimators
+    if self._b_t is None:
+        if self._first_value &gt; 0:
+            self._b_t = delta
+            self._S_t = (measure_value * self._alpha +
+                         previous_value * (1 - self._alpha))
+        else:
+            self._b_t = self._first_value
+            self._S_t = (measure_value * self._alpha +
+                         previous_value * (1 - self._alpha))
+
+    if self._b_t &lt; -measure_value:
+        self._b_t = -measure_value
+        self._S_t = (measure_value * self._alpha +
+                     previous_value * (1 - self._alpha))
+
+    updated = False
+
+    if delta &lt; 0:
+        self._b_t = self._gamma * delta + (1 - self._gamma) * self._b_t
+        self._S_t = (self._alpha * measure_value +
+                     (1 - self._alpha) * self._S_t)
+        updated = True
+
+    print(&#39;delta: %f&#39; %delta)
+    print(&#39;self._lambda*self._b_t: %f&#39; %(self._lambda*self._b_t))
+    if delta &lt; self._lambda * self._b_t:
+        if not updated:
+            self._b_t = self._gamma * delta + (1 - self._gamma) * self._b_t
+            self._S_t = (self._alpha * measure_value +
+                         (1 - self._alpha) * self._S_t)
+            updated = True
+
+        forecast = (time + (old_div(float(-self._S_t), min(delta,self._b_t))))
+        print(&#39;A&#39;, time, previous_value, measure_value, end=&#39; &#39;)
+        print(self._S_t, self._b_t, forecast)
+        #cent = float(input(&#34;STOP&#34;))
+    elif len(self._forecasts) &gt;= 1:
+        # The measure didn&#39;t change but we have a previous forecast
+        if self._forecasts[-1].forecast &gt;= time:
+            forecast = self._forecasts[-1].forecast
+        else:
+            forecast = (time +
+                        (old_div(float(self._measures[-1].active_node_count),
+                         self._measures[-2].active_node_count)) *
+                        (self._forecasts[-1].forecast -
+                         self._forecasts[-1].time))
+
+        print(&#39;B&#39;, time, previous_value, measure_value, forecast)
+        #cent = float(input(&#34;STOP&#34;))
+    else:
+        # The measure didn&#39;t change and we have no previous forecast
+        forecast = (time +
+                    old_div(float(self._measures[-1].active_node_count * time),
+                    (self._measures[-1].node_count -
+                     self._measures[-1].active_node_count)))
+        print(&#39;C&#39;, time, previous_value, measure_value, forecast)
+
+    self._forecasts.append(TimeForecast(time, forecast))</code></pre>
+</details>
+</dd>
+<dt id="coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster.GetForecasts"><code class="name flex">
+<span>def <span class="ident">GetForecasts</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def GetForecasts(self):
+    return self._forecasts</code></pre>
+</details>
+</dd>
+<dt id="coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster.GetMeasures"><code class="name flex">
+<span>def <span class="ident">GetMeasures</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def GetMeasures(self):
+    return self._measures</code></pre>
+</details>
+</dd>
+<dt id="coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, scale_factor, first_value, first_time)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Initialize self.
+See help(type(self)) for accurate signature.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def __init__(self, scale_factor, first_value, first_time):
+    self._measures = []
+    self._forecasts = []
+
+    self._b_t = None
+    self._S_t = None
+
+    self._scale_factor = float(scale_factor)
+    self._first_time = -1
+
+    if first_value is None:
+        self._first_value = 1
+    else:
+        self._first_value = float(first_value)
+
+    self._alpha = 0.5
+    self._lambda = 0.5
+    self._gamma = 0.5
+
+    self._counter = 0</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="coinor.grumpy.forecasting.ForecastingChainedSequences"><code class="flex name class">
+<span>class <span class="ident">ForecastingChainedSequences</span></span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class ForecastingChainedSequences(object):
+    &#34;&#34;&#34;
+    &#34;&#34;&#34;
+    def __init__(self):
+        self._sequences = []
+        self._scale_factors = []
+        self._current_sequence = -1
+
+    def AddMeasure(self, time, value, active_node_count, node_count):
+        assert self._current_sequence &gt;= 0
+        self._sequences[self._current_sequence].AddMeasure(
+            ProgressMeasurement(time, value, active_node_count, node_count))
+
+    def StartNewSequence(self, scale_factor):
+        &#34;&#34;&#34;Starts a new sequence of measures.
+
+        The scale factor should compare only to the previous sequence.
+        &#34;&#34;&#34;
+        if self._scale_factors:
+            scale_factor *= self._scale_factors[-1]
+        self._scale_factors.append(scale_factor)
+
+        assert len(self._sequences) == self._current_sequence + 1
+
+        if self._current_sequence &lt; 0:
+            self._sequences.append(DoubleExponentialSmoothingForecaster(
+                scale_factor, -1, -1))
+        else:
+            self._sequences.append(DoubleExponentialSmoothingForecaster(
+                scale_factor, self._sequences[self._current_sequence]._b_t,
+                self._sequences[self._current_sequence]._first_time))
+
+        self._current_sequence += 1
+
+        assert len(self._scale_factors) == len(self._sequences)
+
+    def GetAllForecasts(self):
+        forecasts = []
+        for sequence in self._sequences:
+            forecasts.extend(sequence.GetForecasts())
+        return forecasts
+
+    def GetAllMeasures(self):
+        measures = []
+        for i, sequence in enumerate(self._sequences):
+            temp_measures = sequence.GetMeasures()
+            for measure in temp_measures:
+                measure.value *= self._scale_factors[i]
+            measures.extend(temp_measures)
+        return measures</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="coinor.grumpy.forecasting.ForecastingChainedSequences.AddMeasure"><code class="name flex">
+<span>def <span class="ident">AddMeasure</span></span>(<span>self, time, value, active_node_count, node_count)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def AddMeasure(self, time, value, active_node_count, node_count):
+    assert self._current_sequence &gt;= 0
+    self._sequences[self._current_sequence].AddMeasure(
+        ProgressMeasurement(time, value, active_node_count, node_count))</code></pre>
+</details>
+</dd>
+<dt id="coinor.grumpy.forecasting.ForecastingChainedSequences.GetAllForecasts"><code class="name flex">
+<span>def <span class="ident">GetAllForecasts</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def GetAllForecasts(self):
+    forecasts = []
+    for sequence in self._sequences:
+        forecasts.extend(sequence.GetForecasts())
+    return forecasts</code></pre>
+</details>
+</dd>
+<dt id="coinor.grumpy.forecasting.ForecastingChainedSequences.GetAllMeasures"><code class="name flex">
+<span>def <span class="ident">GetAllMeasures</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def GetAllMeasures(self):
+    measures = []
+    for i, sequence in enumerate(self._sequences):
+        temp_measures = sequence.GetMeasures()
+        for measure in temp_measures:
+            measure.value *= self._scale_factors[i]
+        measures.extend(temp_measures)
+    return measures</code></pre>
+</details>
+</dd>
+<dt id="coinor.grumpy.forecasting.ForecastingChainedSequences.StartNewSequence"><code class="name flex">
+<span>def <span class="ident">StartNewSequence</span></span>(<span>self, scale_factor)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Starts a new sequence of measures.</p>
+<p>The scale factor should compare only to the previous sequence.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def StartNewSequence(self, scale_factor):
+    &#34;&#34;&#34;Starts a new sequence of measures.
+
+    The scale factor should compare only to the previous sequence.
+    &#34;&#34;&#34;
+    if self._scale_factors:
+        scale_factor *= self._scale_factors[-1]
+    self._scale_factors.append(scale_factor)
+
+    assert len(self._sequences) == self._current_sequence + 1
+
+    if self._current_sequence &lt; 0:
+        self._sequences.append(DoubleExponentialSmoothingForecaster(
+            scale_factor, -1, -1))
+    else:
+        self._sequences.append(DoubleExponentialSmoothingForecaster(
+            scale_factor, self._sequences[self._current_sequence]._b_t,
+            self._sequences[self._current_sequence]._first_time))
+
+    self._current_sequence += 1
+
+    assert len(self._scale_factors) == len(self._sequences)</code></pre>
+</details>
+</dd>
+<dt id="coinor.grumpy.forecasting.ForecastingChainedSequences.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Initialize self.
+See help(type(self)) for accurate signature.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def __init__(self):
+    self._sequences = []
+    self._scale_factors = []
+    self._current_sequence = -1</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="coinor.grumpy.forecasting.ProgressMeasurement"><code class="flex name class">
+<span>class <span class="ident">ProgressMeasurement</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>Key data recording progress.
+Data members are public.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class ProgressMeasurement(object):
+    &#34;&#34;&#34;Key data recording progress.  Data members are public.
+    &#34;&#34;&#34;
+    def __init__(self, time, value, active_node_count, node_count):
+        self.time = float(time)
+        self.value = float(value)
+        self.active_node_count = int(active_node_count)
+        self.node_count = int(node_count)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="coinor.grumpy.forecasting.ProgressMeasurement.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, time, value, active_node_count, node_count)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Initialize self.
+See help(type(self)) for accurate signature.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def __init__(self, time, value, active_node_count, node_count):
+    self.time = float(time)
+    self.value = float(value)
+    self.active_node_count = int(active_node_count)
+    self.node_count = int(node_count)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="coinor.grumpy.forecasting.TimeForecast"><code class="flex name class">
+<span>class <span class="ident">TimeForecast</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>Time-stamped forecast of time remaining.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class TimeForecast(object):
+    &#34;&#34;&#34;Time-stamped forecast of time remaining.
+    &#34;&#34;&#34;
+    def __init__(self, time, forecast):
+        self.time = float(time)
+        self.forecast = float(forecast)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="coinor.grumpy.forecasting.TimeForecast.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, time, forecast)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Initialize self.
+See help(type(self)) for accurate signature.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def __init__(self, time, forecast):
+    self.time = float(time)
+    self.forecast = float(forecast)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="coinor.grumpy" href="index.html">coinor.grumpy</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster" href="#coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster">DoubleExponentialSmoothingForecaster</a></code></h4>
+<ul class="">
+<li><code><a title="coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster.__init__" href="#coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster.__init__">__init__</a></code></li>
+<li><code><a title="coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster.AddMeasure" href="#coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster.AddMeasure">AddMeasure</a></code></li>
+<li><code><a title="coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster.ComputeForecast" href="#coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster.ComputeForecast">ComputeForecast</a></code></li>
+<li><code><a title="coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster.GetForecasts" href="#coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster.GetForecasts">GetForecasts</a></code></li>
+<li><code><a title="coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster.GetMeasures" href="#coinor.grumpy.forecasting.DoubleExponentialSmoothingForecaster.GetMeasures">GetMeasures</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="coinor.grumpy.forecasting.ForecastingChainedSequences" href="#coinor.grumpy.forecasting.ForecastingChainedSequences">ForecastingChainedSequences</a></code></h4>
+<ul class="">
+<li><code><a title="coinor.grumpy.forecasting.ForecastingChainedSequences.__init__" href="#coinor.grumpy.forecasting.ForecastingChainedSequences.__init__">__init__</a></code></li>
+<li><code><a title="coinor.grumpy.forecasting.ForecastingChainedSequences.AddMeasure" href="#coinor.grumpy.forecasting.ForecastingChainedSequences.AddMeasure">AddMeasure</a></code></li>
+<li><code><a title="coinor.grumpy.forecasting.ForecastingChainedSequences.GetAllForecasts" href="#coinor.grumpy.forecasting.ForecastingChainedSequences.GetAllForecasts">GetAllForecasts</a></code></li>
+<li><code><a title="coinor.grumpy.forecasting.ForecastingChainedSequences.GetAllMeasures" href="#coinor.grumpy.forecasting.ForecastingChainedSequences.GetAllMeasures">GetAllMeasures</a></code></li>
+<li><code><a title="coinor.grumpy.forecasting.ForecastingChainedSequences.StartNewSequence" href="#coinor.grumpy.forecasting.ForecastingChainedSequences.StartNewSequence">StartNewSequence</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="coinor.grumpy.forecasting.ProgressMeasurement" href="#coinor.grumpy.forecasting.ProgressMeasurement">ProgressMeasurement</a></code></h4>
+<ul class="">
+<li><code><a title="coinor.grumpy.forecasting.ProgressMeasurement.__init__" href="#coinor.grumpy.forecasting.ProgressMeasurement.__init__">__init__</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="coinor.grumpy.forecasting.TimeForecast" href="#coinor.grumpy.forecasting.TimeForecast">TimeForecast</a></code></h4>
+<ul class="">
+<li><code><a title="coinor.grumpy.forecasting.TimeForecast.__init__" href="#coinor.grumpy.forecasting.TimeForecast.__init__">__init__</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.5.3</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

@@ -1,0 +1,923 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.5.3" />
+<title>coinor.grumpy.BranchAndBound API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.name small{font-weight:normal}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title"><code>coinor.grumpy.BranchAndBound</code> module</h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import str
+from builtins import range
+from past.utils import old_div
+__author__ = &#39;Ted Ralphs&#39;
+__maintainer__ = &#39;Ted Ralphs (ted@lehigh.edu)&#39;
+
+import random, sys, math
+try:
+    from src.blimpy import PriorityQueue
+except ImportError:
+    from coinor.blimpy import PriorityQueue
+import time
+from pulp import LpVariable, lpSum, LpProblem, LpMaximize, LpConstraint
+from pulp import LpStatus, value
+from .BBTree import BBTree
+from .BBTree import MOST_FRACTIONAL, FIXED_BRANCHING, PSEUDOCOST_BRANCHING
+from .BBTree import DEPTH_FIRST, BEST_FIRST, BEST_ESTIMATE, INFINITY
+
+def GenerateRandomMIP(numVars = 40, numCons = 20, density = 0.2,
+                      maxObjCoeff = 10, maxConsCoeff = 10, 
+                      tightness = 2, rand_seed = 2, layout = &#39;dot&#39;):
+    random.seed(rand_seed)
+    CONSTRAINTS = [&#34;C&#34;+str(i) for i in range(numCons)]
+    if layout == &#39;dot2tex&#39;:
+        VARIABLES = [&#34;x_{&#34;+str(i)+&#34;}&#34; for i in range(numVars)]
+    else:
+        VARIABLES = [&#34;x&#34;+str(i) for i in range(numVars)]
+    OBJ = dict((i, random.randint(1, maxObjCoeff)) for i in VARIABLES)
+    MAT = dict((i, [random.randint(1, maxConsCoeff)
+                    if random.random() &lt;= density else 0
+                    for j in CONSTRAINTS]) for i in VARIABLES)
+    RHS = [random.randint(int(numVars*density*maxConsCoeff/tightness),
+                   int(numVars*density*maxConsCoeff/1.5))
+           for i in CONSTRAINTS]
+    return CONSTRAINTS, VARIABLES, OBJ, MAT, RHS
+
+def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
+                   branch_strategy = MOST_FRACTIONAL,
+                   search_strategy = DEPTH_FIRST,
+                   complete_enumeration = False,
+                   display_interval = None,
+                   binary_vars = True):
+    
+    if T.get_layout() == &#39;dot2tex&#39;:
+        cluster_attrs = {&#39;name&#39;:&#39;Key&#39;, &#39;label&#39;:r&#39;\text{Key}&#39;, &#39;fontsize&#39;:&#39;12&#39;}
+        T.add_node(&#39;C&#39;, label = r&#39;\text{Candidate}&#39;, style = &#39;filled&#39;,
+                      color = &#39;yellow&#39;, fillcolor = &#39;yellow&#39;)
+        T.add_node(&#39;I&#39;, label = r&#39;\text{Infeasible}&#39;, style = &#39;filled&#39;,
+                      color = &#39;orange&#39;, fillcolor = &#39;orange&#39;)
+        T.add_node(&#39;S&#39;, label = r&#39;\text{Solution}&#39;, style = &#39;filled&#39;,
+                      color = &#39;lightblue&#39;, fillcolor = &#39;lightblue&#39;)
+        T.add_node(&#39;P&#39;, label = r&#39;\text{Pruned}&#39;, style = &#39;filled&#39;,
+                      color = &#39;red&#39;, fillcolor = &#39;red&#39;)
+        T.add_node(&#39;PC&#39;, label = r&#39;\text{Pruned}$\\ $\text{Candidate}&#39;, style = &#39;filled&#39;,
+                      color = &#39;red&#39;, fillcolor = &#39;yellow&#39;)
+    else:
+        cluster_attrs = {&#39;name&#39;:&#39;Key&#39;, &#39;label&#39;:&#39;Key&#39;, &#39;fontsize&#39;:&#39;12&#39;}
+        T.add_node(&#39;C&#39;, label = &#39;Candidate&#39;, style = &#39;filled&#39;,
+                      color = &#39;yellow&#39;, fillcolor = &#39;yellow&#39;)
+        T.add_node(&#39;I&#39;, label = &#39;Infeasible&#39;, style = &#39;filled&#39;,
+                      color = &#39;orange&#39;, fillcolor = &#39;orange&#39;)
+        T.add_node(&#39;S&#39;, label = &#39;Solution&#39;, style = &#39;filled&#39;,
+                      color = &#39;lightblue&#39;, fillcolor = &#39;lightblue&#39;)
+        T.add_node(&#39;P&#39;, label = &#39;Pruned&#39;, style = &#39;filled&#39;,
+                      color = &#39;red&#39;, fillcolor = &#39;red&#39;)
+        T.add_node(&#39;PC&#39;, label = &#39;Pruned \n Candidate&#39;, style = &#39;filled&#39;,
+                      color = &#39;red&#39;, fillcolor = &#39;yellow&#39;)
+    T.add_edge(&#39;C&#39;, &#39;I&#39;, style = &#39;invisible&#39;, arrowhead = &#39;none&#39;)
+    T.add_edge(&#39;I&#39;, &#39;S&#39;, style = &#39;invisible&#39;, arrowhead = &#39;none&#39;)
+    T.add_edge(&#39;S&#39;, &#39;P&#39;, style = &#39;invisible&#39;, arrowhead = &#39;none&#39;)
+    T.add_edge(&#39;P&#39;, &#39;PC&#39;, style = &#39;invisible&#39;, arrowhead = &#39;none&#39;)
+    T.create_cluster([&#39;C&#39;, &#39;I&#39;, &#39;S&#39;, &#39;P&#39;, &#39;PC&#39;], cluster_attrs)
+    # The initial lower bound
+    LB = -INFINITY
+    # The number of LP&#39;s solved, and the number of nodes solved
+    node_count = 1
+    iter_count = 0
+    lp_count = 0
+    
+    if binary_vars:
+        var   = LpVariable.dicts(&#34;&#34;, VARIABLES, 0, 1)
+    else:
+        var   = LpVariable.dicts(&#34;&#34;, VARIABLES)
+    
+    numCons = len(CONSTRAINTS)
+    numVars = len(VARIABLES)
+    # List of incumbent solution variable values
+    opt = dict([(i, 0) for i in VARIABLES])
+    pseudo_u = dict((i, (OBJ[i], 0)) for i in VARIABLES)
+    pseudo_d = dict((i, (OBJ[i], 0)) for i in VARIABLES)
+    print(&#34;===========================================&#34;)
+    print(&#34;Starting Branch and Bound&#34;)
+    if branch_strategy == MOST_FRACTIONAL:
+        print(&#34;Most fractional variable&#34;)
+    elif branch_strategy == FIXED_BRANCHING:
+        print(&#34;Fixed order&#34;)
+    elif branch_strategy == PSEUDOCOST_BRANCHING:
+        print(&#34;Pseudocost brancing&#34;)
+    else:
+        print(&#34;Unknown branching strategy %s&#34; %branch_strategy)
+    if search_strategy == DEPTH_FIRST:
+        print(&#34;Depth first search strategy&#34;)
+    elif search_strategy == BEST_FIRST:
+        print(&#34;Best first search strategy&#34;)
+    else:
+        print(&#34;Unknown search strategy %s&#34; %search_strategy)
+    print(&#34;===========================================&#34;)
+    # List of candidate nodes
+    Q = PriorityQueue()
+    # The current tree depth
+    cur_depth = 0
+    cur_index = 0
+    # Timer
+    timer = time.time()
+    Q.push(0, -INFINITY, (0, None, None, None, None, None, None))
+    # Branch and Bound Loop
+    while not Q.isEmpty():
+        infeasible = False
+        integer_solution = False
+        (cur_index, parent, relax, branch_var, branch_var_value, sense,
+        rhs) = Q.pop()
+        if cur_index is not 0:
+            cur_depth = T.get_node_attr(parent, &#39;level&#39;) + 1
+        else:
+            cur_depth = 0
+        print(&#34;&#34;)
+        print(&#34;----------------------------------------------------&#34;)
+        print(&#34;&#34;)
+        if LB &gt; -INFINITY:
+            print(&#34;Node: %s, Depth: %s, LB: %s&#34; %(cur_index,cur_depth,LB))
+        else:
+            print(&#34;Node: %s, Depth: %s, LB: %s&#34; %(cur_index,cur_depth,&#34;None&#34;))
+        if relax is not None and relax &lt;= LB:
+            print(&#34;Node pruned immediately by bound&#34;)
+            T.set_node_attr(parent, &#39;color&#39;, &#39;red&#39;)
+            continue
+        #====================================
+        #    LP Relaxation
+        #====================================
+        # Compute lower bound by LP relaxation
+        prob = LpProblem(&#34;relax&#34;, LpMaximize)
+        prob += lpSum([OBJ[i]*var[i] for i in VARIABLES]), &#34;Objective&#34;
+        for j in range(numCons):
+            prob += (lpSum([MAT[i][j]*var[i] for i in VARIABLES])&lt;=RHS[j],\
+                         CONSTRAINTS[j])
+        # Fix all prescribed variables
+        branch_vars = []
+        if cur_index is not 0:
+            sys.stdout.write(&#34;Branching variables: &#34;)
+            branch_vars.append(branch_var)
+            if sense == &#39;&gt;=&#39;:
+                prob += LpConstraint(lpSum(var[branch_var]) &gt;= rhs)
+            else:
+                prob += LpConstraint(lpSum(var[branch_var]) &lt;= rhs)
+            print(branch_var, end=&#39; &#39;)
+            pred = parent
+            while not str(pred) == &#39;0&#39;:
+                pred_branch_var = T.get_node_attr(pred, &#39;branch_var&#39;)
+                pred_rhs = T.get_node_attr(pred, &#39;rhs&#39;)
+                pred_sense = T.get_node_attr(pred, &#39;sense&#39;)
+                if pred_sense == &#39;&lt;=&#39;:
+                    prob += LpConstraint(lpSum(var[pred_branch_var])
+                                         &lt;= pred_rhs)
+                else:
+                    prob += LpConstraint(lpSum(var[pred_branch_var])
+                                         &gt;= pred_rhs)
+                print(pred_branch_var, end=&#39; &#39;)
+                branch_vars.append(pred_branch_var)
+                pred = T.get_node_attr(pred, &#39;parent&#39;)
+            print()
+        # Solve the LP relaxation
+        prob.solve()
+        lp_count = lp_count +1
+        # Check infeasibility
+        infeasible = LpStatus[prob.status] == &#34;Infeasible&#34; or \
+            LpStatus[prob.status] == &#34;Undefined&#34;
+        # Print status
+        if infeasible:
+            print(&#34;LP Solved, status: Infeasible&#34;)
+        else:
+            print(&#34;LP Solved, status: %s, obj: %s&#34; %(LpStatus[prob.status],
+                                                     value(prob.objective)))
+        if(LpStatus[prob.status] == &#34;Optimal&#34;):
+            relax = value(prob.objective)
+            # Update pseudocost
+            if branch_var != None:
+                if sense == &#39;&lt;=&#39;:
+                    pseudo_d[branch_var] = (
+                    old_div((pseudo_d[branch_var][0]*pseudo_d[branch_var][1] +
+                    old_div((T.get_node_attr(parent, &#39;obj&#39;) - relax),
+                    (branch_var_value - rhs))),(pseudo_d[branch_var][1]+1)),
+                    pseudo_d[branch_var][1]+1)
+                else:
+                    pseudo_u[branch_var] = (
+                    old_div((pseudo_u[branch_var][0]*pseudo_d[branch_var][1] +
+                     old_div((T.get_node_attr(parent, &#39;obj&#39;) - relax),
+                     (rhs - branch_var_value))),(pseudo_u[branch_var][1]+1)),
+                    pseudo_u[branch_var][1]+1)
+            var_values = dict([(i, var[i].varValue) for i in VARIABLES])
+            integer_solution = 1
+            for i in VARIABLES:
+                if (abs(round(var_values[i]) - var_values[i]) &gt; .001):
+                    integer_solution = 0
+                    break
+            # Determine integer_infeasibility_count and
+            # Integer_infeasibility_sum for scatterplot and such
+            integer_infeasibility_count = 0
+            integer_infeasibility_sum = 0.0
+            for i in VARIABLES:
+                if (var_values[i] not in set([0,1])):
+                    integer_infeasibility_count += 1
+                    integer_infeasibility_sum += min([var_values[i],
+                                                      1.0-var_values[i]])
+            if (integer_solution and relax&gt;LB):
+                LB = relax
+                for i in VARIABLES:
+                    # These two have different data structures first one
+                    #list, second one dictionary
+                    opt[i] = var_values[i]
+                print(&#34;New best solution found, objective: %s&#34; %relax)
+                for i in VARIABLES:
+                    if var_values[i] &gt; 0:
+                        print(&#34;%s = %s&#34; %(i, var_values[i]))
+            elif (integer_solution and relax&lt;=LB):
+                print(&#34;New integer solution found, objective: %s&#34; %relax)
+                for i in VARIABLES:
+                    if var_values[i] &gt; 0:
+                        print(&#34;%s = %s&#34; %(i, var_values[i]))
+            else:
+                print(&#34;Fractional solution:&#34;)
+                for i in VARIABLES:
+                    if var_values[i] &gt; 0:
+                        print(&#34;%s = %s&#34; %(i, var_values[i]))
+            #For complete enumeration
+            if complete_enumeration:
+                relax = LB - 1
+        else:
+            relax = INFINITY
+        if integer_solution:
+            print(&#34;Integer solution&#34;)
+            BBstatus = &#39;S&#39;
+            status = &#39;integer&#39;
+            color = &#39;lightblue&#39;
+        elif infeasible:
+            print(&#34;Infeasible node&#34;)
+            BBstatus = &#39;I&#39;
+            status = &#39;infeasible&#39;
+            color = &#39;orange&#39;
+        elif not complete_enumeration and relax &lt;= LB:
+            print(&#34;Node pruned by bound (obj: %s, UB: %s)&#34; %(relax,LB))
+            BBstatus = &#39;P&#39;
+            status = &#39;fathomed&#39;
+            color = &#39;red&#39;
+        elif cur_depth &gt;= numVars :
+            print(&#34;Reached a leaf&#34;)
+            BBstatus = &#39;fathomed&#39;
+            status = &#39;L&#39;
+        else:
+            BBstatus = &#39;C&#39;
+            status = &#39;candidate&#39;
+            color = &#39;yellow&#39;
+        if BBstatus is &#39;I&#39;:
+            if T.get_layout() == &#39;dot2tex&#39;:
+                label = &#39;\text{I}&#39;
+            else:
+                label = &#39;I&#39;
+        else:
+            label = &#34;%.1f&#34;%relax
+        if iter_count == 0:
+            if status is not &#39;candidate&#39;:
+                integer_infeasibility_count = None
+                integer_infeasibility_sum = None
+            if status is &#39;fathomed&#39;:
+                if T._incumbent_value is None:
+                    print(&#39;WARNING: Encountered &#34;fathom&#34; line before &#39;+\
+                        &#39;first incumbent.&#39;)
+            T.AddOrUpdateNode(0, None, None, &#39;candidate&#39;, relax,
+                             integer_infeasibility_count,
+                             integer_infeasibility_sum,
+                             label = label,
+                             obj = relax, color = color,
+                             style = &#39;filled&#39;, fillcolor = color)
+            if status is &#39;integer&#39;:
+                T._previous_incumbent_value = T._incumbent_value
+                T._incumbent_value = relax
+                T._incumbent_parent = -1
+                T._new_integer_solution = True
+#           #Currently broken
+#           if ETREE_INSTALLED and T.attr[&#39;display&#39;] == &#39;svg&#39;:
+#               T.write_as_svg(filename = &#34;node%d&#34; % iter_count,
+#                                 nextfile = &#34;node%d&#34; % (iter_count + 1),
+#                                 highlight = cur_index)
+        else:
+            _direction = {&#39;&lt;=&#39;:&#39;L&#39;, &#39;&gt;=&#39;:&#39;R&#39;}
+            if status is &#39;infeasible&#39;:
+                integer_infeasibility_count = T.get_node_attr(parent,
+                                     &#39;integer_infeasibility_count&#39;)
+                integer_infeasibility_sum = T.get_node_attr(parent,
+                                     &#39;integer_infeasibility_sum&#39;)
+                relax = T.get_node_attr(parent, &#39;lp_bound&#39;)
+            elif status is &#39;fathomed&#39;:
+                if T._incumbent_value is None:
+                    print(&#39;WARNING: Encountered &#34;fathom&#34; line before&#39;+\
+                        &#39; first incumbent.&#39;)
+                    print(&#39;  This may indicate an error in the input file.&#39;)
+            elif status is &#39;integer&#39;:
+                integer_infeasibility_count = None
+                integer_infeasibility_sum = None
+            T.AddOrUpdateNode(cur_index, parent, _direction[sense],
+                                 status, relax,
+                                 integer_infeasibility_count,
+                                 integer_infeasibility_sum,
+                                 branch_var = branch_var,
+                                 branch_var_value = var_values[branch_var],
+                                 sense = sense, rhs = rhs, obj = relax,
+                                 color = color, style = &#39;filled&#39;,
+                                 label = label, fillcolor = color)
+            if status is &#39;integer&#39;:
+                T._previous_incumbent_value = T._incumbent_value
+                T._incumbent_value = relax
+                T._incumbent_parent = parent
+                T._new_integer_solution = True
+            # Currently Broken
+#           if ETREE_INSTALLED and T.attr[&#39;display&#39;] == &#39;svg&#39;:
+#               T.write_as_svg(filename = &#34;node%d&#34; % iter_count,
+#                                 prevfile = &#34;node%d&#34; % (iter_count - 1),
+#                                 nextfile = &#34;node%d&#34; % (iter_count + 1),
+#                                 highlight = cur_index)
+            if T.get_layout() == &#39;dot2tex&#39;:
+                _dot2tex_label = {&#39;&gt;=&#39;:&#39; \geq &#39;, &#39;&lt;=&#39;:&#39; \leq &#39;}
+                T.set_edge_attr(parent, cur_index, &#39;label&#39;,
+                                   str(branch_var) + _dot2tex_label[sense] +
+                                   str(rhs))
+            else:
+                T.set_edge_attr(parent, cur_index, &#39;label&#39;,
+                                   str(branch_var) + sense + str(rhs))
+        iter_count += 1
+        if BBstatus == &#39;C&#39;:
+            # Branching:
+            # Choose a variable for branching
+            branching_var = None
+            if branch_strategy == FIXED_BRANCHING:
+                #fixed order
+                for i in VARIABLES:
+                    frac = min(var[i].varValue-math.floor(var[i].varValue),
+                               math.ceil(var[i].varValue) - var[i].varValue)
+                    if (frac &gt; 0):
+                        min_frac = frac
+                        branching_var = i
+                        # TODO(aykut): understand this break
+                        break
+            elif branch_strategy == MOST_FRACTIONAL:
+                #most fractional variable
+                min_frac = -1
+                for i in VARIABLES:
+                    frac = min(var[i].varValue-math.floor(var[i].varValue),
+                               math.ceil(var[i].varValue)- var[i].varValue)
+                    if (frac&gt; min_frac):
+                        min_frac = frac
+                        branching_var = i
+            elif branch_strategy == PSEUDOCOST_BRANCHING:
+                scores = {}
+                for i in VARIABLES:
+                    # find the fractional solutions
+                    if (var[i].varValue - math.floor(var[i].varValue)) != 0:
+                        scores[i] = min(pseudo_u[i][0]*(1-var[i].varValue),
+                                        pseudo_d[i][0]*var[i].varValue)
+                    # sort the dictionary by value
+                branching_var = sorted(list(scores.items()),
+                                       key=lambda x : x[1])[-1][0]
+            else:
+                print(&#34;Unknown branching strategy %s&#34; %branch_strategy)
+                exit()
+            if branching_var is not None:
+                print(&#34;Branching on variable %s&#34; %branching_var)
+            #Create new nodes
+            if search_strategy == DEPTH_FIRST:
+                priority = (-cur_depth - 1, -cur_depth - 1)
+            elif search_strategy == BEST_FIRST:
+                priority = (-relax, -relax)
+            elif search_strategy == BEST_ESTIMATE:
+                priority = (-relax - pseudo_d[branching_var][0]*\
+                                 (math.floor(var[branching_var].varValue) -\
+                                      var[branching_var].varValue),
+                            -relax + pseudo_u[branching_var][0]*\
+                                 (math.ceil(var[branching_var].varValue) -\
+                                      var[branching_var].varValue))
+            node_count += 1
+            Q.push(node_count, priority[0], (node_count, cur_index, relax, branching_var,
+                    var_values[branching_var],
+                    &#39;&lt;=&#39;, math.floor(var[branching_var].varValue)))
+            node_count += 1
+            Q.push(node_count, priority[1], (node_count, cur_index, relax, branching_var,
+                    var_values[branching_var],
+                    &#39;&gt;=&#39;, math.ceil(var[branching_var].varValue)))
+            T.set_node_attr(cur_index, color, &#39;green&#39;)
+        if T.root is not None and display_interval is not None and\
+                iter_count%display_interval == 0:
+            T.display(count=iter_count)
+
+    timer = int(math.ceil((time.time()-timer)*1000))
+    print(&#34;&#34;)
+    print(&#34;===========================================&#34;)
+    print(&#34;Branch and bound completed in %sms&#34; %timer)
+    print(&#34;Strategy: %s&#34; %branch_strategy)
+    if complete_enumeration:
+        print(&#34;Complete enumeration&#34;)
+    print(&#34;%s nodes visited &#34; %node_count)
+    print(&#34;%s LP&#39;s solved&#34; %lp_count)
+    print(&#34;===========================================&#34;)
+    print(&#34;Optimal solution&#34;)
+    #print optimal solution
+    for i in sorted(VARIABLES):
+        if opt[i] &gt; 0:
+            print(&#34;%s = %s&#34; %(i, opt[i]))
+    print(&#34;Objective function value&#34;)
+    print(LB)
+    print(&#34;===========================================&#34;)
+    if T.attr[&#39;display&#39;] is not &#39;off&#39;:
+        T.display(count=iter_count)
+    T._lp_count = lp_count
+    return opt, LB
+
+if __name__ == &#39;__main__&#39;:    
+    T = BBTree()
+    #T.set_layout(&#39;dot2tex&#39;)
+    #T.set_display_mode(&#39;file&#39;)
+    T.set_display_mode(&#39;xdot&#39;)
+    #T.set_display_mode(&#39;pygame&#39;)
+    CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = GenerateRandomMIP(rand_seed = 120)
+    BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
+                   branch_strategy = MOST_FRACTIONAL,
+                   search_strategy = BEST_FIRST,
+                   display_interval = 10000)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="coinor.grumpy.BranchAndBound.BranchAndBound"><code class="name flex">
+<span>def <span class="ident">BranchAndBound</span></span>(<span>T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS, branch_strategy=&#39;Most Fraction&#39;, search_strategy=&#39;Depth First&#39;, complete_enumeration=False, display_interval=None, binary_vars=True)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
+                   branch_strategy = MOST_FRACTIONAL,
+                   search_strategy = DEPTH_FIRST,
+                   complete_enumeration = False,
+                   display_interval = None,
+                   binary_vars = True):
+    
+    if T.get_layout() == &#39;dot2tex&#39;:
+        cluster_attrs = {&#39;name&#39;:&#39;Key&#39;, &#39;label&#39;:r&#39;\text{Key}&#39;, &#39;fontsize&#39;:&#39;12&#39;}
+        T.add_node(&#39;C&#39;, label = r&#39;\text{Candidate}&#39;, style = &#39;filled&#39;,
+                      color = &#39;yellow&#39;, fillcolor = &#39;yellow&#39;)
+        T.add_node(&#39;I&#39;, label = r&#39;\text{Infeasible}&#39;, style = &#39;filled&#39;,
+                      color = &#39;orange&#39;, fillcolor = &#39;orange&#39;)
+        T.add_node(&#39;S&#39;, label = r&#39;\text{Solution}&#39;, style = &#39;filled&#39;,
+                      color = &#39;lightblue&#39;, fillcolor = &#39;lightblue&#39;)
+        T.add_node(&#39;P&#39;, label = r&#39;\text{Pruned}&#39;, style = &#39;filled&#39;,
+                      color = &#39;red&#39;, fillcolor = &#39;red&#39;)
+        T.add_node(&#39;PC&#39;, label = r&#39;\text{Pruned}$\\ $\text{Candidate}&#39;, style = &#39;filled&#39;,
+                      color = &#39;red&#39;, fillcolor = &#39;yellow&#39;)
+    else:
+        cluster_attrs = {&#39;name&#39;:&#39;Key&#39;, &#39;label&#39;:&#39;Key&#39;, &#39;fontsize&#39;:&#39;12&#39;}
+        T.add_node(&#39;C&#39;, label = &#39;Candidate&#39;, style = &#39;filled&#39;,
+                      color = &#39;yellow&#39;, fillcolor = &#39;yellow&#39;)
+        T.add_node(&#39;I&#39;, label = &#39;Infeasible&#39;, style = &#39;filled&#39;,
+                      color = &#39;orange&#39;, fillcolor = &#39;orange&#39;)
+        T.add_node(&#39;S&#39;, label = &#39;Solution&#39;, style = &#39;filled&#39;,
+                      color = &#39;lightblue&#39;, fillcolor = &#39;lightblue&#39;)
+        T.add_node(&#39;P&#39;, label = &#39;Pruned&#39;, style = &#39;filled&#39;,
+                      color = &#39;red&#39;, fillcolor = &#39;red&#39;)
+        T.add_node(&#39;PC&#39;, label = &#39;Pruned \n Candidate&#39;, style = &#39;filled&#39;,
+                      color = &#39;red&#39;, fillcolor = &#39;yellow&#39;)
+    T.add_edge(&#39;C&#39;, &#39;I&#39;, style = &#39;invisible&#39;, arrowhead = &#39;none&#39;)
+    T.add_edge(&#39;I&#39;, &#39;S&#39;, style = &#39;invisible&#39;, arrowhead = &#39;none&#39;)
+    T.add_edge(&#39;S&#39;, &#39;P&#39;, style = &#39;invisible&#39;, arrowhead = &#39;none&#39;)
+    T.add_edge(&#39;P&#39;, &#39;PC&#39;, style = &#39;invisible&#39;, arrowhead = &#39;none&#39;)
+    T.create_cluster([&#39;C&#39;, &#39;I&#39;, &#39;S&#39;, &#39;P&#39;, &#39;PC&#39;], cluster_attrs)
+    # The initial lower bound
+    LB = -INFINITY
+    # The number of LP&#39;s solved, and the number of nodes solved
+    node_count = 1
+    iter_count = 0
+    lp_count = 0
+    
+    if binary_vars:
+        var   = LpVariable.dicts(&#34;&#34;, VARIABLES, 0, 1)
+    else:
+        var   = LpVariable.dicts(&#34;&#34;, VARIABLES)
+    
+    numCons = len(CONSTRAINTS)
+    numVars = len(VARIABLES)
+    # List of incumbent solution variable values
+    opt = dict([(i, 0) for i in VARIABLES])
+    pseudo_u = dict((i, (OBJ[i], 0)) for i in VARIABLES)
+    pseudo_d = dict((i, (OBJ[i], 0)) for i in VARIABLES)
+    print(&#34;===========================================&#34;)
+    print(&#34;Starting Branch and Bound&#34;)
+    if branch_strategy == MOST_FRACTIONAL:
+        print(&#34;Most fractional variable&#34;)
+    elif branch_strategy == FIXED_BRANCHING:
+        print(&#34;Fixed order&#34;)
+    elif branch_strategy == PSEUDOCOST_BRANCHING:
+        print(&#34;Pseudocost brancing&#34;)
+    else:
+        print(&#34;Unknown branching strategy %s&#34; %branch_strategy)
+    if search_strategy == DEPTH_FIRST:
+        print(&#34;Depth first search strategy&#34;)
+    elif search_strategy == BEST_FIRST:
+        print(&#34;Best first search strategy&#34;)
+    else:
+        print(&#34;Unknown search strategy %s&#34; %search_strategy)
+    print(&#34;===========================================&#34;)
+    # List of candidate nodes
+    Q = PriorityQueue()
+    # The current tree depth
+    cur_depth = 0
+    cur_index = 0
+    # Timer
+    timer = time.time()
+    Q.push(0, -INFINITY, (0, None, None, None, None, None, None))
+    # Branch and Bound Loop
+    while not Q.isEmpty():
+        infeasible = False
+        integer_solution = False
+        (cur_index, parent, relax, branch_var, branch_var_value, sense,
+        rhs) = Q.pop()
+        if cur_index is not 0:
+            cur_depth = T.get_node_attr(parent, &#39;level&#39;) + 1
+        else:
+            cur_depth = 0
+        print(&#34;&#34;)
+        print(&#34;----------------------------------------------------&#34;)
+        print(&#34;&#34;)
+        if LB &gt; -INFINITY:
+            print(&#34;Node: %s, Depth: %s, LB: %s&#34; %(cur_index,cur_depth,LB))
+        else:
+            print(&#34;Node: %s, Depth: %s, LB: %s&#34; %(cur_index,cur_depth,&#34;None&#34;))
+        if relax is not None and relax &lt;= LB:
+            print(&#34;Node pruned immediately by bound&#34;)
+            T.set_node_attr(parent, &#39;color&#39;, &#39;red&#39;)
+            continue
+        #====================================
+        #    LP Relaxation
+        #====================================
+        # Compute lower bound by LP relaxation
+        prob = LpProblem(&#34;relax&#34;, LpMaximize)
+        prob += lpSum([OBJ[i]*var[i] for i in VARIABLES]), &#34;Objective&#34;
+        for j in range(numCons):
+            prob += (lpSum([MAT[i][j]*var[i] for i in VARIABLES])&lt;=RHS[j],\
+                         CONSTRAINTS[j])
+        # Fix all prescribed variables
+        branch_vars = []
+        if cur_index is not 0:
+            sys.stdout.write(&#34;Branching variables: &#34;)
+            branch_vars.append(branch_var)
+            if sense == &#39;&gt;=&#39;:
+                prob += LpConstraint(lpSum(var[branch_var]) &gt;= rhs)
+            else:
+                prob += LpConstraint(lpSum(var[branch_var]) &lt;= rhs)
+            print(branch_var, end=&#39; &#39;)
+            pred = parent
+            while not str(pred) == &#39;0&#39;:
+                pred_branch_var = T.get_node_attr(pred, &#39;branch_var&#39;)
+                pred_rhs = T.get_node_attr(pred, &#39;rhs&#39;)
+                pred_sense = T.get_node_attr(pred, &#39;sense&#39;)
+                if pred_sense == &#39;&lt;=&#39;:
+                    prob += LpConstraint(lpSum(var[pred_branch_var])
+                                         &lt;= pred_rhs)
+                else:
+                    prob += LpConstraint(lpSum(var[pred_branch_var])
+                                         &gt;= pred_rhs)
+                print(pred_branch_var, end=&#39; &#39;)
+                branch_vars.append(pred_branch_var)
+                pred = T.get_node_attr(pred, &#39;parent&#39;)
+            print()
+        # Solve the LP relaxation
+        prob.solve()
+        lp_count = lp_count +1
+        # Check infeasibility
+        infeasible = LpStatus[prob.status] == &#34;Infeasible&#34; or \
+            LpStatus[prob.status] == &#34;Undefined&#34;
+        # Print status
+        if infeasible:
+            print(&#34;LP Solved, status: Infeasible&#34;)
+        else:
+            print(&#34;LP Solved, status: %s, obj: %s&#34; %(LpStatus[prob.status],
+                                                     value(prob.objective)))
+        if(LpStatus[prob.status] == &#34;Optimal&#34;):
+            relax = value(prob.objective)
+            # Update pseudocost
+            if branch_var != None:
+                if sense == &#39;&lt;=&#39;:
+                    pseudo_d[branch_var] = (
+                    old_div((pseudo_d[branch_var][0]*pseudo_d[branch_var][1] +
+                    old_div((T.get_node_attr(parent, &#39;obj&#39;) - relax),
+                    (branch_var_value - rhs))),(pseudo_d[branch_var][1]+1)),
+                    pseudo_d[branch_var][1]+1)
+                else:
+                    pseudo_u[branch_var] = (
+                    old_div((pseudo_u[branch_var][0]*pseudo_d[branch_var][1] +
+                     old_div((T.get_node_attr(parent, &#39;obj&#39;) - relax),
+                     (rhs - branch_var_value))),(pseudo_u[branch_var][1]+1)),
+                    pseudo_u[branch_var][1]+1)
+            var_values = dict([(i, var[i].varValue) for i in VARIABLES])
+            integer_solution = 1
+            for i in VARIABLES:
+                if (abs(round(var_values[i]) - var_values[i]) &gt; .001):
+                    integer_solution = 0
+                    break
+            # Determine integer_infeasibility_count and
+            # Integer_infeasibility_sum for scatterplot and such
+            integer_infeasibility_count = 0
+            integer_infeasibility_sum = 0.0
+            for i in VARIABLES:
+                if (var_values[i] not in set([0,1])):
+                    integer_infeasibility_count += 1
+                    integer_infeasibility_sum += min([var_values[i],
+                                                      1.0-var_values[i]])
+            if (integer_solution and relax&gt;LB):
+                LB = relax
+                for i in VARIABLES:
+                    # These two have different data structures first one
+                    #list, second one dictionary
+                    opt[i] = var_values[i]
+                print(&#34;New best solution found, objective: %s&#34; %relax)
+                for i in VARIABLES:
+                    if var_values[i] &gt; 0:
+                        print(&#34;%s = %s&#34; %(i, var_values[i]))
+            elif (integer_solution and relax&lt;=LB):
+                print(&#34;New integer solution found, objective: %s&#34; %relax)
+                for i in VARIABLES:
+                    if var_values[i] &gt; 0:
+                        print(&#34;%s = %s&#34; %(i, var_values[i]))
+            else:
+                print(&#34;Fractional solution:&#34;)
+                for i in VARIABLES:
+                    if var_values[i] &gt; 0:
+                        print(&#34;%s = %s&#34; %(i, var_values[i]))
+            #For complete enumeration
+            if complete_enumeration:
+                relax = LB - 1
+        else:
+            relax = INFINITY
+        if integer_solution:
+            print(&#34;Integer solution&#34;)
+            BBstatus = &#39;S&#39;
+            status = &#39;integer&#39;
+            color = &#39;lightblue&#39;
+        elif infeasible:
+            print(&#34;Infeasible node&#34;)
+            BBstatus = &#39;I&#39;
+            status = &#39;infeasible&#39;
+            color = &#39;orange&#39;
+        elif not complete_enumeration and relax &lt;= LB:
+            print(&#34;Node pruned by bound (obj: %s, UB: %s)&#34; %(relax,LB))
+            BBstatus = &#39;P&#39;
+            status = &#39;fathomed&#39;
+            color = &#39;red&#39;
+        elif cur_depth &gt;= numVars :
+            print(&#34;Reached a leaf&#34;)
+            BBstatus = &#39;fathomed&#39;
+            status = &#39;L&#39;
+        else:
+            BBstatus = &#39;C&#39;
+            status = &#39;candidate&#39;
+            color = &#39;yellow&#39;
+        if BBstatus is &#39;I&#39;:
+            if T.get_layout() == &#39;dot2tex&#39;:
+                label = &#39;\text{I}&#39;
+            else:
+                label = &#39;I&#39;
+        else:
+            label = &#34;%.1f&#34;%relax
+        if iter_count == 0:
+            if status is not &#39;candidate&#39;:
+                integer_infeasibility_count = None
+                integer_infeasibility_sum = None
+            if status is &#39;fathomed&#39;:
+                if T._incumbent_value is None:
+                    print(&#39;WARNING: Encountered &#34;fathom&#34; line before &#39;+\
+                        &#39;first incumbent.&#39;)
+            T.AddOrUpdateNode(0, None, None, &#39;candidate&#39;, relax,
+                             integer_infeasibility_count,
+                             integer_infeasibility_sum,
+                             label = label,
+                             obj = relax, color = color,
+                             style = &#39;filled&#39;, fillcolor = color)
+            if status is &#39;integer&#39;:
+                T._previous_incumbent_value = T._incumbent_value
+                T._incumbent_value = relax
+                T._incumbent_parent = -1
+                T._new_integer_solution = True
+#           #Currently broken
+#           if ETREE_INSTALLED and T.attr[&#39;display&#39;] == &#39;svg&#39;:
+#               T.write_as_svg(filename = &#34;node%d&#34; % iter_count,
+#                                 nextfile = &#34;node%d&#34; % (iter_count + 1),
+#                                 highlight = cur_index)
+        else:
+            _direction = {&#39;&lt;=&#39;:&#39;L&#39;, &#39;&gt;=&#39;:&#39;R&#39;}
+            if status is &#39;infeasible&#39;:
+                integer_infeasibility_count = T.get_node_attr(parent,
+                                     &#39;integer_infeasibility_count&#39;)
+                integer_infeasibility_sum = T.get_node_attr(parent,
+                                     &#39;integer_infeasibility_sum&#39;)
+                relax = T.get_node_attr(parent, &#39;lp_bound&#39;)
+            elif status is &#39;fathomed&#39;:
+                if T._incumbent_value is None:
+                    print(&#39;WARNING: Encountered &#34;fathom&#34; line before&#39;+\
+                        &#39; first incumbent.&#39;)
+                    print(&#39;  This may indicate an error in the input file.&#39;)
+            elif status is &#39;integer&#39;:
+                integer_infeasibility_count = None
+                integer_infeasibility_sum = None
+            T.AddOrUpdateNode(cur_index, parent, _direction[sense],
+                                 status, relax,
+                                 integer_infeasibility_count,
+                                 integer_infeasibility_sum,
+                                 branch_var = branch_var,
+                                 branch_var_value = var_values[branch_var],
+                                 sense = sense, rhs = rhs, obj = relax,
+                                 color = color, style = &#39;filled&#39;,
+                                 label = label, fillcolor = color)
+            if status is &#39;integer&#39;:
+                T._previous_incumbent_value = T._incumbent_value
+                T._incumbent_value = relax
+                T._incumbent_parent = parent
+                T._new_integer_solution = True
+            # Currently Broken
+#           if ETREE_INSTALLED and T.attr[&#39;display&#39;] == &#39;svg&#39;:
+#               T.write_as_svg(filename = &#34;node%d&#34; % iter_count,
+#                                 prevfile = &#34;node%d&#34; % (iter_count - 1),
+#                                 nextfile = &#34;node%d&#34; % (iter_count + 1),
+#                                 highlight = cur_index)
+            if T.get_layout() == &#39;dot2tex&#39;:
+                _dot2tex_label = {&#39;&gt;=&#39;:&#39; \geq &#39;, &#39;&lt;=&#39;:&#39; \leq &#39;}
+                T.set_edge_attr(parent, cur_index, &#39;label&#39;,
+                                   str(branch_var) + _dot2tex_label[sense] +
+                                   str(rhs))
+            else:
+                T.set_edge_attr(parent, cur_index, &#39;label&#39;,
+                                   str(branch_var) + sense + str(rhs))
+        iter_count += 1
+        if BBstatus == &#39;C&#39;:
+            # Branching:
+            # Choose a variable for branching
+            branching_var = None
+            if branch_strategy == FIXED_BRANCHING:
+                #fixed order
+                for i in VARIABLES:
+                    frac = min(var[i].varValue-math.floor(var[i].varValue),
+                               math.ceil(var[i].varValue) - var[i].varValue)
+                    if (frac &gt; 0):
+                        min_frac = frac
+                        branching_var = i
+                        # TODO(aykut): understand this break
+                        break
+            elif branch_strategy == MOST_FRACTIONAL:
+                #most fractional variable
+                min_frac = -1
+                for i in VARIABLES:
+                    frac = min(var[i].varValue-math.floor(var[i].varValue),
+                               math.ceil(var[i].varValue)- var[i].varValue)
+                    if (frac&gt; min_frac):
+                        min_frac = frac
+                        branching_var = i
+            elif branch_strategy == PSEUDOCOST_BRANCHING:
+                scores = {}
+                for i in VARIABLES:
+                    # find the fractional solutions
+                    if (var[i].varValue - math.floor(var[i].varValue)) != 0:
+                        scores[i] = min(pseudo_u[i][0]*(1-var[i].varValue),
+                                        pseudo_d[i][0]*var[i].varValue)
+                    # sort the dictionary by value
+                branching_var = sorted(list(scores.items()),
+                                       key=lambda x : x[1])[-1][0]
+            else:
+                print(&#34;Unknown branching strategy %s&#34; %branch_strategy)
+                exit()
+            if branching_var is not None:
+                print(&#34;Branching on variable %s&#34; %branching_var)
+            #Create new nodes
+            if search_strategy == DEPTH_FIRST:
+                priority = (-cur_depth - 1, -cur_depth - 1)
+            elif search_strategy == BEST_FIRST:
+                priority = (-relax, -relax)
+            elif search_strategy == BEST_ESTIMATE:
+                priority = (-relax - pseudo_d[branching_var][0]*\
+                                 (math.floor(var[branching_var].varValue) -\
+                                      var[branching_var].varValue),
+                            -relax + pseudo_u[branching_var][0]*\
+                                 (math.ceil(var[branching_var].varValue) -\
+                                      var[branching_var].varValue))
+            node_count += 1
+            Q.push(node_count, priority[0], (node_count, cur_index, relax, branching_var,
+                    var_values[branching_var],
+                    &#39;&lt;=&#39;, math.floor(var[branching_var].varValue)))
+            node_count += 1
+            Q.push(node_count, priority[1], (node_count, cur_index, relax, branching_var,
+                    var_values[branching_var],
+                    &#39;&gt;=&#39;, math.ceil(var[branching_var].varValue)))
+            T.set_node_attr(cur_index, color, &#39;green&#39;)
+        if T.root is not None and display_interval is not None and\
+                iter_count%display_interval == 0:
+            T.display(count=iter_count)
+
+    timer = int(math.ceil((time.time()-timer)*1000))
+    print(&#34;&#34;)
+    print(&#34;===========================================&#34;)
+    print(&#34;Branch and bound completed in %sms&#34; %timer)
+    print(&#34;Strategy: %s&#34; %branch_strategy)
+    if complete_enumeration:
+        print(&#34;Complete enumeration&#34;)
+    print(&#34;%s nodes visited &#34; %node_count)
+    print(&#34;%s LP&#39;s solved&#34; %lp_count)
+    print(&#34;===========================================&#34;)
+    print(&#34;Optimal solution&#34;)
+    #print optimal solution
+    for i in sorted(VARIABLES):
+        if opt[i] &gt; 0:
+            print(&#34;%s = %s&#34; %(i, opt[i]))
+    print(&#34;Objective function value&#34;)
+    print(LB)
+    print(&#34;===========================================&#34;)
+    if T.attr[&#39;display&#39;] is not &#39;off&#39;:
+        T.display(count=iter_count)
+    T._lp_count = lp_count
+    return opt, LB</code></pre>
+</details>
+</dd>
+<dt id="coinor.grumpy.BranchAndBound.GenerateRandomMIP"><code class="name flex">
+<span>def <span class="ident">GenerateRandomMIP</span></span>(<span>numVars=40, numCons=20, density=0.2, maxObjCoeff=10, maxConsCoeff=10, tightness=2, rand_seed=2, layout=&#39;dot&#39;)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def GenerateRandomMIP(numVars = 40, numCons = 20, density = 0.2,
+                      maxObjCoeff = 10, maxConsCoeff = 10, 
+                      tightness = 2, rand_seed = 2, layout = &#39;dot&#39;):
+    random.seed(rand_seed)
+    CONSTRAINTS = [&#34;C&#34;+str(i) for i in range(numCons)]
+    if layout == &#39;dot2tex&#39;:
+        VARIABLES = [&#34;x_{&#34;+str(i)+&#34;}&#34; for i in range(numVars)]
+    else:
+        VARIABLES = [&#34;x&#34;+str(i) for i in range(numVars)]
+    OBJ = dict((i, random.randint(1, maxObjCoeff)) for i in VARIABLES)
+    MAT = dict((i, [random.randint(1, maxConsCoeff)
+                    if random.random() &lt;= density else 0
+                    for j in CONSTRAINTS]) for i in VARIABLES)
+    RHS = [random.randint(int(numVars*density*maxConsCoeff/tightness),
+                   int(numVars*density*maxConsCoeff/1.5))
+           for i in CONSTRAINTS]
+    return CONSTRAINTS, VARIABLES, OBJ, MAT, RHS</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="coinor.grumpy" href="index.html">coinor.grumpy</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="coinor.grumpy.BranchAndBound.BranchAndBound" href="#coinor.grumpy.BranchAndBound.BranchAndBound">BranchAndBound</a></code></li>
+<li><code><a title="coinor.grumpy.BranchAndBound.GenerateRandomMIP" href="#coinor.grumpy.BranchAndBound.GenerateRandomMIP">GenerateRandomMIP</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.5.3</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
