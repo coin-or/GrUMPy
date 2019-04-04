@@ -239,7 +239,7 @@ bt.display()
 
 ## Visualizing Polyhedra
 
-GrUMPy can be used to visualize polyhedra in two dimenions using the module polyhedron (see, e.g., [DisplayPolyhedronAndSolveLP.py](https://github.com/coin-or/GrUMPy/blob/master/src/grumpy/examples/DisplayPolyhedronAndSolveLP.py))
+GrUMPy can be used to visualize polyhedra in two dimensions using the module polyhedron (see, e.g., [DisplayPolyhedronAndSolveLP.py](https://github.com/coin-or/GrUMPy/blob/master/src/grumpy/examples/DisplayPolyhedronAndSolveLP.py))
 
 ```python
 from coinor.grumpy.polyhedron2D import Polyhedron2D, Figure
