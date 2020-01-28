@@ -21,7 +21,7 @@ https://pypi.python.org/pypi/coinor.grumpy
 
 See below for brief documentation of usage
 
-##Installation Notes
+## Installation Notes
 
 To install, do:
 
@@ -63,7 +63,7 @@ pip install coinor.grumpy
 
 There have been reports of incompatibilities with recent versions of PyGtk, but I have not attempted yet to track this down. If things break, you may try some variant of the instructions above for installing on Windows.
 
-##Examples of Visualizations
+## Examples of Visualizations
 
 ![Branch and bound tree](https://github.com/coin-or/GrUMPy/raw/master/images/BranchAndBound.png)
 
@@ -73,9 +73,9 @@ There have been reports of incompatibilities with recent versions of PyGtk, but 
 
 ![Figure 3 made with GrUMPy](https://raw.githubusercontent.com/tkralphs/GrUMPy/master/images/GMI-Row3.png)
 
-##Usage
+## Usage
 
-###Visualizing Branch and Bound Trees
+### Visualizing Branch and Bound Trees
 
 There are two separate modes for visualizing branch and bound trees. One uses
 [GiMPy](https://github.com/coin-or/GiMPy) to visualize the tree (which in turn
@@ -169,15 +169,15 @@ The remaining fields differ by event type.
  * `branched`: Field 6 is the LP bound, fields 7-8 are the integer
  infeasibility count and the sum of integer infeasibilities, fields 9-10 are
  the beginning and ending conditions numbers (optional).
- * `candidate`: Field 6 is the LP bound
+ * `candidate`: Field 6 is the LP bound.
  * `pregnant`: Field 6 is the LP bound, fields 7-8 are
  the beginning and ending conditions numbers (optional). Pregnant status
  lines are entirely optional.
  * `integer`: Field 6 is the value of the solution (LP bound), fields 9-10 are
  the beginning and ending conditions numbers (optional).
- * `fathomed`: No additional fields
+ * `fathomed`: No additional fields.
 
-A snippet from an example file might look as follows (see, e.g.,  [p0201_SYMPHONY.vbc](https://github.com/coin-or/GrUMPy/blob/master/src/grumpy/examples/p0201_SYMPHONY.vbc):
+A snippet from an example file might look as follows (see, e.g.,  [p0201_SYMPHONY.vbc](https://github.com/coin-or/GrUMPy/blob/master/src/grumpy/examples/p0201_SYMPHONY.vbc)):
 ```
   0.288516 branched 1 0 M 7125.000000 11.368421 24 19000000 100000
   0.289231 candidate 2 1 R 7465.000000
@@ -239,7 +239,7 @@ bt.display()
 
 ## Visualizing Polyhedra
 
-GrUMPy can be used to visualize polyhedra in two dimensions using the module polyhedron (see, e.g., [DisplayPolyhedronAndSolveLP.py](https://github.com/coin-or/GrUMPy/blob/master/src/grumpy/examples/DisplayPolyhedronAndSolveLP.py))
+GrUMPy can be used to visualize polyhedra in two dimensions using the module polyhedron (see, e.g., [DisplayPolyhedronAndSolveLP.py](https://github.com/coin-or/GrUMPy/blob/master/src/grumpy/examples/DisplayPolyhedronAndSolveLP.py)).
 
 ```python
 from coinor.grumpy.polyhedron2D import Polyhedron2D, Figure
