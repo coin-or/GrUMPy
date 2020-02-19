@@ -4,7 +4,7 @@ from setuptools import setup
 import setuptools
 
 setup(name='coinor.grumpy',
-      version='0.9.1',
+      version='0.9.2',
       description='Graphics for Understanding Mathematical Programming (GrUMPy)',
       long_description='''GrUMPy is a class for visualizing various algorithm used in solving discrete optimization problem. It has a class for dynamically generating and visualizing branch-and-bound trees that is derived from the GiMPy graph class. Using the branch-and-bound class, a user can visualize the branch-and-bound process in a number of different ways either by building the tree dynamically through direct calls to Python from the solver or by piping the output of an instrumented solver to GrUMPy for parsing. The branch-and-bound class also includes a pure Python implementation of branch and bound that is targeted at educational use.
 
@@ -23,7 +23,9 @@ https://tkralphs.github.io/GrUMPy
       license='Eclipse Public License',
       url='https://github.com/tkralphs/GrUMPy/',
       namespace_packages=['coinor'],
-      packages=['coinor.grumpy','coinor.grumpy.examples','coinor'],
+      packages=['coinor.grumpy','coinor'],
+      package_data={'':['*.vbc']},
+      include_package_data=True,
       package_dir = {'coinor': 'src'},
       install_requires=['coinor.gimpy>=2.0.0', 'pulp']
      )

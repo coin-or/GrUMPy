@@ -274,10 +274,13 @@ class BBTree(BinaryTree):
                 self.attr['display'] = 'off'
         elif mode is 'file':
             self.attr['display'] = 'file'
+        elif mode is 'matplotlib':
+            self.attr['display'] = 'matplotlib'
         else:
             raise Exception('%s is not a valid display mode.' %mode)
 
-    def display(self, item = 'all', basename = 'graph', format='png', count=None):
+    def display(self, item = 'all', basename = 'graph', format='png', count=None,
+                pause=False, wait_for_click=True):
         '''
         Displays/Saves images requested. BranchAndBound method calls this method
         to visualize the branch and bound tree.
@@ -300,7 +303,7 @@ class BBTree(BinaryTree):
                         n.attr['style'] = 'filled'
                     else:
                         n.attr['label'] = ' '
-            BinaryTree.display(self)
+            BinaryTree.display(self, pause = pause, wait_for_click = wait_for_click)
             return
         if self.attr['display'] is 'off':
             return
@@ -2082,7 +2085,7 @@ if __name__ == '__main__':
     T = BBTree()
     #T.set_layout('dot2tex')
     #T.set_display_mode('file')
-    T.set_display_mode('xdot')
+    T.set_display_mode('matplotlib')
     #T.set_display_mode('pygame')
     CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = GenerateRandomMIP(rand_seed = 120)
     BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,

@@ -1,7 +1,12 @@
 from __future__ import print_function
 from future import standard_library
 standard_library.install_aliases()
-from coinor.grumpy import BBTree
+from .BBTree import *
+from .BranchAndBound import *
+try:
+    from .polyhedron2D import *
+except ImportError:
+    pass
 import sys
 import io
 
