@@ -1,4 +1,4 @@
-# GrUMPy 0.9.1
+# GrUMPy 0.9.2
 
 ## Now with Python 3 support!
 
