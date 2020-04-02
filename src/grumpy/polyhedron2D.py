@@ -316,15 +316,18 @@ class Figure(object):
     def set_ylim(self, ylim):
         self.ax.set_ylim(ylim)
 
-    def show(self, pause = True, wait_for_click = True):
+    def show(self, pause = True, wait_for_click = True, filename = None):
         plt.legend()
-        if wait_for_click == True:
-            plt.draw()
-            if plt.waitforbuttonpress(timeout = 10000):
-                plt.close()
-                exit()
+        if filename is not None:
+            plt.savefig(filename, bbox_inches='tight')
         else:
-            plt.show(block=pause)
+            if wait_for_click == True:
+                plt.draw()
+                if plt.waitforbuttonpress(timeout = 10000):
+                    plt.close()
+                    exit()
+                else:
+                    plt.show(block=pause)
         self.fig = None
 
 if __name__ == '__main__':
