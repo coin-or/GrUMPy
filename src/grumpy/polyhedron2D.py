@@ -316,9 +316,15 @@ class Figure(object):
     def set_ylim(self, ylim):
         self.ax.set_ylim(ylim)
 
-    def show(self):
+    def show(self, pause = True, wait_for_click = True):
         plt.legend()
-        plt.show()
+        if wait_for_click == True:
+            plt.draw()
+            if plt.waitforbuttonpress(timeout = 10000):
+                plt.close()
+                exit()
+        else:
+            plt.show(block=pause)
         self.fig = None
 
 if __name__ == '__main__':
