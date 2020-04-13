@@ -5,9 +5,15 @@ from builtins import object
 from past.utils import old_div
 import numpy as np
 from pypolyhedron.polyhedron import Vrep, Hrep
+from math import ceil, floor
+
 import matplotlib.pyplot as plt
 import matplotlib.lines as lines
-from math import ceil, floor
+
+closed = False
+
+def handle_close(evt):
+    print('Figure closed. Exiting!')
 
 class Polyhedron2D(object):
     def __init__(self, points = None, rays = None, A = None, b = None):
@@ -126,16 +132,19 @@ class Figure(object):
 
     def __init__(self):
         self.fig = None
+        self.ax = None
 
     def initialize(self):
-        self.fig = plt.figure()
-        self.ax = self.fig.add_subplot(111)
-        self.ax.grid()
+        if self.fig == None:
+            self.fig = plt.figure()
+            self.fig.canvas.mpl_connect('close_event', handle_close)
+        if self.ax == None:
+            self.ax = self.fig.add_subplot(111)
+            self.ax.grid()
 
     def add_polyhedron(self, p, color = 'blue', linestyle = 'solid', label = None,
                        show_int_points = False):
-        if self.fig is None:
-            self.initialize()
+        self.initialize()
         if p.xlim is None or p.ylim is None:
             p.determine_plot_size()
         x, y = [], []
@@ -233,8 +242,7 @@ class Figure(object):
         
     def add_line(self, coeffs, level, xlim = None, ylim = None, 
                  color = 'blue', linestyle = 'solid', label = None):
-        if self.fig is None:
-            self.initialize()
+        self.initialize()
         if xlim is None or ylim is None:
             print('Must have plot_max and plot_min set in order to add line')
             return
@@ -303,8 +311,7 @@ class Figure(object):
         self.ax.add_line(line)
     
     def add_point(self, center, radius = .02, color = 'red', ):
-        if self.fig is None:
-            self.initialize()
+        self.initialize()
         self.ax.add_patch(plt.Circle(center, radius = radius, color = color))
     
     def add_text(self, loc, text):
@@ -323,12 +330,18 @@ class Figure(object):
         else:
             if wait_for_click == True:
                 plt.draw()
-                if plt.waitforbuttonpress(timeout = 10000):
-                    plt.close()
+                try:
+                    if plt.waitforbuttonpress(timeout = 10000):
+                        plt.close()
+                        exit()
+                except:
                     exit()
-                else:
-                    plt.show(block=pause)
-        self.fig = None
+                plt.clf()
+                self.ax = None
+            else:
+                plt.show(block=pause)
+                self.fig = None
+                self.ax = None
 
 if __name__ == '__main__':
     #points = np.random.random ((20,2))
