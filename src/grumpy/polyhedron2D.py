@@ -7,8 +7,12 @@ import numpy as np
 from pypolyhedron.polyhedron import Vrep, Hrep
 from math import ceil, floor
 
-import matplotlib.pyplot as plt
-import matplotlib.lines as lines
+try:
+    import matplotlib.pyplot as plt
+    import matplotlib.lines as lines
+    MATPLOTLIB_INSTALLED = True
+except:
+    MATPLOTLIB_INSTALLED = False
 
 closed = False
 
@@ -133,6 +137,8 @@ class Figure(object):
     def __init__(self):
         self.fig = None
         self.ax = None
+        if MATPLOTLIB_INSTALLED == False:
+            raise Exception('Matplotlib not installed, figures cannot be created')
 
     def initialize(self):
         if self.fig == None:
