@@ -10,16 +10,9 @@ except ImportError:
 import sys
 import io
 
-try:
-    from PIL import Image as PIL_Image
-except ImportError:
-    PIL_INSTALLED = False
-else:
-    PIL_INSTALLED = True
-
 if __name__ == '__main__':
     bt = BBTree()
-    bt.set_display_mode('pygame')
+    bt.set_display_mode('matplotlib')
     line_number = 0
     for line in sys.stdin:
         bt.ProcessLine(line)

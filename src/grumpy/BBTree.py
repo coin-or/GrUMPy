@@ -58,24 +58,26 @@ import random
 import re
 import subprocess
 import sys, os
-from subprocess import Popen, PIPE, STDOUT
+import tempfile
 import optparse
 try:
-    from src.gimpy import BinaryTree, XDOT_INSTALLED, PYGAME_INSTALLED, DOT2TEX_INSTALLED
+    from src.gimpy import BinaryTree, XDOT_INSTALLED, MATPLOTLIB_INSTALLED, DOT2TEX_INSTALLED
     from src.gimpy import PIL_INSTALLED, ETREE_INSTALLED
     from src.gimpy import quote_if_necessary as quote
 except ImportError:
-    from coinor.gimpy import BinaryTree, XDOT_INSTALLED, PYGAME_INSTALLED, DOT2TEX_INSTALLED
+    from coinor.gimpy import BinaryTree, XDOT_INSTALLED, MATPLOTLIB_INSTALLED, DOT2TEX_INSTALLED
     from coinor.gimpy import PIL_INSTALLED, ETREE_INSTALLED
     from coinor.gimpy import quote_if_necessary as quote
 from io import StringIO
-#from pygame.transform import scale
 from pulp import LpVariable, lpSum, LpProblem, LpMaximize, LpConstraint
 from pulp import LpStatus, value
 from .forecasting import ForecastingChainedSequences
 
-if PYGAME_INSTALLED:
-    import pygame
+if MATPLOTLIB_INSTALLED:
+    import matplotlib.pyplot as plt
+
+if PIL_INSTALLED:
+    from PIL import Image as PIL_Image
 
 # branch strategy
 BRANCH_STRATEGY = None
@@ -154,6 +156,8 @@ class BBTree(BinaryTree):
     keeps the entire branch-and-bound tree in self.
     """
     def __init__(self, **attrs):
+        if not 'layout' in attrs:
+            attrs['layout']= 'bak'
         BinaryTree.__init__(self, **attrs)
         # User-controlled constant values
         self._label = ''
@@ -191,13 +195,10 @@ class BBTree(BinaryTree):
         self._sum_subtree_gaps_forecaster = ForecastingChainedSequences()
         self._sum_subtree_gaps_scale = 1.0
         self._previous_incumbent_value = None  # Only needed for SSG
-        # pygame initialize
         if 'display' in attrs:
             self.set_display_mode(attrs['display'])
         else:
             self.set_display_mode('off')
-        if PYGAME_INSTALLED:
-            pygame.init()
 
     def process_file(self, file_name):
         self._filename = file_name
@@ -254,11 +255,11 @@ class BBTree(BinaryTree):
     def set_display_mode(self, mode):
         if mode is 'off':
             self.attr['display'] = mode
-        elif mode is 'pygame':
-            if PYGAME_INSTALLED:
-                self.attr['display'] = 'pygame'
+        elif mode is 'matplotlib':
+            if MATPLOTLIB_INSTALLED:
+                self.attr['display'] = 'matplotlib'
             else:
-                print('Pygame is not installed. Display is set to off.')
+                print('Matplotlib is not installed. Display is set to off.')
                 self.attr['display'] = 'off'
         elif mode is 'PIL':
             if PIL_INSTALLED:
@@ -279,8 +280,8 @@ class BBTree(BinaryTree):
         else:
             raise Exception('%s is not a valid display mode.' %mode)
 
-    def display(self, item = 'all', basename = 'graph', format='png', count=None,
-                pause=False, wait_for_click=True):
+    def display(self, item = 'all', basename = 'graph', format='png',
+                count=None, pause=False, wait_for_click=True):
         '''
         Displays/Saves images requested. BranchAndBound method calls this method
         to visualize the branch and bound tree.
@@ -307,24 +308,24 @@ class BBTree(BinaryTree):
             return
         if self.attr['display'] is 'off':
             return
-        if self.attr['display'] is 'pygame':
-            gnuplot_image = None
+        if self.attr['display'] is 'matplotlib':
+            gnuplot_script = None
             if item=='all':
                 self.display_all()
             elif item=='tree':
-                gnuplot_image = self.GenerateTreeImage()
+                gnuplot_script = self.GenerateTreeImage()
             elif item=='scatterplot':
-                gnuplot_image = self.GenerateScatterplot()
+                gnuplot_script = self.GenerateScatterplot()
             elif item=='histogram':
-                gnuplot_image = self.GenerateHistogram()
+                gnuplot_script = self.GenerateHistogram()
             elif item=='incumbent':
-                gnuplot_image = self.GenerateIncumbentPath()
+                gnuplot_script = self.GenerateIncumbentPath()
             elif item=='forecast':
-                gnuplot_image = self.GenerateForecastImages()
+                gnuplot_script = self.GenerateForecastImages()
             else:
                 raise Exception('Unknown display() method argument %s' %item)
-            if gnuplot_image is not None:
-                self.display_image(gnuplot_image)
+            if gnuplot_script is not None:
+                self.display_image(gnuplot_script)
             # clean auxilary files.
             histogram_files = [f for f in os.listdir(".")
                                if f.startswith("histogram")]
@@ -334,12 +335,18 @@ class BBTree(BinaryTree):
                                  if f.startswith("scatterplot")]
             t_fathomed_files = [f for f in os.listdir(".")
                                 if f.startswith("tree_fathomed")]
+            t_infeasible_files = [f for f in os.listdir(".")
+                                if f.startswith("tree_infeasible")]
+            t_pregnant_files = [f for f in os.listdir(".")
+                                if f.startswith("tree_pregnant")]
             t_integer_files = [f for f in os.listdir(".")
                                if f.startswith("tree_integer")]
+            t_branched_files = [f for f in os.listdir(".")
+                               if f.startswith("tree_branched")]
             bak_filelist = (histogram_files + incumbent_files +
                             scatterplot_files + t_fathomed_files +
-                            t_integer_files)
-            print(bak_filelist)
+                            t_integer_files + t_branched_files +
+                            t_infeasible_files + t_pregnant_files)
             for f in bak_filelist:
                 os.remove(f)
         elif self.attr['display'] is 'xdot':
@@ -378,10 +385,51 @@ class BBTree(BinaryTree):
                                     basename+'.dvi', basename+'.aux']
                     for f in aux_filelist:
                         os.remove(f)
+                else:
+                    print("Dot2tex not installed, falling back to graphviz")
+                    self.set_layout('dot')
+                    self.write(basename+'.'+format, self.get_layout(), format)
             else:
-                print("Dot2tex not installed, falling back to graphviz")
-                self.set_layout('dot')
-                self.write(basename+'.'+format, self.get_layout(), format)
+                gnuplot_script = None
+                if item=='all':
+                    self.display_all()
+                elif item=='tree':
+                    gnuplot_script = self.GenerateTreeImage()
+                elif item=='scatterplot':
+                    gnuplot_script = self.GenerateScatterplot()
+                elif item=='histogram':
+                    gnuplot_script = self.GenerateHistogram()
+                elif item=='incumbent':
+                    gnuplot_script = self.GenerateIncumbentPath()
+                elif item=='forecast':
+                    gnuplot_script = self.GenerateForecastImages()
+                else:
+                    raise Exception('Unknown display() method argument %s' %item)
+                if gnuplot_script is not None:
+                    self.write_image(gnuplot_script, basename+'.'+format)
+                # clean auxilary files.
+                histogram_files = [f for f in os.listdir(".")
+                                   if f.startswith("histogram")]
+                incumbent_files = [f for f in os.listdir(".")
+                                   if f.startswith("incumbentpath")]
+                scatterplot_files = [f for f in os.listdir(".")
+                                     if f.startswith("scatterplot")]
+                t_fathomed_files = [f for f in os.listdir(".")
+                                    if f.startswith("tree_fathomed")]
+                t_infeasible_files = [f for f in os.listdir(".")
+                                      if f.startswith("tree_infeasible")]
+                t_pregnant_files = [f for f in os.listdir(".")
+                                    if f.startswith("tree_pregnant")]
+                t_integer_files = [f for f in os.listdir(".")
+                                   if f.startswith("tree_integer")]
+                t_branched_files = [f for f in os.listdir(".")
+                                    if f.startswith("tree_branched")]
+                bak_filelist = (histogram_files + incumbent_files +
+                                scatterplot_files + t_fathomed_files +
+                                t_integer_files + t_branched_files +
+                                t_infeasible_files + t_pregnant_files)
+                for f in bak_filelist:
+                    os.remove(f)
         else:
             raise Exception('Unknown display mode %s' %self.attr['display'])
 
@@ -389,81 +437,119 @@ class BBTree(BinaryTree):
         '''
         Assumes all the images have the same size.
         '''
-        if not PYGAME_INSTALLED:
-            print('Pygame not installed. Display disabled')
-            return
-        tree = self.GenerateTreeImage()
-        scatterplot = self.GenerateScatterplot()
-        histogram = self.GenerateHistogram()
-        incumbent = self.GenerateIncumbentPath()
-        if tree is not None:
-            imTree = StringIO(tree)
-            pTree = pygame.image.load(imTree, 'png')
-            sTree = pTree.get_size()
-            rTree = pygame.Rect(0,0,sTree[0],sTree[1])
-        if scatterplot is not None:
-            imScatterplot = StringIO(scatterplot)
-            pScatterplot = pygame.image.load(imScatterplot, 'png')
-            sScatterplot = pScatterplot.get_size()
-            rScatterplot = pygame.Rect(sTree[0],0,sScatterplot[0],
-                                       sScatterplot[1])
-        if histogram is not None:
-            imHistogram = StringIO(histogram)
-            pHistogram = pygame.image.load(imHistogram, 'png')
-            sHistogram = pHistogram.get_size()
-            rHistogram = pygame.Rect(0,sTree[1],sHistogram[0],sHistogram[1])
-        if incumbent is not None:
-            imIncumbent = StringIO(incumbent)
-            pIncumbent = pygame.image.load(imIncumbent, 'png')
-            sIncumbent = pIncumbent.get_size()
-            rIncumbent = pygame.Rect(sTree[0],sTree[1],sIncumbent[0],
-                                     sIncumbent[1])
-        screen = pygame.display.set_mode((sTree[0]+sTree[0], sTree[1]+sTree[1]))
-        if tree is not None:
-            screen.blit(pTree, rTree)
-        if scatterplot is not None:
-            screen.blit(pScatterplot, rScatterplot)
-        if histogram is not None:
-            screen.blit(pHistogram, rHistogram)
-        if incumbent is not None:
-            screen.blit(pIncumbent, rIncumbent)
-        pygame.display.flip()
-        if self._wait_for_keypress:
-            pause = True
-            print("Press any key to continue to next image (ESCAPE to disable pausing)")
-        else:
-            pause = False
-        while pause:
-            e = pygame.event.poll()
-            if e.type == pygame.KEYDOWN:
-                keystate = pygame.key.get_pressed()
-                if keystate[pygame.K_ESCAPE] != 0:
-                    self._wait_for_keypress = False
-                break
-            if e.type == pygame.QUIT:
-                pause = False
-                pygame.display.quit()
-                # sys.exit() exits the whole program and I (aykut) guess it is
-                # not appropriate here.
-                #sys.exit()
+        print ('This function is deprected and no longer functions')
+        return
 
-    def display_image(self, gnuplot):
-        if not PYGAME_INSTALLED:
-            print('Pygame not installed. Display disabled')
+        # Old source, just in case
+        # if not (MATPLOTLIB_INSTALLED and PIL_INSTALLED:
+        #     print('Matplotlib or Pillow not installed. Display disabled')
+        #     return
+        # tree = self.GenerateTreeImage()
+        # scatterplot = self.GenerateScatterplot()
+        # histogram = self.GenerateHistogram()
+        # incumbent = self.GenerateIncumbentPath()
+        # if tree is not None:
+        #     imTree = StringIO(tree)
+        #     pTree = pygame.image.load(imTree, 'png')
+        #     sTree = pTree.get_size()
+        #     rTree = pygame.Rect(0,0,sTree[0],sTree[1])
+        # if scatterplot is not None:
+        #     imScatterplot = StringIO(scatterplot)
+        #     pScatterplot = pygame.image.load(imScatterplot, 'png')
+        #     sScatterplot = pScatterplot.get_size()
+        #     rScatterplot = pygame.Rect(sTree[0],0,sScatterplot[0],
+        #                                sScatterplot[1])
+        # if histogram is not None:
+        #     imHistogram = StringIO(histogram)
+        #     pHistogram = pygame.image.load(imHistogram, 'png')
+        #     sHistogram = pHistogram.get_size()
+        #     rHistogram = pygame.Rect(0,sTree[1],sHistogram[0],sHistogram[1])
+        # if incumbent is not None:
+        #     imIncumbent = StringIO(incumbent)
+        #     pIncumbent = pygame.image.load(imIncumbent, 'png')
+        #     sIncumbent = pIncumbent.get_size()
+        #     rIncumbent = pygame.Rect(sTree[0],sTree[1],sIncumbent[0],
+        #                              sIncumbent[1])
+        # screen = pygame.display.set_mode((sTree[0]+sTree[0], sTree[1]+sTree[1]))
+        # if tree is not None:
+        #     screen.blit(pTree, rTree)
+        # if scatterplot is not None:
+        #     screen.blit(pScatterplot, rScatterplot)
+        # if histogram is not None:
+        #     screen.blit(pHistogram, rHistogram)
+        # if incumbent is not None:
+        #     screen.blit(pIncumbent, rIncumbent)
+        # pygame.display.flip()
+        # if self._wait_for_keypress:
+        #     pause = True
+        #     print("Press any key to continue to next image (ESCAPE to disable pausing)")
+        # else:
+        #     pause = False
+        # while pause:
+        #     e = pygame.event.poll()
+        #     if e.type == pygame.KEYDOWN:
+        #         keystate = pygame.key.get_pressed()
+        #         if keystate[pygame.K_ESCAPE] != 0:
+        #             self._wait_for_keypress = False
+        #         break
+        #     if e.type == pygame.QUIT:
+        #         pause = False
+        #         pygame.display.quit()
+        #         # sys.exit() exits the whole program and I (aykut) guess it is
+        #         # not appropriate here.
+        #         #sys.exit()
+
+    def write_image(self, gnuplot_script, filename):
+        if not (MATPLOTLIB_INSTALLED and PIL_INSTALLED):
+            print('Either matplotlib or Pillow is not installed. Display disabled')
             return
-        im = StringIO(gnuplot)
-        picture = pygame.image.load(im, 'png')
-        screen = pygame.display.set_mode(picture.get_size())
-        screen.blit(picture, picture.get_rect())
-        pygame.display.flip()
-        pause = True
-        while pause:
-            e = pygame.event.poll()
-            if e.type == pygame.KEYDOWN:
-                break
-            if e.type == pygame.QUIT:
-                pause = False
-                pygame.display.quit()
+        try:
+            p = subprocess.run(['gnuplot'], capture_output = True,
+                               input = bytearray(gnuplot_script, 'utf8'))
+        except OSError:
+            print('''Gnuplot executable not found.
+Gnuplot must be installed and in your search path.
+After installation, ensure that the PATH variable is properly set.''')
+            return
+        p.check_returncode()
+
+        if p.stderr:
+            print(p.stderr)        
+
+        if isinstance(filename, str):
+            with open(filename, "w+b") as f:
+                f.write(p.stdout)
+        else:
+            filename.write(p.stdout)
+
+    def display_image(self, gnuplot_script, pause = False, wait_for_click = True):
+
+        if not (PIL_INSTALLED and MATPLOTLIB_INSTALLED):
+            print('Warning: Either matplotlib or Pillow is not installed. Cannot display.')
+            return
+        
+        tmp_fd, tmp_name = tempfile.mkstemp()
+        tmp_file = os.fdopen(tmp_fd, 'w+b')
+        self.write_image(gnuplot_script, tmp_file)
+        tmp_file.close()
+        im = PIL_Image.open(tmp_name)
+        plt.figure(1)
+        plt.clf()
+        plt.axis('off')
+        plt.imshow(im, interpolation='bilinear' #resample=True
+                   #extent = (0, 100, 0, 100)
+        )
+        if wait_for_click == True:
+            plt.draw()
+            try:
+                if plt.waitforbuttonpress(timeout = 10000):
+                    plt.close()
+                    exit()
+            except:
+                exit()
+        else:
+            plt.show(block=pause)
+        im.close()
 
     def set_label(self, label):
         self._label = label
@@ -516,7 +602,6 @@ class BBTree(BinaryTree):
                 self.set_node_attr(id, 'final_log_cond',
                                    math.log(condition_end, 10))
         elif self.root is None:
-            print('adding root', id)
             self.add_root(id, status = status, lp_bound = lp_bound,
                           integer_infeasibility_count = integer_infeasibility_count,
                           integer_infeasibility_sum = integer_infeasibility_sum,
@@ -901,8 +986,7 @@ class BBTree(BinaryTree):
         if self._incumbent_value is None:
             self._histogram_lower_bound = None
             self._histogram_upper_bound = None
-        gp = Popen(['gnuplot'], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-        return gp.communicate(input=histogram_script)[0]
+        return histogram_script
 
     def GetImageObjectiveBounds(self, min_value, max_value):
         """
@@ -988,7 +1072,7 @@ class BBTree(BinaryTree):
         references the data file).
         Args:
             output_file: if not given the gnuplot image will not be written
-        to disk but returned (to be displayed in pygame window)
+        to disk but returned (to be displayed in matplotlib window)
         """
         # Output data points.
         index_string = self.GetImageCounterString()
@@ -1026,8 +1110,7 @@ class BBTree(BinaryTree):
                     self._scatterplot_lower_bound = self._incumbent_value
         scatterplot_script = self.WriteScatterplotScript(data_filename,
                                                          output_file)
-        gp = Popen(['gnuplot'], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-        return gp.communicate(input=scatterplot_script)[0]
+        return scatterplot_script
 
     def WriteIncumbentPathScript(self, data_filename):
         """
@@ -1129,8 +1212,7 @@ class BBTree(BinaryTree):
         self._incumbent_path_datafiles.append(data_filename)
         # Output the Gnuplot script to a file.
         path_script = self.WriteIncumbentPathScript(data_filename)
-        gp = Popen(['gnuplot'], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-        return gp.communicate(input=path_script)[0]
+        return path_script
 
     def GenerateAllIncumbentPaths(self):
         """
@@ -1463,8 +1545,8 @@ class BBTree(BinaryTree):
                 self._filename, self._time, self._label)
         for line in additional_script_lines:
             data += line
-        gp = Popen(['gnuplot'], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-        return gp.communicate(input=data)[0]
+
+        return data
 
     def ProcessLine(self, line):
         """
@@ -1877,9 +1959,8 @@ class BBTree(BinaryTree):
             'title \"(MIP gap)\"\n' %
             (ssg_data_filename, gap_data_filename))
         measures_script += 'show output\n'
-        # Pipe gnuplot with measures_script
-        gp = Popen(['gnuplot'], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-        return gp.communicate(input=measures_script)[0]
+
+        return measures_script
 
     def GenerateForecastImages(self):
         # Forecasts
@@ -1925,9 +2006,8 @@ class BBTree(BinaryTree):
             'title \"(MIP gap)\", ' % gap_data_filename)
         forecast_script += 'x linetype 0 title \"elapsed time\"\n'
         forecast_script += 'show output\n'
-        # pipe gnuplot with forecast_script
-        gp = Popen(['gnuplot'], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-        return gp.communicate(input=forecast_script)[0]
+
+        return forecast_script
 
     def _get_fh(self, path, mode='r'):
         '''
@@ -2086,7 +2166,6 @@ if __name__ == '__main__':
     #T.set_layout('dot2tex')
     #T.set_display_mode('file')
     T.set_display_mode('matplotlib')
-    #T.set_display_mode('pygame')
     CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = GenerateRandomMIP(rand_seed = 120)
     BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                    branch_strategy = MOST_FRACTIONAL,

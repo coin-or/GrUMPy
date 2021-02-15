@@ -428,8 +428,8 @@ if __name__ == '__main__':
     T = BBTree()
     #T.set_layout('dot2tex')
     #T.set_display_mode('file')
-    T.set_display_mode('xdot')
-    #T.set_display_mode('pygame')
+    #T.set_display_mode('xdot')
+    T.set_display_mode('matplotlib')
     CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = GenerateRandomMIP(rand_seed = 120)
     BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                    branch_strategy = MOST_FRACTIONAL,
