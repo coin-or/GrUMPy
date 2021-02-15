@@ -10,7 +10,9 @@ from math import ceil, floor
 try:
     import matplotlib.pyplot as plt
     import matplotlib.lines as lines
+    from matplotlib import rcParams
     MATPLOTLIB_INSTALLED = True
+    rcParams["mathtext.fontset"] = 'cm'
 except:
     MATPLOTLIB_INSTALLED = False
 
@@ -18,6 +20,7 @@ closed = False
 
 def handle_close(evt):
     print('Figure closed. Exiting!')
+    exit()
 
 class Polyhedron2D(object):
     def __init__(self, points = None, rays = None, A = None, b = None):
@@ -148,8 +151,8 @@ class Figure(object):
             self.ax = self.fig.add_subplot(111)
             self.ax.grid()
 
-    def add_polyhedron(self, p, color = 'blue', linestyle = 'solid', label = None,
-                       show_int_points = False):
+    def add_polyhedron(self, p, color = 'blue', linestyle = 'solid',
+                       linewidth = 1, label = None, show_int_points = False):
         self.initialize()
         if p.xlim is None or p.ylim is None:
             p.determine_plot_size()
@@ -224,7 +227,8 @@ class Figure(object):
         if linestyle == 'solid':
             linestyle = '-'
         line = lines.Line2D(x, y, color = color, linestyle = linestyle,
-                            label = label)
+                            label = label, alpha = 0.5,
+                            linewidth = linewidth)
         self.ax.add_line(line)
         if show_int_points:
             for i in range(int(ceil(p.min_point[0])), 
@@ -234,8 +238,13 @@ class Figure(object):
                     if np.alltrue(np.dot(p.hrep.A, [i, j]) <= p.hrep.b):
                         self.add_point((i, j), radius = 0.02, color = 'black')
 
-    def add_line_segment(self, point1, point2, color = 'blue', linestyle = 'solid',
-                         label = None):
+        if label is not None:
+            plt.legend()
+
+        return line
+
+    def add_line_segment(self, point1, point2, color = 'blue',
+                         linestyle = 'solid', label = None):
         if linestyle == 'dashed':
             linestyle = '--'
         if linestyle == 'solid':
@@ -245,6 +254,11 @@ class Figure(object):
                             color = color, linestyle = linestyle,
                             label = label)
         self.ax.add_line(line)
+
+        if label is not None:
+            plt.legend()
+
+        return line
         
     def add_line(self, coeffs, level, xlim = None, ylim = None, 
                  color = 'blue', linestyle = 'solid', label = None):
@@ -315,10 +329,15 @@ class Figure(object):
         line = lines.Line2D(x, y, color = color, linestyle = linestyle,
                             label = label)
         self.ax.add_line(line)
+
+        if label is not None:
+            plt.legend()
+
+        return line
     
     def add_point(self, center, radius = .02, color = 'red', ):
         self.initialize()
-        self.ax.add_patch(plt.Circle(center, radius = radius, color = color))
+        return self.ax.add_patch(plt.Circle(center, radius = radius, color = color))
     
     def add_text(self, loc, text):
         plt.text(loc[0], loc[1], text)
@@ -329,8 +348,7 @@ class Figure(object):
     def set_ylim(self, ylim):
         self.ax.set_ylim(ylim)
 
-    def show(self, pause = True, wait_for_click = True, filename = None):
-        plt.legend()
+    def show(self, pause = False, wait_for_click = True, filename = None):
         if filename is not None:
             plt.savefig(filename, bbox_inches='tight')
         else:
