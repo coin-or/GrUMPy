@@ -3,25 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.5.3" />
+<meta name="generator" content="pdoc 0.9.2" />
 <title>coinor.grumpy.BBTree API documentation</title>
 <meta name="description" content="" />
-<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
-<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
-<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.name small{font-weight:normal}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
 </head>
 <body>
 <main>
 <article id="content">
 <header>
-<h1 class="title"><code>coinor.grumpy.BBTree</code> module</h1>
+<h1 class="title">Module <code>coinor.grumpy.BBTree</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
@@ -82,24 +86,26 @@ import random
 import re
 import subprocess
 import sys, os
-from subprocess import Popen, PIPE, STDOUT
+import tempfile
 import optparse
 try:
-    from src.gimpy import BinaryTree, XDOT_INSTALLED, PYGAME_INSTALLED, DOT2TEX_INSTALLED
+    from src.gimpy import BinaryTree, XDOT_INSTALLED, MATPLOTLIB_INSTALLED, DOT2TEX_INSTALLED
     from src.gimpy import PIL_INSTALLED, ETREE_INSTALLED
     from src.gimpy import quote_if_necessary as quote
 except ImportError:
-    from coinor.gimpy import BinaryTree, XDOT_INSTALLED, PYGAME_INSTALLED, DOT2TEX_INSTALLED
+    from coinor.gimpy import BinaryTree, XDOT_INSTALLED, MATPLOTLIB_INSTALLED, DOT2TEX_INSTALLED
     from coinor.gimpy import PIL_INSTALLED, ETREE_INSTALLED
     from coinor.gimpy import quote_if_necessary as quote
 from io import StringIO
-#from pygame.transform import scale
 from pulp import LpVariable, lpSum, LpProblem, LpMaximize, LpConstraint
 from pulp import LpStatus, value
 from .forecasting import ForecastingChainedSequences
 
-if PYGAME_INSTALLED:
-    import pygame
+if MATPLOTLIB_INSTALLED:
+    import matplotlib.pyplot as plt
+
+if PIL_INSTALLED:
+    from PIL import Image as PIL_Image
 
 # branch strategy
 BRANCH_STRATEGY = None
@@ -178,6 +184,8 @@ class BBTree(BinaryTree):
     keeps the entire branch-and-bound tree in self.
     &#34;&#34;&#34;
     def __init__(self, **attrs):
+        if not &#39;layout&#39; in attrs:
+            attrs[&#39;layout&#39;]= &#39;bak&#39;
         BinaryTree.__init__(self, **attrs)
         # User-controlled constant values
         self._label = &#39;&#39;
@@ -215,13 +223,10 @@ class BBTree(BinaryTree):
         self._sum_subtree_gaps_forecaster = ForecastingChainedSequences()
         self._sum_subtree_gaps_scale = 1.0
         self._previous_incumbent_value = None  # Only needed for SSG
-        # pygame initialize
         if &#39;display&#39; in attrs:
             self.set_display_mode(attrs[&#39;display&#39;])
         else:
             self.set_display_mode(&#39;off&#39;)
-        if PYGAME_INSTALLED:
-            pygame.init()
 
     def process_file(self, file_name):
         self._filename = file_name
@@ -278,11 +283,11 @@ class BBTree(BinaryTree):
     def set_display_mode(self, mode):
         if mode is &#39;off&#39;:
             self.attr[&#39;display&#39;] = mode
-        elif mode is &#39;pygame&#39;:
-            if PYGAME_INSTALLED:
-                self.attr[&#39;display&#39;] = &#39;pygame&#39;
+        elif mode is &#39;matplotlib&#39;:
+            if MATPLOTLIB_INSTALLED:
+                self.attr[&#39;display&#39;] = &#39;matplotlib&#39;
             else:
-                print(&#39;Pygame is not installed. Display is set to off.&#39;)
+                print(&#39;Matplotlib is not installed. Display is set to off.&#39;)
                 self.attr[&#39;display&#39;] = &#39;off&#39;
         elif mode is &#39;PIL&#39;:
             if PIL_INSTALLED:
@@ -298,10 +303,13 @@ class BBTree(BinaryTree):
                 self.attr[&#39;display&#39;] = &#39;off&#39;
         elif mode is &#39;file&#39;:
             self.attr[&#39;display&#39;] = &#39;file&#39;
+        elif mode is &#39;matplotlib&#39;:
+            self.attr[&#39;display&#39;] = &#39;matplotlib&#39;
         else:
             raise Exception(&#39;%s is not a valid display mode.&#39; %mode)
 
-    def display(self, item = &#39;all&#39;, basename = &#39;graph&#39;, format=&#39;png&#39;, count=None):
+    def display(self, item = &#39;all&#39;, basename = &#39;graph&#39;, format=&#39;png&#39;,
+                count=None, pause=False, wait_for_click=True):
         &#39;&#39;&#39;
         Displays/Saves images requested. BranchAndBound method calls this method
         to visualize the branch and bound tree.
@@ -324,28 +332,28 @@ class BBTree(BinaryTree):
                         n.attr[&#39;style&#39;] = &#39;filled&#39;
                     else:
                         n.attr[&#39;label&#39;] = &#39; &#39;
-            BinaryTree.display(self)
+            BinaryTree.display(self, pause = pause, wait_for_click = wait_for_click)
             return
         if self.attr[&#39;display&#39;] is &#39;off&#39;:
             return
-        if self.attr[&#39;display&#39;] is &#39;pygame&#39;:
-            gnuplot_image = None
+        if self.attr[&#39;display&#39;] is &#39;matplotlib&#39;:
+            gnuplot_script = None
             if item==&#39;all&#39;:
                 self.display_all()
             elif item==&#39;tree&#39;:
-                gnuplot_image = self.GenerateTreeImage()
+                gnuplot_script = self.GenerateTreeImage()
             elif item==&#39;scatterplot&#39;:
-                gnuplot_image = self.GenerateScatterplot()
+                gnuplot_script = self.GenerateScatterplot()
             elif item==&#39;histogram&#39;:
-                gnuplot_image = self.GenerateHistogram()
+                gnuplot_script = self.GenerateHistogram()
             elif item==&#39;incumbent&#39;:
-                gnuplot_image = self.GenerateIncumbentPath()
+                gnuplot_script = self.GenerateIncumbentPath()
             elif item==&#39;forecast&#39;:
-                gnuplot_image = self.GenerateForecastImages()
+                gnuplot_script = self.GenerateForecastImages()
             else:
                 raise Exception(&#39;Unknown display() method argument %s&#39; %item)
-            if gnuplot_image is not None:
-                self.display_image(gnuplot_image)
+            if gnuplot_script is not None:
+                self.display_image(gnuplot_script)
             # clean auxilary files.
             histogram_files = [f for f in os.listdir(&#34;.&#34;)
                                if f.startswith(&#34;histogram&#34;)]
@@ -355,12 +363,18 @@ class BBTree(BinaryTree):
                                  if f.startswith(&#34;scatterplot&#34;)]
             t_fathomed_files = [f for f in os.listdir(&#34;.&#34;)
                                 if f.startswith(&#34;tree_fathomed&#34;)]
+            t_infeasible_files = [f for f in os.listdir(&#34;.&#34;)
+                                if f.startswith(&#34;tree_infeasible&#34;)]
+            t_pregnant_files = [f for f in os.listdir(&#34;.&#34;)
+                                if f.startswith(&#34;tree_pregnant&#34;)]
             t_integer_files = [f for f in os.listdir(&#34;.&#34;)
                                if f.startswith(&#34;tree_integer&#34;)]
+            t_branched_files = [f for f in os.listdir(&#34;.&#34;)
+                               if f.startswith(&#34;tree_branched&#34;)]
             bak_filelist = (histogram_files + incumbent_files +
                             scatterplot_files + t_fathomed_files +
-                            t_integer_files)
-            print(bak_filelist)
+                            t_integer_files + t_branched_files +
+                            t_infeasible_files + t_pregnant_files)
             for f in bak_filelist:
                 os.remove(f)
         elif self.attr[&#39;display&#39;] is &#39;xdot&#39;:
@@ -399,10 +413,51 @@ class BBTree(BinaryTree):
                                     basename+&#39;.dvi&#39;, basename+&#39;.aux&#39;]
                     for f in aux_filelist:
                         os.remove(f)
+                else:
+                    print(&#34;Dot2tex not installed, falling back to graphviz&#34;)
+                    self.set_layout(&#39;dot&#39;)
+                    self.write(basename+&#39;.&#39;+format, self.get_layout(), format)
             else:
-                print(&#34;Dot2tex not installed, falling back to graphviz&#34;)
-                self.set_layout(&#39;dot&#39;)
-                self.write(basename+&#39;.&#39;+format, self.get_layout(), format)
+                gnuplot_script = None
+                if item==&#39;all&#39;:
+                    self.display_all()
+                elif item==&#39;tree&#39;:
+                    gnuplot_script = self.GenerateTreeImage()
+                elif item==&#39;scatterplot&#39;:
+                    gnuplot_script = self.GenerateScatterplot()
+                elif item==&#39;histogram&#39;:
+                    gnuplot_script = self.GenerateHistogram()
+                elif item==&#39;incumbent&#39;:
+                    gnuplot_script = self.GenerateIncumbentPath()
+                elif item==&#39;forecast&#39;:
+                    gnuplot_script = self.GenerateForecastImages()
+                else:
+                    raise Exception(&#39;Unknown display() method argument %s&#39; %item)
+                if gnuplot_script is not None:
+                    self.write_image(gnuplot_script, basename+&#39;.&#39;+format)
+                # clean auxilary files.
+                histogram_files = [f for f in os.listdir(&#34;.&#34;)
+                                   if f.startswith(&#34;histogram&#34;)]
+                incumbent_files = [f for f in os.listdir(&#34;.&#34;)
+                                   if f.startswith(&#34;incumbentpath&#34;)]
+                scatterplot_files = [f for f in os.listdir(&#34;.&#34;)
+                                     if f.startswith(&#34;scatterplot&#34;)]
+                t_fathomed_files = [f for f in os.listdir(&#34;.&#34;)
+                                    if f.startswith(&#34;tree_fathomed&#34;)]
+                t_infeasible_files = [f for f in os.listdir(&#34;.&#34;)
+                                      if f.startswith(&#34;tree_infeasible&#34;)]
+                t_pregnant_files = [f for f in os.listdir(&#34;.&#34;)
+                                    if f.startswith(&#34;tree_pregnant&#34;)]
+                t_integer_files = [f for f in os.listdir(&#34;.&#34;)
+                                   if f.startswith(&#34;tree_integer&#34;)]
+                t_branched_files = [f for f in os.listdir(&#34;.&#34;)
+                                    if f.startswith(&#34;tree_branched&#34;)]
+                bak_filelist = (histogram_files + incumbent_files +
+                                scatterplot_files + t_fathomed_files +
+                                t_integer_files + t_branched_files +
+                                t_infeasible_files + t_pregnant_files)
+                for f in bak_filelist:
+                    os.remove(f)
         else:
             raise Exception(&#39;Unknown display mode %s&#39; %self.attr[&#39;display&#39;])
 
@@ -410,81 +465,119 @@ class BBTree(BinaryTree):
         &#39;&#39;&#39;
         Assumes all the images have the same size.
         &#39;&#39;&#39;
-        if not PYGAME_INSTALLED:
-            print(&#39;Pygame not installed. Display disabled&#39;)
-            return
-        tree = self.GenerateTreeImage()
-        scatterplot = self.GenerateScatterplot()
-        histogram = self.GenerateHistogram()
-        incumbent = self.GenerateIncumbentPath()
-        if tree is not None:
-            imTree = StringIO(tree)
-            pTree = pygame.image.load(imTree, &#39;png&#39;)
-            sTree = pTree.get_size()
-            rTree = pygame.Rect(0,0,sTree[0],sTree[1])
-        if scatterplot is not None:
-            imScatterplot = StringIO(scatterplot)
-            pScatterplot = pygame.image.load(imScatterplot, &#39;png&#39;)
-            sScatterplot = pScatterplot.get_size()
-            rScatterplot = pygame.Rect(sTree[0],0,sScatterplot[0],
-                                       sScatterplot[1])
-        if histogram is not None:
-            imHistogram = StringIO(histogram)
-            pHistogram = pygame.image.load(imHistogram, &#39;png&#39;)
-            sHistogram = pHistogram.get_size()
-            rHistogram = pygame.Rect(0,sTree[1],sHistogram[0],sHistogram[1])
-        if incumbent is not None:
-            imIncumbent = StringIO(incumbent)
-            pIncumbent = pygame.image.load(imIncumbent, &#39;png&#39;)
-            sIncumbent = pIncumbent.get_size()
-            rIncumbent = pygame.Rect(sTree[0],sTree[1],sIncumbent[0],
-                                     sIncumbent[1])
-        screen = pygame.display.set_mode((sTree[0]+sTree[0], sTree[1]+sTree[1]))
-        if tree is not None:
-            screen.blit(pTree, rTree)
-        if scatterplot is not None:
-            screen.blit(pScatterplot, rScatterplot)
-        if histogram is not None:
-            screen.blit(pHistogram, rHistogram)
-        if incumbent is not None:
-            screen.blit(pIncumbent, rIncumbent)
-        pygame.display.flip()
-        if self._wait_for_keypress:
-            pause = True
-            print(&#34;Press any key to continue to next image (ESCAPE to disable pausing)&#34;)
-        else:
-            pause = False
-        while pause:
-            e = pygame.event.poll()
-            if e.type == pygame.KEYDOWN:
-                keystate = pygame.key.get_pressed()
-                if keystate[pygame.K_ESCAPE] != 0:
-                    self._wait_for_keypress = False
-                break
-            if e.type == pygame.QUIT:
-                pause = False
-                pygame.display.quit()
-                # sys.exit() exits the whole program and I (aykut) guess it is
-                # not appropriate here.
-                #sys.exit()
+        print (&#39;This function is deprected and no longer functions&#39;)
+        return
 
-    def display_image(self, gnuplot):
-        if not PYGAME_INSTALLED:
-            print(&#39;Pygame not installed. Display disabled&#39;)
+        # Old source, just in case
+        # if not (MATPLOTLIB_INSTALLED and PIL_INSTALLED:
+        #     print(&#39;Matplotlib or Pillow not installed. Display disabled&#39;)
+        #     return
+        # tree = self.GenerateTreeImage()
+        # scatterplot = self.GenerateScatterplot()
+        # histogram = self.GenerateHistogram()
+        # incumbent = self.GenerateIncumbentPath()
+        # if tree is not None:
+        #     imTree = StringIO(tree)
+        #     pTree = pygame.image.load(imTree, &#39;png&#39;)
+        #     sTree = pTree.get_size()
+        #     rTree = pygame.Rect(0,0,sTree[0],sTree[1])
+        # if scatterplot is not None:
+        #     imScatterplot = StringIO(scatterplot)
+        #     pScatterplot = pygame.image.load(imScatterplot, &#39;png&#39;)
+        #     sScatterplot = pScatterplot.get_size()
+        #     rScatterplot = pygame.Rect(sTree[0],0,sScatterplot[0],
+        #                                sScatterplot[1])
+        # if histogram is not None:
+        #     imHistogram = StringIO(histogram)
+        #     pHistogram = pygame.image.load(imHistogram, &#39;png&#39;)
+        #     sHistogram = pHistogram.get_size()
+        #     rHistogram = pygame.Rect(0,sTree[1],sHistogram[0],sHistogram[1])
+        # if incumbent is not None:
+        #     imIncumbent = StringIO(incumbent)
+        #     pIncumbent = pygame.image.load(imIncumbent, &#39;png&#39;)
+        #     sIncumbent = pIncumbent.get_size()
+        #     rIncumbent = pygame.Rect(sTree[0],sTree[1],sIncumbent[0],
+        #                              sIncumbent[1])
+        # screen = pygame.display.set_mode((sTree[0]+sTree[0], sTree[1]+sTree[1]))
+        # if tree is not None:
+        #     screen.blit(pTree, rTree)
+        # if scatterplot is not None:
+        #     screen.blit(pScatterplot, rScatterplot)
+        # if histogram is not None:
+        #     screen.blit(pHistogram, rHistogram)
+        # if incumbent is not None:
+        #     screen.blit(pIncumbent, rIncumbent)
+        # pygame.display.flip()
+        # if self._wait_for_keypress:
+        #     pause = True
+        #     print(&#34;Press any key to continue to next image (ESCAPE to disable pausing)&#34;)
+        # else:
+        #     pause = False
+        # while pause:
+        #     e = pygame.event.poll()
+        #     if e.type == pygame.KEYDOWN:
+        #         keystate = pygame.key.get_pressed()
+        #         if keystate[pygame.K_ESCAPE] != 0:
+        #             self._wait_for_keypress = False
+        #         break
+        #     if e.type == pygame.QUIT:
+        #         pause = False
+        #         pygame.display.quit()
+        #         # sys.exit() exits the whole program and I (aykut) guess it is
+        #         # not appropriate here.
+        #         #sys.exit()
+
+    def write_image(self, gnuplot_script, filename):
+        if not (MATPLOTLIB_INSTALLED and PIL_INSTALLED):
+            print(&#39;Either matplotlib or Pillow is not installed. Display disabled&#39;)
             return
-        im = StringIO(gnuplot)
-        picture = pygame.image.load(im, &#39;png&#39;)
-        screen = pygame.display.set_mode(picture.get_size())
-        screen.blit(picture, picture.get_rect())
-        pygame.display.flip()
-        pause = True
-        while pause:
-            e = pygame.event.poll()
-            if e.type == pygame.KEYDOWN:
-                break
-            if e.type == pygame.QUIT:
-                pause = False
-                pygame.display.quit()
+        try:
+            p = subprocess.run([&#39;gnuplot&#39;], capture_output = True,
+                               input = bytearray(gnuplot_script, &#39;utf8&#39;))
+        except OSError:
+            print(&#39;&#39;&#39;Gnuplot executable not found.
+Gnuplot must be installed and in your search path.
+After installation, ensure that the PATH variable is properly set.&#39;&#39;&#39;)
+            return
+        p.check_returncode()
+
+        if p.stderr:
+            print(p.stderr)        
+
+        if isinstance(filename, str):
+            with open(filename, &#34;w+b&#34;) as f:
+                f.write(p.stdout)
+        else:
+            filename.write(p.stdout)
+
+    def display_image(self, gnuplot_script, pause = False, wait_for_click = True):
+
+        if not (PIL_INSTALLED and MATPLOTLIB_INSTALLED):
+            print(&#39;Warning: Either matplotlib or Pillow is not installed. Cannot display.&#39;)
+            return
+        
+        tmp_fd, tmp_name = tempfile.mkstemp()
+        tmp_file = os.fdopen(tmp_fd, &#39;w+b&#39;)
+        self.write_image(gnuplot_script, tmp_file)
+        tmp_file.close()
+        im = PIL_Image.open(tmp_name)
+        plt.figure(1)
+        plt.clf()
+        plt.axis(&#39;off&#39;)
+        plt.imshow(im, interpolation=&#39;bilinear&#39; #resample=True
+                   #extent = (0, 100, 0, 100)
+        )
+        if wait_for_click == True:
+            plt.draw()
+            try:
+                if plt.waitforbuttonpress(timeout = 10000):
+                    plt.close()
+                    exit()
+            except:
+                exit()
+        else:
+            plt.show(block=pause)
+        im.close()
 
     def set_label(self, label):
         self._label = label
@@ -537,7 +630,6 @@ class BBTree(BinaryTree):
                 self.set_node_attr(id, &#39;final_log_cond&#39;,
                                    math.log(condition_end, 10))
         elif self.root is None:
-            print(&#39;adding root&#39;, id)
             self.add_root(id, status = status, lp_bound = lp_bound,
                           integer_infeasibility_count = integer_infeasibility_count,
                           integer_infeasibility_sum = integer_infeasibility_sum,
@@ -922,8 +1014,7 @@ class BBTree(BinaryTree):
         if self._incumbent_value is None:
             self._histogram_lower_bound = None
             self._histogram_upper_bound = None
-        gp = Popen([&#39;gnuplot&#39;], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-        return gp.communicate(input=histogram_script)[0]
+        return histogram_script
 
     def GetImageObjectiveBounds(self, min_value, max_value):
         &#34;&#34;&#34;
@@ -1009,7 +1100,7 @@ class BBTree(BinaryTree):
         references the data file).
         Args:
             output_file: if not given the gnuplot image will not be written
-        to disk but returned (to be displayed in pygame window)
+        to disk but returned (to be displayed in matplotlib window)
         &#34;&#34;&#34;
         # Output data points.
         index_string = self.GetImageCounterString()
@@ -1047,8 +1138,7 @@ class BBTree(BinaryTree):
                     self._scatterplot_lower_bound = self._incumbent_value
         scatterplot_script = self.WriteScatterplotScript(data_filename,
                                                          output_file)
-        gp = Popen([&#39;gnuplot&#39;], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-        return gp.communicate(input=scatterplot_script)[0]
+        return scatterplot_script
 
     def WriteIncumbentPathScript(self, data_filename):
         &#34;&#34;&#34;
@@ -1150,8 +1240,7 @@ class BBTree(BinaryTree):
         self._incumbent_path_datafiles.append(data_filename)
         # Output the Gnuplot script to a file.
         path_script = self.WriteIncumbentPathScript(data_filename)
-        gp = Popen([&#39;gnuplot&#39;], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-        return gp.communicate(input=path_script)[0]
+        return path_script
 
     def GenerateAllIncumbentPaths(self):
         &#34;&#34;&#34;
@@ -1484,8 +1573,8 @@ class BBTree(BinaryTree):
                 self._filename, self._time, self._label)
         for line in additional_script_lines:
             data += line
-        gp = Popen([&#39;gnuplot&#39;], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-        return gp.communicate(input=data)[0]
+
+        return data
 
     def ProcessLine(self, line):
         &#34;&#34;&#34;
@@ -1898,9 +1987,8 @@ class BBTree(BinaryTree):
             &#39;title \&#34;(MIP gap)\&#34;\n&#39; %
             (ssg_data_filename, gap_data_filename))
         measures_script += &#39;show output\n&#39;
-        # Pipe gnuplot with measures_script
-        gp = Popen([&#39;gnuplot&#39;], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-        return gp.communicate(input=measures_script)[0]
+
+        return measures_script
 
     def GenerateForecastImages(self):
         # Forecasts
@@ -1946,9 +2034,8 @@ class BBTree(BinaryTree):
             &#39;title \&#34;(MIP gap)\&#34;, &#39; % gap_data_filename)
         forecast_script += &#39;x linetype 0 title \&#34;elapsed time\&#34;\n&#39;
         forecast_script += &#39;show output\n&#39;
-        # pipe gnuplot with forecast_script
-        gp = Popen([&#39;gnuplot&#39;], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-        return gp.communicate(input=forecast_script)[0]
+
+        return forecast_script
 
     def _get_fh(self, path, mode=&#39;r&#39;):
         &#39;&#39;&#39;
@@ -2106,8 +2193,7 @@ if __name__ == &#39;__main__&#39;:
     T = BBTree()
     #T.set_layout(&#39;dot2tex&#39;)
     #T.set_display_mode(&#39;file&#39;)
-    T.set_display_mode(&#39;xdot&#39;)
-    #T.set_display_mode(&#39;pygame&#39;)
+    T.set_display_mode(&#39;matplotlib&#39;)
     CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = GenerateRandomMIP(rand_seed = 120)
     BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                    branch_strategy = MOST_FRACTIONAL,
@@ -2126,7 +2212,7 @@ if __name__ == &#39;__main__&#39;:
 <span>def <span class="ident">CreatePerlStyleBooleanFlag</span></span>(<span>parser, flag_text, variable_name, help_text)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Add two options to an optparse.OptionParser, one with a 'no' prefix.
+<div class="desc"><p>Add two options to an optparse.OptionParser, one with a 'no' prefix.
 Two options are created.
 One has the flag_text and one has 'no' prepended
 to the flag_text.
@@ -2143,9 +2229,11 @@ common style in Perl.</p>
 <dd>String name of the variable to store the flag results.</dd>
 <dt><strong><code>help_text</code></strong></dt>
 <dd>String that describes the flag.</dd>
-</dl></section>
+</dl></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def CreatePerlStyleBooleanFlag(parser, flag_text, variable_name, help_text):
     &#34;&#34;&#34;
     Add two options to an optparse.OptionParser, one with a &#39;no&#39; prefix.
@@ -2170,9 +2258,11 @@ common style in Perl.</p>
 <span>def <span class="ident">parse_options</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Parse arguments and flags</p></section>
+<div class="desc"><p>Parse arguments and flags</p></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def parse_options():
     &#39;&#39;&#39; Parse arguments and flags&#39;&#39;&#39;
     usage_text = &#39;usage: %prog [options] &lt;input file&gt;&#39;
@@ -2280,10 +2370,10 @@ common style in Perl.</p>
 <dl>
 <dt id="coinor.grumpy.BBTree.BBTree"><code class="flex name class">
 <span>class <span class="ident">BBTree</span></span>
-<span>(</span><span><small>ancestors:</small> src.gimpy.tree.BinaryTree, src.gimpy.tree.Tree, src.gimpy.graph.Graph)</span>
+<span>(</span><span>**attrs)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Methods to process and visualize information about a b&amp;b tree. It can
+<div class="desc"><p>Methods to process and visualize information about a b&amp;b tree. It can
 process an output file (in a specific format, see BAK project in COIN-OR) of
 a solver that has three information. See run.py in examples directory fot
 this use. Moreover it implements a branch and bound method that can solve
@@ -2291,9 +2381,17 @@ binary programs (0-1 variables only) using PuLP as an LP solver. It provides
 different branching and searching strategies. See test_strategies.py in test
 directory.</p>
 <p>This is the main class of GrUMPy. It inherits BinaryTree from GIMPy and
-keeps the entire branch-and-bound tree in self.</p></section>
+keeps the entire branch-and-bound tree in self.</p>
+<p>API: <strong>init</strong>(self, **attrs)</p>
+<h2 id="description">Description</h2>
+<p>Class constructor.</p>
+<h2 id="input">Input</h2>
+<p>attrs: Tree attributes in keyword arguments format. See Graph and
+Tree class for details.</p></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">class BBTree(BinaryTree):
     &#34;&#34;&#34;
     Methods to process and visualize information about a b&amp;b tree. It can
@@ -2308,6 +2406,8 @@ keeps the entire branch-and-bound tree in self.</p></section>
     keeps the entire branch-and-bound tree in self.
     &#34;&#34;&#34;
     def __init__(self, **attrs):
+        if not &#39;layout&#39; in attrs:
+            attrs[&#39;layout&#39;]= &#39;bak&#39;
         BinaryTree.__init__(self, **attrs)
         # User-controlled constant values
         self._label = &#39;&#39;
@@ -2345,13 +2445,10 @@ keeps the entire branch-and-bound tree in self.</p></section>
         self._sum_subtree_gaps_forecaster = ForecastingChainedSequences()
         self._sum_subtree_gaps_scale = 1.0
         self._previous_incumbent_value = None  # Only needed for SSG
-        # pygame initialize
         if &#39;display&#39; in attrs:
             self.set_display_mode(attrs[&#39;display&#39;])
         else:
             self.set_display_mode(&#39;off&#39;)
-        if PYGAME_INSTALLED:
-            pygame.init()
 
     def process_file(self, file_name):
         self._filename = file_name
@@ -2408,11 +2505,11 @@ keeps the entire branch-and-bound tree in self.</p></section>
     def set_display_mode(self, mode):
         if mode is &#39;off&#39;:
             self.attr[&#39;display&#39;] = mode
-        elif mode is &#39;pygame&#39;:
-            if PYGAME_INSTALLED:
-                self.attr[&#39;display&#39;] = &#39;pygame&#39;
+        elif mode is &#39;matplotlib&#39;:
+            if MATPLOTLIB_INSTALLED:
+                self.attr[&#39;display&#39;] = &#39;matplotlib&#39;
             else:
-                print(&#39;Pygame is not installed. Display is set to off.&#39;)
+                print(&#39;Matplotlib is not installed. Display is set to off.&#39;)
                 self.attr[&#39;display&#39;] = &#39;off&#39;
         elif mode is &#39;PIL&#39;:
             if PIL_INSTALLED:
@@ -2428,10 +2525,13 @@ keeps the entire branch-and-bound tree in self.</p></section>
                 self.attr[&#39;display&#39;] = &#39;off&#39;
         elif mode is &#39;file&#39;:
             self.attr[&#39;display&#39;] = &#39;file&#39;
+        elif mode is &#39;matplotlib&#39;:
+            self.attr[&#39;display&#39;] = &#39;matplotlib&#39;
         else:
             raise Exception(&#39;%s is not a valid display mode.&#39; %mode)
 
-    def display(self, item = &#39;all&#39;, basename = &#39;graph&#39;, format=&#39;png&#39;, count=None):
+    def display(self, item = &#39;all&#39;, basename = &#39;graph&#39;, format=&#39;png&#39;,
+                count=None, pause=False, wait_for_click=True):
         &#39;&#39;&#39;
         Displays/Saves images requested. BranchAndBound method calls this method
         to visualize the branch and bound tree.
@@ -2454,28 +2554,28 @@ keeps the entire branch-and-bound tree in self.</p></section>
                         n.attr[&#39;style&#39;] = &#39;filled&#39;
                     else:
                         n.attr[&#39;label&#39;] = &#39; &#39;
-            BinaryTree.display(self)
+            BinaryTree.display(self, pause = pause, wait_for_click = wait_for_click)
             return
         if self.attr[&#39;display&#39;] is &#39;off&#39;:
             return
-        if self.attr[&#39;display&#39;] is &#39;pygame&#39;:
-            gnuplot_image = None
+        if self.attr[&#39;display&#39;] is &#39;matplotlib&#39;:
+            gnuplot_script = None
             if item==&#39;all&#39;:
                 self.display_all()
             elif item==&#39;tree&#39;:
-                gnuplot_image = self.GenerateTreeImage()
+                gnuplot_script = self.GenerateTreeImage()
             elif item==&#39;scatterplot&#39;:
-                gnuplot_image = self.GenerateScatterplot()
+                gnuplot_script = self.GenerateScatterplot()
             elif item==&#39;histogram&#39;:
-                gnuplot_image = self.GenerateHistogram()
+                gnuplot_script = self.GenerateHistogram()
             elif item==&#39;incumbent&#39;:
-                gnuplot_image = self.GenerateIncumbentPath()
+                gnuplot_script = self.GenerateIncumbentPath()
             elif item==&#39;forecast&#39;:
-                gnuplot_image = self.GenerateForecastImages()
+                gnuplot_script = self.GenerateForecastImages()
             else:
                 raise Exception(&#39;Unknown display() method argument %s&#39; %item)
-            if gnuplot_image is not None:
-                self.display_image(gnuplot_image)
+            if gnuplot_script is not None:
+                self.display_image(gnuplot_script)
             # clean auxilary files.
             histogram_files = [f for f in os.listdir(&#34;.&#34;)
                                if f.startswith(&#34;histogram&#34;)]
@@ -2485,12 +2585,18 @@ keeps the entire branch-and-bound tree in self.</p></section>
                                  if f.startswith(&#34;scatterplot&#34;)]
             t_fathomed_files = [f for f in os.listdir(&#34;.&#34;)
                                 if f.startswith(&#34;tree_fathomed&#34;)]
+            t_infeasible_files = [f for f in os.listdir(&#34;.&#34;)
+                                if f.startswith(&#34;tree_infeasible&#34;)]
+            t_pregnant_files = [f for f in os.listdir(&#34;.&#34;)
+                                if f.startswith(&#34;tree_pregnant&#34;)]
             t_integer_files = [f for f in os.listdir(&#34;.&#34;)
                                if f.startswith(&#34;tree_integer&#34;)]
+            t_branched_files = [f for f in os.listdir(&#34;.&#34;)
+                               if f.startswith(&#34;tree_branched&#34;)]
             bak_filelist = (histogram_files + incumbent_files +
                             scatterplot_files + t_fathomed_files +
-                            t_integer_files)
-            print(bak_filelist)
+                            t_integer_files + t_branched_files +
+                            t_infeasible_files + t_pregnant_files)
             for f in bak_filelist:
                 os.remove(f)
         elif self.attr[&#39;display&#39;] is &#39;xdot&#39;:
@@ -2529,10 +2635,51 @@ keeps the entire branch-and-bound tree in self.</p></section>
                                     basename+&#39;.dvi&#39;, basename+&#39;.aux&#39;]
                     for f in aux_filelist:
                         os.remove(f)
+                else:
+                    print(&#34;Dot2tex not installed, falling back to graphviz&#34;)
+                    self.set_layout(&#39;dot&#39;)
+                    self.write(basename+&#39;.&#39;+format, self.get_layout(), format)
             else:
-                print(&#34;Dot2tex not installed, falling back to graphviz&#34;)
-                self.set_layout(&#39;dot&#39;)
-                self.write(basename+&#39;.&#39;+format, self.get_layout(), format)
+                gnuplot_script = None
+                if item==&#39;all&#39;:
+                    self.display_all()
+                elif item==&#39;tree&#39;:
+                    gnuplot_script = self.GenerateTreeImage()
+                elif item==&#39;scatterplot&#39;:
+                    gnuplot_script = self.GenerateScatterplot()
+                elif item==&#39;histogram&#39;:
+                    gnuplot_script = self.GenerateHistogram()
+                elif item==&#39;incumbent&#39;:
+                    gnuplot_script = self.GenerateIncumbentPath()
+                elif item==&#39;forecast&#39;:
+                    gnuplot_script = self.GenerateForecastImages()
+                else:
+                    raise Exception(&#39;Unknown display() method argument %s&#39; %item)
+                if gnuplot_script is not None:
+                    self.write_image(gnuplot_script, basename+&#39;.&#39;+format)
+                # clean auxilary files.
+                histogram_files = [f for f in os.listdir(&#34;.&#34;)
+                                   if f.startswith(&#34;histogram&#34;)]
+                incumbent_files = [f for f in os.listdir(&#34;.&#34;)
+                                   if f.startswith(&#34;incumbentpath&#34;)]
+                scatterplot_files = [f for f in os.listdir(&#34;.&#34;)
+                                     if f.startswith(&#34;scatterplot&#34;)]
+                t_fathomed_files = [f for f in os.listdir(&#34;.&#34;)
+                                    if f.startswith(&#34;tree_fathomed&#34;)]
+                t_infeasible_files = [f for f in os.listdir(&#34;.&#34;)
+                                      if f.startswith(&#34;tree_infeasible&#34;)]
+                t_pregnant_files = [f for f in os.listdir(&#34;.&#34;)
+                                    if f.startswith(&#34;tree_pregnant&#34;)]
+                t_integer_files = [f for f in os.listdir(&#34;.&#34;)
+                                   if f.startswith(&#34;tree_integer&#34;)]
+                t_branched_files = [f for f in os.listdir(&#34;.&#34;)
+                                    if f.startswith(&#34;tree_branched&#34;)]
+                bak_filelist = (histogram_files + incumbent_files +
+                                scatterplot_files + t_fathomed_files +
+                                t_integer_files + t_branched_files +
+                                t_infeasible_files + t_pregnant_files)
+                for f in bak_filelist:
+                    os.remove(f)
         else:
             raise Exception(&#39;Unknown display mode %s&#39; %self.attr[&#39;display&#39;])
 
@@ -2540,81 +2687,119 @@ keeps the entire branch-and-bound tree in self.</p></section>
         &#39;&#39;&#39;
         Assumes all the images have the same size.
         &#39;&#39;&#39;
-        if not PYGAME_INSTALLED:
-            print(&#39;Pygame not installed. Display disabled&#39;)
-            return
-        tree = self.GenerateTreeImage()
-        scatterplot = self.GenerateScatterplot()
-        histogram = self.GenerateHistogram()
-        incumbent = self.GenerateIncumbentPath()
-        if tree is not None:
-            imTree = StringIO(tree)
-            pTree = pygame.image.load(imTree, &#39;png&#39;)
-            sTree = pTree.get_size()
-            rTree = pygame.Rect(0,0,sTree[0],sTree[1])
-        if scatterplot is not None:
-            imScatterplot = StringIO(scatterplot)
-            pScatterplot = pygame.image.load(imScatterplot, &#39;png&#39;)
-            sScatterplot = pScatterplot.get_size()
-            rScatterplot = pygame.Rect(sTree[0],0,sScatterplot[0],
-                                       sScatterplot[1])
-        if histogram is not None:
-            imHistogram = StringIO(histogram)
-            pHistogram = pygame.image.load(imHistogram, &#39;png&#39;)
-            sHistogram = pHistogram.get_size()
-            rHistogram = pygame.Rect(0,sTree[1],sHistogram[0],sHistogram[1])
-        if incumbent is not None:
-            imIncumbent = StringIO(incumbent)
-            pIncumbent = pygame.image.load(imIncumbent, &#39;png&#39;)
-            sIncumbent = pIncumbent.get_size()
-            rIncumbent = pygame.Rect(sTree[0],sTree[1],sIncumbent[0],
-                                     sIncumbent[1])
-        screen = pygame.display.set_mode((sTree[0]+sTree[0], sTree[1]+sTree[1]))
-        if tree is not None:
-            screen.blit(pTree, rTree)
-        if scatterplot is not None:
-            screen.blit(pScatterplot, rScatterplot)
-        if histogram is not None:
-            screen.blit(pHistogram, rHistogram)
-        if incumbent is not None:
-            screen.blit(pIncumbent, rIncumbent)
-        pygame.display.flip()
-        if self._wait_for_keypress:
-            pause = True
-            print(&#34;Press any key to continue to next image (ESCAPE to disable pausing)&#34;)
-        else:
-            pause = False
-        while pause:
-            e = pygame.event.poll()
-            if e.type == pygame.KEYDOWN:
-                keystate = pygame.key.get_pressed()
-                if keystate[pygame.K_ESCAPE] != 0:
-                    self._wait_for_keypress = False
-                break
-            if e.type == pygame.QUIT:
-                pause = False
-                pygame.display.quit()
-                # sys.exit() exits the whole program and I (aykut) guess it is
-                # not appropriate here.
-                #sys.exit()
+        print (&#39;This function is deprected and no longer functions&#39;)
+        return
 
-    def display_image(self, gnuplot):
-        if not PYGAME_INSTALLED:
-            print(&#39;Pygame not installed. Display disabled&#39;)
+        # Old source, just in case
+        # if not (MATPLOTLIB_INSTALLED and PIL_INSTALLED:
+        #     print(&#39;Matplotlib or Pillow not installed. Display disabled&#39;)
+        #     return
+        # tree = self.GenerateTreeImage()
+        # scatterplot = self.GenerateScatterplot()
+        # histogram = self.GenerateHistogram()
+        # incumbent = self.GenerateIncumbentPath()
+        # if tree is not None:
+        #     imTree = StringIO(tree)
+        #     pTree = pygame.image.load(imTree, &#39;png&#39;)
+        #     sTree = pTree.get_size()
+        #     rTree = pygame.Rect(0,0,sTree[0],sTree[1])
+        # if scatterplot is not None:
+        #     imScatterplot = StringIO(scatterplot)
+        #     pScatterplot = pygame.image.load(imScatterplot, &#39;png&#39;)
+        #     sScatterplot = pScatterplot.get_size()
+        #     rScatterplot = pygame.Rect(sTree[0],0,sScatterplot[0],
+        #                                sScatterplot[1])
+        # if histogram is not None:
+        #     imHistogram = StringIO(histogram)
+        #     pHistogram = pygame.image.load(imHistogram, &#39;png&#39;)
+        #     sHistogram = pHistogram.get_size()
+        #     rHistogram = pygame.Rect(0,sTree[1],sHistogram[0],sHistogram[1])
+        # if incumbent is not None:
+        #     imIncumbent = StringIO(incumbent)
+        #     pIncumbent = pygame.image.load(imIncumbent, &#39;png&#39;)
+        #     sIncumbent = pIncumbent.get_size()
+        #     rIncumbent = pygame.Rect(sTree[0],sTree[1],sIncumbent[0],
+        #                              sIncumbent[1])
+        # screen = pygame.display.set_mode((sTree[0]+sTree[0], sTree[1]+sTree[1]))
+        # if tree is not None:
+        #     screen.blit(pTree, rTree)
+        # if scatterplot is not None:
+        #     screen.blit(pScatterplot, rScatterplot)
+        # if histogram is not None:
+        #     screen.blit(pHistogram, rHistogram)
+        # if incumbent is not None:
+        #     screen.blit(pIncumbent, rIncumbent)
+        # pygame.display.flip()
+        # if self._wait_for_keypress:
+        #     pause = True
+        #     print(&#34;Press any key to continue to next image (ESCAPE to disable pausing)&#34;)
+        # else:
+        #     pause = False
+        # while pause:
+        #     e = pygame.event.poll()
+        #     if e.type == pygame.KEYDOWN:
+        #         keystate = pygame.key.get_pressed()
+        #         if keystate[pygame.K_ESCAPE] != 0:
+        #             self._wait_for_keypress = False
+        #         break
+        #     if e.type == pygame.QUIT:
+        #         pause = False
+        #         pygame.display.quit()
+        #         # sys.exit() exits the whole program and I (aykut) guess it is
+        #         # not appropriate here.
+        #         #sys.exit()
+
+    def write_image(self, gnuplot_script, filename):
+        if not (MATPLOTLIB_INSTALLED and PIL_INSTALLED):
+            print(&#39;Either matplotlib or Pillow is not installed. Display disabled&#39;)
             return
-        im = StringIO(gnuplot)
-        picture = pygame.image.load(im, &#39;png&#39;)
-        screen = pygame.display.set_mode(picture.get_size())
-        screen.blit(picture, picture.get_rect())
-        pygame.display.flip()
-        pause = True
-        while pause:
-            e = pygame.event.poll()
-            if e.type == pygame.KEYDOWN:
-                break
-            if e.type == pygame.QUIT:
-                pause = False
-                pygame.display.quit()
+        try:
+            p = subprocess.run([&#39;gnuplot&#39;], capture_output = True,
+                               input = bytearray(gnuplot_script, &#39;utf8&#39;))
+        except OSError:
+            print(&#39;&#39;&#39;Gnuplot executable not found.
+Gnuplot must be installed and in your search path.
+After installation, ensure that the PATH variable is properly set.&#39;&#39;&#39;)
+            return
+        p.check_returncode()
+
+        if p.stderr:
+            print(p.stderr)        
+
+        if isinstance(filename, str):
+            with open(filename, &#34;w+b&#34;) as f:
+                f.write(p.stdout)
+        else:
+            filename.write(p.stdout)
+
+    def display_image(self, gnuplot_script, pause = False, wait_for_click = True):
+
+        if not (PIL_INSTALLED and MATPLOTLIB_INSTALLED):
+            print(&#39;Warning: Either matplotlib or Pillow is not installed. Cannot display.&#39;)
+            return
+        
+        tmp_fd, tmp_name = tempfile.mkstemp()
+        tmp_file = os.fdopen(tmp_fd, &#39;w+b&#39;)
+        self.write_image(gnuplot_script, tmp_file)
+        tmp_file.close()
+        im = PIL_Image.open(tmp_name)
+        plt.figure(1)
+        plt.clf()
+        plt.axis(&#39;off&#39;)
+        plt.imshow(im, interpolation=&#39;bilinear&#39; #resample=True
+                   #extent = (0, 100, 0, 100)
+        )
+        if wait_for_click == True:
+            plt.draw()
+            try:
+                if plt.waitforbuttonpress(timeout = 10000):
+                    plt.close()
+                    exit()
+            except:
+                exit()
+        else:
+            plt.show(block=pause)
+        im.close()
 
     def set_label(self, label):
         self._label = label
@@ -2667,7 +2852,6 @@ keeps the entire branch-and-bound tree in self.</p></section>
                 self.set_node_attr(id, &#39;final_log_cond&#39;,
                                    math.log(condition_end, 10))
         elif self.root is None:
-            print(&#39;adding root&#39;, id)
             self.add_root(id, status = status, lp_bound = lp_bound,
                           integer_infeasibility_count = integer_infeasibility_count,
                           integer_infeasibility_sum = integer_infeasibility_sum,
@@ -3052,8 +3236,7 @@ keeps the entire branch-and-bound tree in self.</p></section>
         if self._incumbent_value is None:
             self._histogram_lower_bound = None
             self._histogram_upper_bound = None
-        gp = Popen([&#39;gnuplot&#39;], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-        return gp.communicate(input=histogram_script)[0]
+        return histogram_script
 
     def GetImageObjectiveBounds(self, min_value, max_value):
         &#34;&#34;&#34;
@@ -3139,7 +3322,7 @@ keeps the entire branch-and-bound tree in self.</p></section>
         references the data file).
         Args:
             output_file: if not given the gnuplot image will not be written
-        to disk but returned (to be displayed in pygame window)
+        to disk but returned (to be displayed in matplotlib window)
         &#34;&#34;&#34;
         # Output data points.
         index_string = self.GetImageCounterString()
@@ -3177,8 +3360,7 @@ keeps the entire branch-and-bound tree in self.</p></section>
                     self._scatterplot_lower_bound = self._incumbent_value
         scatterplot_script = self.WriteScatterplotScript(data_filename,
                                                          output_file)
-        gp = Popen([&#39;gnuplot&#39;], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-        return gp.communicate(input=scatterplot_script)[0]
+        return scatterplot_script
 
     def WriteIncumbentPathScript(self, data_filename):
         &#34;&#34;&#34;
@@ -3280,8 +3462,7 @@ keeps the entire branch-and-bound tree in self.</p></section>
         self._incumbent_path_datafiles.append(data_filename)
         # Output the Gnuplot script to a file.
         path_script = self.WriteIncumbentPathScript(data_filename)
-        gp = Popen([&#39;gnuplot&#39;], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-        return gp.communicate(input=path_script)[0]
+        return path_script
 
     def GenerateAllIncumbentPaths(self):
         &#34;&#34;&#34;
@@ -3614,8 +3795,8 @@ keeps the entire branch-and-bound tree in self.</p></section>
                 self._filename, self._time, self._label)
         for line in additional_script_lines:
             data += line
-        gp = Popen([&#39;gnuplot&#39;], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-        return gp.communicate(input=data)[0]
+
+        return data
 
     def ProcessLine(self, line):
         &#34;&#34;&#34;
@@ -4028,9 +4209,8 @@ keeps the entire branch-and-bound tree in self.</p></section>
             &#39;title \&#34;(MIP gap)\&#34;\n&#39; %
             (ssg_data_filename, gap_data_filename))
         measures_script += &#39;show output\n&#39;
-        # Pipe gnuplot with measures_script
-        gp = Popen([&#39;gnuplot&#39;], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-        return gp.communicate(input=measures_script)[0]
+
+        return measures_script
 
     def GenerateForecastImages(self):
         # Forecasts
@@ -4076,9 +4256,8 @@ keeps the entire branch-and-bound tree in self.</p></section>
             &#39;title \&#34;(MIP gap)\&#34;, &#39; % gap_data_filename)
         forecast_script += &#39;x linetype 0 title \&#34;elapsed time\&#34;\n&#39;
         forecast_script += &#39;show output\n&#39;
-        # pipe gnuplot with forecast_script
-        gp = Popen([&#39;gnuplot&#39;], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-        return gp.communicate(input=forecast_script)[0]
+
+        return forecast_script
 
     def _get_fh(self, path, mode=&#39;r&#39;):
         &#39;&#39;&#39;
@@ -4111,13 +4290,19 @@ keeps the entire branch-and-bound tree in self.</p></section>
             return False
         return True</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>coinor.gimpy.tree.BinaryTree</li>
+<li>coinor.gimpy.tree.Tree</li>
+<li>coinor.gimpy.graph.Graph</li>
+</ul>
 <h3>Methods</h3>
 <dl>
 <dt id="coinor.grumpy.BBTree.BBTree.AddOrUpdateNode"><code class="name flex">
 <span>def <span class="ident">AddOrUpdateNode</span></span>(<span>self, id, parent_id, branch_direction, status, lp_bound, integer_infeasibility_count, integer_infeasibility_sum, condition_begin=None, condition_end=None, **attrs)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>This method designed to update nodes (in BAK) but we use it for
+<div class="desc"><p>This method designed to update nodes (in BAK) but we use it for
 updating/adding arcs. This is because of the tree data structure the
 authors adopted in BAK.
 We can divide these attributes such that some will belong to the edge
@@ -4128,9 +4313,11 @@ status -&gt; node
 lp_bound -&gt; node
 integer_infeasibility_count -&gt; node
 integer_infeasibility_sum -&gt; node
-parent_id -&gt; node</p></section>
+parent_id -&gt; node</p></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def AddOrUpdateNode(self, id, parent_id, branch_direction, status, lp_bound,
                     integer_infeasibility_count, integer_infeasibility_sum,
                     condition_begin = None, condition_end = None,
@@ -4167,7 +4354,6 @@ parent_id -&gt; node</p></section>
             self.set_node_attr(id, &#39;final_log_cond&#39;,
                                math.log(condition_end, 10))
     elif self.root is None:
-        print(&#39;adding root&#39;, id)
         self.add_root(id, status = status, lp_bound = lp_bound,
                       integer_infeasibility_count = integer_infeasibility_count,
                       integer_infeasibility_sum = integer_infeasibility_sum,
@@ -4213,9 +4399,11 @@ parent_id -&gt; node</p></section>
 <span>def <span class="ident">AddProgressMeasures</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<div class="desc"></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def AddProgressMeasures(self):
     # No progress measures if there is no incumbent yet
     if self._incumbent_value is None:
@@ -4285,7 +4473,7 @@ parent_id -&gt; node</p></section>
 <span>def <span class="ident">AdjustHistogramEndBins</span></span>(<span>self, objective_list, num_bins, bin_width, bin_counts, bin_centers, bin_widths)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Adjusts the two end bins if necessary to make them narrower.
+<div class="desc"><p>Adjusts the two end bins if necessary to make them narrower.
 The two end bins may need to be narrower than the other bins so that
 they do not go past the current incumbent value on one end and the
 current lp bound on the other.
@@ -4312,9 +4500,11 @@ determining the bin height, but that is not currently done.</p>
 <dt><strong><code>bin_widths</code></strong></dt>
 <dd>List of float widths for bins, allowing for individualized
 widths.</dd>
-</dl></section>
+</dl></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def AdjustHistogramEndBins(self, objective_list, num_bins, bin_width,
                            bin_counts, bin_centers, bin_widths):
     &#34;&#34;&#34;
@@ -4387,9 +4577,11 @@ widths.</dd>
 <span>def <span class="ident">CreateAnimatedImages</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Create animated images based on the static images.</p></section>
+<div class="desc"><p>Create animated images based on the static images.</p></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def CreateAnimatedImages(self):
     &#34;&#34;&#34;Create animated images based on the static images.&#34;&#34;&#34;
     histogram_re = re.compile(&#39;histogram&#39;)
@@ -4434,12 +4626,14 @@ widths.</dd>
 <span>def <span class="ident">GenerateAllIncumbentPaths</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Generate file for a path image with all incumbent paths.
+<div class="desc"><p>Generate file for a path image with all incumbent paths.
 Data files were previously generated for each incumbent.
 This re-uses
-those files.</p></section>
+those files.</p></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def GenerateAllIncumbentPaths(self):
     &#34;&#34;&#34;
     Generate file for a path image with all incumbent paths.
@@ -4453,9 +4647,11 @@ those files.</p></section>
 <span>def <span class="ident">GenerateForecastImages</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<div class="desc"></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def GenerateForecastImages(self):
     # Forecasts
     # Gap forecasts
@@ -4500,25 +4696,26 @@ those files.</p></section>
         &#39;title \&#34;(MIP gap)\&#34;, &#39; % gap_data_filename)
     forecast_script += &#39;x linetype 0 title \&#34;elapsed time\&#34;\n&#39;
     forecast_script += &#39;show output\n&#39;
-    # pipe gnuplot with forecast_script
-    gp = Popen([&#39;gnuplot&#39;], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-    return gp.communicate(input=forecast_script)[0]</code></pre>
+
+    return forecast_script</code></pre>
 </details>
 </dd>
 <dt id="coinor.grumpy.BBTree.BBTree.GenerateHistogram"><code class="name flex">
 <span>def <span class="ident">GenerateHistogram</span></span>(<span>self, output_file=False)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Generate files necessary for a histogram image.
+<div class="desc"><p>Generate files necessary for a histogram image.
 Two files are necessary: a data file and a Gnuplot script file (which
 references the data file).</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>time</code></strong></dt>
 <dd>Float number of seconds since the start of optimization.</dd>
-</dl></section>
+</dl></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def GenerateHistogram(self, output_file = False):
     &#34;&#34;&#34;
     Generate files necessary for a histogram image.
@@ -4599,19 +4796,20 @@ references the data file).</p>
     if self._incumbent_value is None:
         self._histogram_lower_bound = None
         self._histogram_upper_bound = None
-    gp = Popen([&#39;gnuplot&#39;], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-    return gp.communicate(input=histogram_script)[0]</code></pre>
+    return histogram_script</code></pre>
 </details>
 </dd>
 <dt id="coinor.grumpy.BBTree.BBTree.GenerateIncumbentPath"><code class="name flex">
 <span>def <span class="ident">GenerateIncumbentPath</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Generate files necessary for an incumbent scatterplot path image.
+<div class="desc"><p>Generate files necessary for an incumbent scatterplot path image.
 Two files are necessary: a data file and a Gnuplot script file (which
-references the data file).</p></section>
+references the data file).</p></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def GenerateIncumbentPath(self):
     &#34;&#34;&#34;
     Generate files necessary for an incumbent scatterplot path image.
@@ -4644,17 +4842,18 @@ references the data file).</p></section>
     self._incumbent_path_datafiles.append(data_filename)
     # Output the Gnuplot script to a file.
     path_script = self.WriteIncumbentPathScript(data_filename)
-    gp = Popen([&#39;gnuplot&#39;], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-    return gp.communicate(input=path_script)[0]</code></pre>
+    return path_script</code></pre>
 </details>
 </dd>
 <dt id="coinor.grumpy.BBTree.BBTree.GeneratePredictionImages"><code class="name flex">
 <span>def <span class="ident">GeneratePredictionImages</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<div class="desc"></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def GeneratePredictionImages(self):
     gap_measures = self._objective_gap_forecaster.GetAllMeasures()
     ssg_measures = self._sum_subtree_gaps_forecaster.GetAllMeasures()
@@ -4699,16 +4898,15 @@ references the data file).</p></section>
         &#39;title \&#34;(MIP gap)\&#34;\n&#39; %
         (ssg_data_filename, gap_data_filename))
     measures_script += &#39;show output\n&#39;
-    # Pipe gnuplot with measures_script
-    gp = Popen([&#39;gnuplot&#39;], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-    return gp.communicate(input=measures_script)[0]</code></pre>
+
+    return measures_script</code></pre>
 </details>
 </dd>
 <dt id="coinor.grumpy.BBTree.BBTree.GenerateScatterplot"><code class="name flex">
 <span>def <span class="ident">GenerateScatterplot</span></span>(<span>self, output_file=False)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Generate files necessary for a scatterplot image.
+<div class="desc"><p>Generate files necessary for a scatterplot image.
 Two files are necessary: a data file and a Gnuplot script file (which
 references the data file).</p>
 <h2 id="args">Args</h2>
@@ -4716,9 +4914,11 @@ references the data file).</p>
 <dt><strong><code>output_file</code></strong></dt>
 <dd>if not given the gnuplot image will not be written</dd>
 </dl>
-<p>to disk but returned (to be displayed in pygame window)</p></section>
+<p>to disk but returned (to be displayed in matplotlib window)</p></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def GenerateScatterplot(self, output_file = False):
     &#34;&#34;&#34;
     Generate files necessary for a scatterplot image.
@@ -4726,7 +4926,7 @@ references the data file).</p>
     references the data file).
     Args:
         output_file: if not given the gnuplot image will not be written
-    to disk but returned (to be displayed in pygame window)
+    to disk but returned (to be displayed in matplotlib window)
     &#34;&#34;&#34;
     # Output data points.
     index_string = self.GetImageCounterString()
@@ -4764,19 +4964,20 @@ references the data file).</p>
                 self._scatterplot_lower_bound = self._incumbent_value
     scatterplot_script = self.WriteScatterplotScript(data_filename,
                                                      output_file)
-    gp = Popen([&#39;gnuplot&#39;], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-    return gp.communicate(input=scatterplot_script)[0]</code></pre>
+    return scatterplot_script</code></pre>
 </details>
 </dd>
 <dt id="coinor.grumpy.BBTree.BBTree.GenerateTreeImage"><code class="name flex">
 <span>def <span class="ident">GenerateTreeImage</span></span>(<span>self, fixed_horizontal_positions=False)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Generate files necessary for a tree image.
+<div class="desc"><p>Generate files necessary for a tree image.
 Two files are necessary: a data file and a Gnuplot script file (which
-references the data file).</p></section>
+references the data file).</p></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def GenerateTreeImage(self, fixed_horizontal_positions = False):
     &#34;&#34;&#34;
     Generate files necessary for a tree image.
@@ -4909,17 +5110,19 @@ references the data file).</p></section>
             self._filename, self._time, self._label)
     for line in additional_script_lines:
         data += line
-    gp = Popen([&#39;gnuplot&#39;], stdin = PIPE, stdout = PIPE, stderr = STDOUT)
-    return gp.communicate(input=data)[0]</code></pre>
+
+    return data</code></pre>
 </details>
 </dd>
 <dt id="coinor.grumpy.BBTree.BBTree.GetImageCounterString"><code class="name flex">
 <span>def <span class="ident">GetImageCounterString</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Returns a string with the image counter.</p></section>
+<div class="desc"><p>Returns a string with the image counter.</p></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def GetImageCounterString(self):
     &#34;&#34;&#34;
     Returns a string with the image counter.
@@ -4931,7 +5134,7 @@ references the data file).</p></section>
 <span>def <span class="ident">GetImageObjectiveBounds</span></span>(<span>self, min_value, max_value)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Return min and max bounds to be used for images.
+<div class="desc"><p>Return min and max bounds to be used for images.
 Images should use bounds that are slightly wider than observed
 objective values.
 Also, the special case of a single value must be
@@ -4944,9 +5147,11 @@ handled.</p>
 <dd>Float maximum objective value.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>A tuple of two float values (lower_bound, upper_bound).</p></section>
+<p>A tuple of two float values (lower_bound, upper_bound).</p></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def GetImageObjectiveBounds(self, min_value, max_value):
     &#34;&#34;&#34;
     Return min and max bounds to be used for images.
@@ -4979,11 +5184,13 @@ handled.</p>
 <span>def <span class="ident">GetTreeFixedHorizontalPositions</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Returns horizontal positions for all nodes based on fixed positions.</p>
+<div class="desc"><p>Returns horizontal positions for all nodes based on fixed positions.</p>
 <h2 id="returns">Returns</h2>
-<p>Dictionary of float horizontal positions, keyed by node id.</p></section>
+<p>Dictionary of float horizontal positions, keyed by node id.</p></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def GetTreeFixedHorizontalPositions(self):
     &#34;&#34;&#34;
     Returns horizontal positions for all nodes based on fixed positions.
@@ -5031,12 +5238,14 @@ handled.</p>
 <span>def <span class="ident">GetTreeHorizontalPositions</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Returns horizontal positions for all nodes.
+<div class="desc"><p>Returns horizontal positions for all nodes.
 Each node is given equal horizontal space.</p>
 <h2 id="returns">Returns</h2>
-<p>Dictionary of float horizontal positions, keyed by node id.</p></section>
+<p>Dictionary of float horizontal positions, keyed by node id.</p></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def GetTreeHorizontalPositions(self):
     &#34;&#34;&#34;
     Returns horizontal positions for all nodes.
@@ -5149,7 +5358,7 @@ Each node is given equal horizontal space.</p>
 <span>def <span class="ident">IsBetterThan</span></span>(<span>self, value1, value2)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Returns True if value1 is better than value2 as an objective value.
+<div class="desc"><p>Returns True if value1 is better than value2 as an objective value.
 This depends on the optimization sense of the instance.</p>
 <h2 id="args">Args</h2>
 <dl>
@@ -5159,9 +5368,11 @@ This depends on the optimization sense of the instance.</p>
 <dd>Float.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>True if value1 is better than value2 as an objective value.</p></section>
+<p>True if value1 is better than value2 as an objective value.</p></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def IsBetterThan(self, value1, value2):
     &#34;&#34;&#34;
     Returns True if value1 is better than value2 as an objective value.
@@ -5185,7 +5396,7 @@ This depends on the optimization sense of the instance.</p>
 <span>def <span class="ident">IsBetterThanIncumbent</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Returns True if the passed value is better than current incumbent.</p>
+<div class="desc"><p>Returns True if the passed value is better than current incumbent.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>value</code></strong></dt>
@@ -5193,9 +5404,11 @@ This depends on the optimization sense of the instance.</p>
 </dl>
 <h2 id="returns">Returns</h2>
 <p>True if the passed value is better than the current incumbent.
-'Better' is determined by the sense of optimization.</p></section>
+'Better' is determined by the sense of optimization.</p></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def IsBetterThanIncumbent(self, value):
     &#34;&#34;&#34;
     Returns True if the passed value is better than current incumbent.
@@ -5215,7 +5428,7 @@ This depends on the optimization sense of the instance.</p>
 <span>def <span class="ident">ProcessBranchedLine</span></span>(<span>self, node_id, parent_id, branch_direction, remaining_tokens)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Core processing for a line of type 'branched'.</p>
+<div class="desc"><p>Core processing for a line of type 'branched'.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>node_id</code></strong></dt>
@@ -5228,9 +5441,11 @@ This depends on the optimization sense of the instance.</p>
 <dt><strong><code>remaining_tokens</code></strong></dt>
 <dd>List of string tokens. These are those that remain
 after any common tokens are processed.</dd>
-</dl></section>
+</dl></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def ProcessBranchedLine(self, node_id, parent_id, branch_direction,
                         remaining_tokens):
     &#34;&#34;&#34;
@@ -5272,7 +5487,7 @@ after any common tokens are processed.</dd>
 <span>def <span class="ident">ProcessCandidateLine</span></span>(<span>self, node_id, parent_id, branch_direction, remaining_tokens)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Core processing for a line of type 'candidate'.</p>
+<div class="desc"><p>Core processing for a line of type 'candidate'.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>node_id</code></strong></dt>
@@ -5285,9 +5500,11 @@ after any common tokens are processed.</dd>
 <dt><strong><code>remaining_tokens</code></strong></dt>
 <dd>List of string tokens. These are those that remain
 after any common tokens are processed.</dd>
-</dl></section>
+</dl></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def ProcessCandidateLine(self, node_id, parent_id, branch_direction,
                          remaining_tokens):
     &#34;&#34;&#34;
@@ -5336,7 +5553,7 @@ after any common tokens are processed.</dd>
 <span>def <span class="ident">ProcessFathomedLine</span></span>(<span>self, node_id, parent_id, branch_direction, remaining_tokens)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Core processing for a line of type 'fathomed'.</p>
+<div class="desc"><p>Core processing for a line of type 'fathomed'.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>node_id</code></strong></dt>
@@ -5349,9 +5566,11 @@ the left or right child of its parent.</dd>
 <dt><strong><code>remaining_tokens</code></strong></dt>
 <dd>List of string tokens. These are those that remain
 after any common tokens are processed.</dd>
-</dl></section>
+</dl></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def ProcessFathomedLine(self, node_id, parent_id, branch_direction,
                         remaining_tokens):
     &#34;&#34;&#34;
@@ -5405,15 +5624,17 @@ after any common tokens are processed.</dd>
 <span>def <span class="ident">ProcessHeuristicLine</span></span>(<span>self, remaining_tokens)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Core processing for a line of type 'heuristic'.</p>
+<div class="desc"><p>Core processing for a line of type 'heuristic'.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>remaining_tokens</code></strong></dt>
 <dd>List of string tokens. These are those that remain
 after any common tokens are processed.</dd>
-</dl></section>
+</dl></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def ProcessHeuristicLine(self, remaining_tokens):
     &#34;&#34;&#34;
     Core processing for a line of type &#39;heuristic&#39;.
@@ -5455,7 +5676,7 @@ after any common tokens are processed.</dd>
 <span>def <span class="ident">ProcessInfeasibleLine</span></span>(<span>self, node_id, parent_id, branch_direction, remaining_tokens)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Core processing for a line of type 'infeasible'.</p>
+<div class="desc"><p>Core processing for a line of type 'infeasible'.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>node_id</code></strong></dt>
@@ -5468,9 +5689,11 @@ the left or right child of its parent.</dd>
 <dt><strong><code>remaining_tokens</code></strong></dt>
 <dd>List of string tokens. These are those that remain
 after any common tokens are processed.</dd>
-</dl></section>
+</dl></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def ProcessInfeasibleLine(self, node_id, parent_id, branch_direction,
                           remaining_tokens):
     &#34;&#34;&#34;
@@ -5517,7 +5740,7 @@ after any common tokens are processed.</dd>
 <span>def <span class="ident">ProcessIntegerLine</span></span>(<span>self, node_id, parent_id, branch_direction, remaining_tokens)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Core processing for a line of type 'integer'.</p>
+<div class="desc"><p>Core processing for a line of type 'integer'.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>node_id</code></strong></dt>
@@ -5530,9 +5753,11 @@ after any common tokens are processed.</dd>
 <dt><strong><code>remaining_tokens</code></strong></dt>
 <dd>List of string tokens. These are those that remain
 after any common tokens are processed.</dd>
-</dl></section>
+</dl></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def ProcessIntegerLine(self, node_id, parent_id, branch_direction,
                        remaining_tokens):
     &#34;&#34;&#34;
@@ -5566,16 +5791,18 @@ after any common tokens are processed.</dd>
 <span>def <span class="ident">ProcessLine</span></span>(<span>self, line)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Process a line of the input file, generating images if appropriate.
+<div class="desc"><p>Process a line of the input file, generating images if appropriate.
 Parses the line, updates internal data structures, and creates images
 if appropriate.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>line</code></strong></dt>
 <dd>String input line to process.</dd>
-</dl></section>
+</dl></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def ProcessLine(self, line):
     &#34;&#34;&#34;
     Process a line of the input file, generating images if appropriate.
@@ -5642,7 +5869,7 @@ if appropriate.</p>
 <span>def <span class="ident">ProcessPregnantLine</span></span>(<span>self, node_id, parent_id, branch_direction, remaining_tokens)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Core processing for a line of type 'pregnant'.</p>
+<div class="desc"><p>Core processing for a line of type 'pregnant'.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>node_id</code></strong></dt>
@@ -5655,9 +5882,11 @@ the left or right child of its parent.</dd>
 <dt><strong><code>remaining_tokens</code></strong></dt>
 <dd>List of string tokens. These are those that remain
 after any common tokens are processed.</dd>
-</dl></section>
+</dl></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def ProcessPregnantLine(self, node_id, parent_id, branch_direction,
                         remaining_tokens):
     &#34;&#34;&#34;
@@ -5693,9 +5922,11 @@ after any common tokens are processed.</dd>
 <span>def <span class="ident">RunGnuplotOnAllFiles</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Runs Gnuplot on all files in self._gnuplot_files.</p></section>
+<div class="desc"><p>Runs Gnuplot on all files in self._gnuplot_files.</p></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def RunGnuplotOnAllFiles(self):
     &#34;&#34;&#34;Runs Gnuplot on all files in self._gnuplot_files.&#34;&#34;&#34;
     for file in self._gnuplot_files:
@@ -5706,14 +5937,16 @@ after any common tokens are processed.</dd>
 <span>def <span class="ident">UpdateObjectiveValueLimits</span></span>(<span>self, value)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Updates the min and max objective values if appropriate.</p>
+<div class="desc"><p>Updates the min and max objective values if appropriate.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>value</code></strong></dt>
 <dd>Float objective value.</dd>
-</dl></section>
+</dl></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def UpdateObjectiveValueLimits(self, value):
     &#34;&#34;&#34;Updates the min and max objective values if appropriate.
     Args:
@@ -5733,14 +5966,16 @@ after any common tokens are processed.</dd>
 <span>def <span class="ident">WriteAllIncumbentPathsScript</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Return a Gnuplot script string to generate an incumbent path image.</p>
+<div class="desc"><p>Return a Gnuplot script string to generate an incumbent path image.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>data_filenames</code></strong></dt>
 <dd>List of string names of files.</dd>
-</dl></section>
+</dl></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def WriteAllIncumbentPathsScript(self):
     &#34;&#34;&#34;
     Return a Gnuplot script string to generate an incumbent path image.
@@ -5783,16 +6018,18 @@ after any common tokens are processed.</dd>
 <span>def <span class="ident">WriteDataFileFromList</span></span>(<span>self, filename, data_list)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Write a list of string data to a file with one entry per line.</p>
+<div class="desc"><p>Write a list of string data to a file with one entry per line.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>filename</code></strong></dt>
 <dd>String filename to open.</dd>
 <dt><strong><code>data_list</code></strong></dt>
 <dd>List of string values to write.</dd>
-</dl></section>
+</dl></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def WriteDataFileFromList(self, filename, data_list):
     &#34;&#34;&#34;
     Write a list of string data to a file with one entry per line.
@@ -5810,7 +6047,7 @@ after any common tokens are processed.</dd>
 <span>def <span class="ident">WriteHistogramScript</span></span>(<span>self, num_bins, bin_width, max_bin_count, lp_bound, data_filename, output_file)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Write a Gnuplot script file to generate a histogram image.</p>
+<div class="desc"><p>Write a Gnuplot script file to generate a histogram image.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>num_bins</code></strong></dt>
@@ -5823,9 +6060,11 @@ after any common tokens are processed.</dd>
 <dd>Float value of the current LP bound.</dd>
 <dt><strong><code>data_filename</code></strong></dt>
 <dd>String name of the file; used for display purposes.</dd>
-</dl></section>
+</dl></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def WriteHistogramScript(self, num_bins, bin_width, max_bin_count,
                              lp_bound, data_filename, output_file):
     &#34;&#34;&#34;
@@ -5912,14 +6151,16 @@ after any common tokens are processed.</dd>
 <span>def <span class="ident">WriteIncumbentPathScript</span></span>(<span>self, data_filename)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Write a Gnuplot script file to generate an incumbent path image.</p>
+<div class="desc"><p>Write a Gnuplot script file to generate an incumbent path image.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>data_filename</code></strong></dt>
 <dd>String name of the file; used for display purposes.</dd>
-</dl></section>
+</dl></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def WriteIncumbentPathScript(self, data_filename):
     &#34;&#34;&#34;
     Write a Gnuplot script file to generate an incumbent path image.
@@ -5956,14 +6197,16 @@ after any common tokens are processed.</dd>
 <span>def <span class="ident">WriteScatterplotScript</span></span>(<span>self, data_filename, output_file)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Write a Gnuplot script file to generate a scatterplot image.</p>
+<div class="desc"><p>Write a Gnuplot script file to generate a scatterplot image.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>data_filename</code></strong></dt>
 <dd>String name of the file; used for display purposes.</dd>
-</dl></section>
+</dl></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def WriteScatterplotScript(self, data_filename, output_file):
     &#34;&#34;&#34;
     Write a Gnuplot script file to generate a scatterplot image.
@@ -6019,15 +6262,17 @@ after any common tokens are processed.</dd>
 <span>def <span class="ident">WriteTreeScript</span></span>(<span>self, additional_lines=None)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Write a Gnuplot script file to generate a tree image.</p>
+<div class="desc"><p>Write a Gnuplot script file to generate a tree image.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>additional_lines</code></strong></dt>
 <dd>String with additional lines to be added to the
 script file.</dd>
-</dl></section>
+</dl></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def WriteTreeScript(self, additional_lines = None):
     &#34;&#34;&#34;
     Write a Gnuplot script file to generate a tree image.
@@ -6059,80 +6304,18 @@ script file.</dd>
     return data</code></pre>
 </details>
 </dd>
-<dt id="coinor.grumpy.BBTree.BBTree.__init__"><code class="name flex">
-<span>def <span class="ident">__init__</span></span>(<span>self, **attrs)</span>
-</code></dt>
-<dd>
-<section class="desc"><dl>
-<dt><strong><code>API</code></strong> :&ensp;<code>__init__</code>(<code>self</code>, **<code>attrs</code>)</dt>
-<dd>&nbsp;</dd>
-</dl>
-<h2 id="description">Description</h2>
-<p>Class constructor.</p>
-<h2 id="input">Input</h2>
-<dl>
-<dt><strong><code>attrs</code></strong></dt>
-<dd>Tree attributes in keyword arguments format. See Graph and</dd>
-</dl>
-<p>Tree class for details.</p></section>
-<details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def __init__(self, **attrs):
-    BinaryTree.__init__(self, **attrs)
-    # User-controlled constant values
-    self._label = &#39;&#39;
-    self._filename = None
-    self._logscaley = False
-    self._fathom = False
-    self._wait_for_keypress = True
-    self._edge_limit = 1000000
-    # current time, updated each time we read a new line
-    self._time = 0.0
-    # use at most NUM nodes of each type in tree images; zero means no limit
-    self._sample_tree = 0
-    # Instance-dependent constant values
-    self._optimization_sense = None
-    self._start_time = None
-    self._histogram_lower_bound = None
-    self._histogram_upper_bound = None
-    self._scatterplot_lower_bound = None
-    self._scatterplot_upper_bound = None
-    self._integer_infeasibility_lower_bound = None
-    self._integer_infeasibility_upper_bound = None
-    # Changing reference values
-    self._image_counter = 0
-    self._next_image_time = None
-    self._incumbent_value = None
-    self._incumbent_parent = None
-    self._new_integer_solution = False
-    self._max_objective_value = None
-    self._min_objective_value = None
-    self._max_integer_infeasibility_sum = None
-    # List of incumbent path data files, for the all incumbent paths image
-    self._incumbent_path_datafiles = []
-    # Objects for measuring and predicting progress
-    self._objective_gap_forecaster = ForecastingChainedSequences()
-    self._sum_subtree_gaps_forecaster = ForecastingChainedSequences()
-    self._sum_subtree_gaps_scale = 1.0
-    self._previous_incumbent_value = None  # Only needed for SSG
-    # pygame initialize
-    if &#39;display&#39; in attrs:
-        self.set_display_mode(attrs[&#39;display&#39;])
-    else:
-        self.set_display_mode(&#39;off&#39;)
-    if PYGAME_INSTALLED:
-        pygame.init()</code></pre>
-</details>
-</dd>
 <dt id="coinor.grumpy.BBTree.BBTree.display"><code class="name flex">
-<span>def <span class="ident">display</span></span>(<span>self, item=&#39;all&#39;, basename=&#39;graph&#39;, format=&#39;png&#39;, count=None)</span>
+<span>def <span class="ident">display</span></span>(<span>self, item='all', basename='graph', format='png', count=None, pause=False, wait_for_click=True)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Displays/Saves images requested. BranchAndBound method calls this method
-to visualize the branch and bound tree.</p></section>
+<div class="desc"><p>Displays/Saves images requested. BranchAndBound method calls this method
+to visualize the branch and bound tree.</p></div>
 <details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def display(self, item = &#39;all&#39;, basename = &#39;graph&#39;, format=&#39;png&#39;, count=None):
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def display(self, item = &#39;all&#39;, basename = &#39;graph&#39;, format=&#39;png&#39;,
+            count=None, pause=False, wait_for_click=True):
     &#39;&#39;&#39;
     Displays/Saves images requested. BranchAndBound method calls this method
     to visualize the branch and bound tree.
@@ -6155,28 +6338,28 @@ to visualize the branch and bound tree.</p></section>
                     n.attr[&#39;style&#39;] = &#39;filled&#39;
                 else:
                     n.attr[&#39;label&#39;] = &#39; &#39;
-        BinaryTree.display(self)
+        BinaryTree.display(self, pause = pause, wait_for_click = wait_for_click)
         return
     if self.attr[&#39;display&#39;] is &#39;off&#39;:
         return
-    if self.attr[&#39;display&#39;] is &#39;pygame&#39;:
-        gnuplot_image = None
+    if self.attr[&#39;display&#39;] is &#39;matplotlib&#39;:
+        gnuplot_script = None
         if item==&#39;all&#39;:
             self.display_all()
         elif item==&#39;tree&#39;:
-            gnuplot_image = self.GenerateTreeImage()
+            gnuplot_script = self.GenerateTreeImage()
         elif item==&#39;scatterplot&#39;:
-            gnuplot_image = self.GenerateScatterplot()
+            gnuplot_script = self.GenerateScatterplot()
         elif item==&#39;histogram&#39;:
-            gnuplot_image = self.GenerateHistogram()
+            gnuplot_script = self.GenerateHistogram()
         elif item==&#39;incumbent&#39;:
-            gnuplot_image = self.GenerateIncumbentPath()
+            gnuplot_script = self.GenerateIncumbentPath()
         elif item==&#39;forecast&#39;:
-            gnuplot_image = self.GenerateForecastImages()
+            gnuplot_script = self.GenerateForecastImages()
         else:
             raise Exception(&#39;Unknown display() method argument %s&#39; %item)
-        if gnuplot_image is not None:
-            self.display_image(gnuplot_image)
+        if gnuplot_script is not None:
+            self.display_image(gnuplot_script)
         # clean auxilary files.
         histogram_files = [f for f in os.listdir(&#34;.&#34;)
                            if f.startswith(&#34;histogram&#34;)]
@@ -6186,12 +6369,18 @@ to visualize the branch and bound tree.</p></section>
                              if f.startswith(&#34;scatterplot&#34;)]
         t_fathomed_files = [f for f in os.listdir(&#34;.&#34;)
                             if f.startswith(&#34;tree_fathomed&#34;)]
+        t_infeasible_files = [f for f in os.listdir(&#34;.&#34;)
+                            if f.startswith(&#34;tree_infeasible&#34;)]
+        t_pregnant_files = [f for f in os.listdir(&#34;.&#34;)
+                            if f.startswith(&#34;tree_pregnant&#34;)]
         t_integer_files = [f for f in os.listdir(&#34;.&#34;)
                            if f.startswith(&#34;tree_integer&#34;)]
+        t_branched_files = [f for f in os.listdir(&#34;.&#34;)
+                           if f.startswith(&#34;tree_branched&#34;)]
         bak_filelist = (histogram_files + incumbent_files +
                         scatterplot_files + t_fathomed_files +
-                        t_integer_files)
-        print(bak_filelist)
+                        t_integer_files + t_branched_files +
+                        t_infeasible_files + t_pregnant_files)
         for f in bak_filelist:
             os.remove(f)
     elif self.attr[&#39;display&#39;] is &#39;xdot&#39;:
@@ -6230,10 +6419,51 @@ to visualize the branch and bound tree.</p></section>
                                 basename+&#39;.dvi&#39;, basename+&#39;.aux&#39;]
                 for f in aux_filelist:
                     os.remove(f)
+            else:
+                print(&#34;Dot2tex not installed, falling back to graphviz&#34;)
+                self.set_layout(&#39;dot&#39;)
+                self.write(basename+&#39;.&#39;+format, self.get_layout(), format)
         else:
-            print(&#34;Dot2tex not installed, falling back to graphviz&#34;)
-            self.set_layout(&#39;dot&#39;)
-            self.write(basename+&#39;.&#39;+format, self.get_layout(), format)
+            gnuplot_script = None
+            if item==&#39;all&#39;:
+                self.display_all()
+            elif item==&#39;tree&#39;:
+                gnuplot_script = self.GenerateTreeImage()
+            elif item==&#39;scatterplot&#39;:
+                gnuplot_script = self.GenerateScatterplot()
+            elif item==&#39;histogram&#39;:
+                gnuplot_script = self.GenerateHistogram()
+            elif item==&#39;incumbent&#39;:
+                gnuplot_script = self.GenerateIncumbentPath()
+            elif item==&#39;forecast&#39;:
+                gnuplot_script = self.GenerateForecastImages()
+            else:
+                raise Exception(&#39;Unknown display() method argument %s&#39; %item)
+            if gnuplot_script is not None:
+                self.write_image(gnuplot_script, basename+&#39;.&#39;+format)
+            # clean auxilary files.
+            histogram_files = [f for f in os.listdir(&#34;.&#34;)
+                               if f.startswith(&#34;histogram&#34;)]
+            incumbent_files = [f for f in os.listdir(&#34;.&#34;)
+                               if f.startswith(&#34;incumbentpath&#34;)]
+            scatterplot_files = [f for f in os.listdir(&#34;.&#34;)
+                                 if f.startswith(&#34;scatterplot&#34;)]
+            t_fathomed_files = [f for f in os.listdir(&#34;.&#34;)
+                                if f.startswith(&#34;tree_fathomed&#34;)]
+            t_infeasible_files = [f for f in os.listdir(&#34;.&#34;)
+                                  if f.startswith(&#34;tree_infeasible&#34;)]
+            t_pregnant_files = [f for f in os.listdir(&#34;.&#34;)
+                                if f.startswith(&#34;tree_pregnant&#34;)]
+            t_integer_files = [f for f in os.listdir(&#34;.&#34;)
+                               if f.startswith(&#34;tree_integer&#34;)]
+            t_branched_files = [f for f in os.listdir(&#34;.&#34;)
+                                if f.startswith(&#34;tree_branched&#34;)]
+            bak_filelist = (histogram_files + incumbent_files +
+                            scatterplot_files + t_fathomed_files +
+                            t_integer_files + t_branched_files +
+                            t_infeasible_files + t_pregnant_files)
+            for f in bak_filelist:
+                os.remove(f)
     else:
         raise Exception(&#39;Unknown display mode %s&#39; %self.attr[&#39;display&#39;])</code></pre>
 </details>
@@ -6242,102 +6472,67 @@ to visualize the branch and bound tree.</p></section>
 <span>def <span class="ident">display_all</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>Assumes all the images have the same size.</p></section>
+<div class="desc"><p>Assumes all the images have the same size.</p></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def display_all(self):
     &#39;&#39;&#39;
     Assumes all the images have the same size.
     &#39;&#39;&#39;
-    if not PYGAME_INSTALLED:
-        print(&#39;Pygame not installed. Display disabled&#39;)
-        return
-    tree = self.GenerateTreeImage()
-    scatterplot = self.GenerateScatterplot()
-    histogram = self.GenerateHistogram()
-    incumbent = self.GenerateIncumbentPath()
-    if tree is not None:
-        imTree = StringIO(tree)
-        pTree = pygame.image.load(imTree, &#39;png&#39;)
-        sTree = pTree.get_size()
-        rTree = pygame.Rect(0,0,sTree[0],sTree[1])
-    if scatterplot is not None:
-        imScatterplot = StringIO(scatterplot)
-        pScatterplot = pygame.image.load(imScatterplot, &#39;png&#39;)
-        sScatterplot = pScatterplot.get_size()
-        rScatterplot = pygame.Rect(sTree[0],0,sScatterplot[0],
-                                   sScatterplot[1])
-    if histogram is not None:
-        imHistogram = StringIO(histogram)
-        pHistogram = pygame.image.load(imHistogram, &#39;png&#39;)
-        sHistogram = pHistogram.get_size()
-        rHistogram = pygame.Rect(0,sTree[1],sHistogram[0],sHistogram[1])
-    if incumbent is not None:
-        imIncumbent = StringIO(incumbent)
-        pIncumbent = pygame.image.load(imIncumbent, &#39;png&#39;)
-        sIncumbent = pIncumbent.get_size()
-        rIncumbent = pygame.Rect(sTree[0],sTree[1],sIncumbent[0],
-                                 sIncumbent[1])
-    screen = pygame.display.set_mode((sTree[0]+sTree[0], sTree[1]+sTree[1]))
-    if tree is not None:
-        screen.blit(pTree, rTree)
-    if scatterplot is not None:
-        screen.blit(pScatterplot, rScatterplot)
-    if histogram is not None:
-        screen.blit(pHistogram, rHistogram)
-    if incumbent is not None:
-        screen.blit(pIncumbent, rIncumbent)
-    pygame.display.flip()
-    if self._wait_for_keypress:
-        pause = True
-        print(&#34;Press any key to continue to next image (ESCAPE to disable pausing)&#34;)
-    else:
-        pause = False
-    while pause:
-        e = pygame.event.poll()
-        if e.type == pygame.KEYDOWN:
-            keystate = pygame.key.get_pressed()
-            if keystate[pygame.K_ESCAPE] != 0:
-                self._wait_for_keypress = False
-            break
-        if e.type == pygame.QUIT:
-            pause = False
-            pygame.display.quit()</code></pre>
+    print (&#39;This function is deprected and no longer functions&#39;)
+    return</code></pre>
 </details>
 </dd>
 <dt id="coinor.grumpy.BBTree.BBTree.display_image"><code class="name flex">
-<span>def <span class="ident">display_image</span></span>(<span>self, gnuplot)</span>
+<span>def <span class="ident">display_image</span></span>(<span>self, gnuplot_script, pause=False, wait_for_click=True)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<div class="desc"></div>
 <details class="source">
-<summary>Source code</summary>
-<pre><code class="python">def display_image(self, gnuplot):
-    if not PYGAME_INSTALLED:
-        print(&#39;Pygame not installed. Display disabled&#39;)
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def display_image(self, gnuplot_script, pause = False, wait_for_click = True):
+
+    if not (PIL_INSTALLED and MATPLOTLIB_INSTALLED):
+        print(&#39;Warning: Either matplotlib or Pillow is not installed. Cannot display.&#39;)
         return
-    im = StringIO(gnuplot)
-    picture = pygame.image.load(im, &#39;png&#39;)
-    screen = pygame.display.set_mode(picture.get_size())
-    screen.blit(picture, picture.get_rect())
-    pygame.display.flip()
-    pause = True
-    while pause:
-        e = pygame.event.poll()
-        if e.type == pygame.KEYDOWN:
-            break
-        if e.type == pygame.QUIT:
-            pause = False
-            pygame.display.quit()</code></pre>
+    
+    tmp_fd, tmp_name = tempfile.mkstemp()
+    tmp_file = os.fdopen(tmp_fd, &#39;w+b&#39;)
+    self.write_image(gnuplot_script, tmp_file)
+    tmp_file.close()
+    im = PIL_Image.open(tmp_name)
+    plt.figure(1)
+    plt.clf()
+    plt.axis(&#39;off&#39;)
+    plt.imshow(im, interpolation=&#39;bilinear&#39; #resample=True
+               #extent = (0, 100, 0, 100)
+    )
+    if wait_for_click == True:
+        plt.draw()
+        try:
+            if plt.waitforbuttonpress(timeout = 10000):
+                plt.close()
+                exit()
+        except:
+            exit()
+    else:
+        plt.show(block=pause)
+    im.close()</code></pre>
 </details>
 </dd>
 <dt id="coinor.grumpy.BBTree.BBTree.process_file"><code class="name flex">
 <span>def <span class="ident">process_file</span></span>(<span>self, file_name)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<div class="desc"></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def process_file(self, file_name):
     self._filename = file_name
     input_file = open(file_name, &#39;r&#39;)
@@ -6353,27 +6548,26 @@ to visualize the branch and bound tree.</p></section>
 <span>def <span class="ident">set_display_mode</span></span>(<span>self, mode)</span>
 </code></dt>
 <dd>
-<section class="desc"><h2 id="api">API</h2>
+<div class="desc"><h2 id="api">Api</h2>
 <p>set_display_mode(self, value)</p>
 <h2 id="description">Description</h2>
 <p>Sets display mode to value.</p>
 <h2 id="input">Input</h2>
-<dl>
-<dt><strong><code>value</code></strong></dt>
-<dd>New display mode.</dd>
-</dl>
+<p>value: New display mode.</p>
 <h2 id="post">Post</h2>
-<p>Display mode attribute of graph is updated.</p></section>
+<p>Display mode attribute of graph is updated.</p></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def set_display_mode(self, mode):
     if mode is &#39;off&#39;:
         self.attr[&#39;display&#39;] = mode
-    elif mode is &#39;pygame&#39;:
-        if PYGAME_INSTALLED:
-            self.attr[&#39;display&#39;] = &#39;pygame&#39;
+    elif mode is &#39;matplotlib&#39;:
+        if MATPLOTLIB_INSTALLED:
+            self.attr[&#39;display&#39;] = &#39;matplotlib&#39;
         else:
-            print(&#39;Pygame is not installed. Display is set to off.&#39;)
+            print(&#39;Matplotlib is not installed. Display is set to off.&#39;)
             self.attr[&#39;display&#39;] = &#39;off&#39;
     elif mode is &#39;PIL&#39;:
         if PIL_INSTALLED:
@@ -6389,6 +6583,8 @@ to visualize the branch and bound tree.</p></section>
             self.attr[&#39;display&#39;] = &#39;off&#39;
     elif mode is &#39;file&#39;:
         self.attr[&#39;display&#39;] = &#39;file&#39;
+    elif mode is &#39;matplotlib&#39;:
+        self.attr[&#39;display&#39;] = &#39;matplotlib&#39;
     else:
         raise Exception(&#39;%s is not a valid display mode.&#39; %mode)</code></pre>
 </details>
@@ -6397,9 +6593,11 @@ to visualize the branch and bound tree.</p></section>
 <span>def <span class="ident">set_edge_limit</span></span>(<span>self, limit)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<div class="desc"></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def set_edge_limit(self, limit):
     self._edge_limit = limit</code></pre>
 </details>
@@ -6408,9 +6606,11 @@ to visualize the branch and bound tree.</p></section>
 <span>def <span class="ident">set_fathom</span></span>(<span>self, boolean)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<div class="desc"></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def set_fathom(self, boolean):
     self._fathom = boolean</code></pre>
 </details>
@@ -6419,9 +6619,11 @@ to visualize the branch and bound tree.</p></section>
 <span>def <span class="ident">set_label</span></span>(<span>self, label)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<div class="desc"></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def set_label(self, label):
     self._label = label</code></pre>
 </details>
@@ -6430,9 +6632,11 @@ to visualize the branch and bound tree.</p></section>
 <span>def <span class="ident">set_logscaley</span></span>(<span>self, boolean)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<div class="desc"></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def set_logscaley(self, boolean):
     self._logscaley = boolean</code></pre>
 </details>
@@ -6441,20 +6645,24 @@ to visualize the branch and bound tree.</p></section>
 <span>def <span class="ident">set_sample_tree</span></span>(<span>self, number)</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<div class="desc"></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def set_sample_tree(self, number):
     self._sample_tree = number</code></pre>
 </details>
 </dd>
 <dt id="coinor.grumpy.BBTree.BBTree.write_as_dynamic_gexf"><code class="name flex">
-<span>def <span class="ident">write_as_dynamic_gexf</span></span>(<span>self, filename, mode=&#39;Dot&#39;)</span>
+<span>def <span class="ident">write_as_dynamic_gexf</span></span>(<span>self, filename, mode='Dot')</span>
 </code></dt>
 <dd>
-<section class="desc"></section>
+<div class="desc"></div>
 <details class="source">
-<summary>Source code</summary>
+<summary>
+<span>Expand source code</span>
+</summary>
 <pre><code class="python">def write_as_dynamic_gexf(self, filename, mode = &#34;Dot&#34;):
     if not GEXF_INSTALLED:
         print(&#39;Gexf not installed. Exiting.&#39;)
@@ -6498,6 +6706,39 @@ to visualize the branch and bound tree.</p></section>
         raise Exception(&#34;Only Dot mode supported in write_as_dynamic_gexf&#34;)</code></pre>
 </details>
 </dd>
+<dt id="coinor.grumpy.BBTree.BBTree.write_image"><code class="name flex">
+<span>def <span class="ident">write_image</span></span>(<span>self, gnuplot_script, filename)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">    def write_image(self, gnuplot_script, filename):
+        if not (MATPLOTLIB_INSTALLED and PIL_INSTALLED):
+            print(&#39;Either matplotlib or Pillow is not installed. Display disabled&#39;)
+            return
+        try:
+            p = subprocess.run([&#39;gnuplot&#39;], capture_output = True,
+                               input = bytearray(gnuplot_script, &#39;utf8&#39;))
+        except OSError:
+            print(&#39;&#39;&#39;Gnuplot executable not found.
+Gnuplot must be installed and in your search path.
+After installation, ensure that the PATH variable is properly set.&#39;&#39;&#39;)
+            return
+        p.check_returncode()
+
+        if p.stderr:
+            print(p.stderr)        
+
+        if isinstance(filename, str):
+            with open(filename, &#34;w+b&#34;) as f:
+                f.write(p.stdout)
+        else:
+            filename.write(p.stdout)</code></pre>
+</details>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -6525,7 +6766,6 @@ to visualize the branch and bound tree.</p></section>
 <li>
 <h4><code><a title="coinor.grumpy.BBTree.BBTree" href="#coinor.grumpy.BBTree.BBTree">BBTree</a></code></h4>
 <ul class="">
-<li><code><a title="coinor.grumpy.BBTree.BBTree.__init__" href="#coinor.grumpy.BBTree.BBTree.__init__">__init__</a></code></li>
 <li><code><a title="coinor.grumpy.BBTree.BBTree.AddOrUpdateNode" href="#coinor.grumpy.BBTree.BBTree.AddOrUpdateNode">AddOrUpdateNode</a></code></li>
 <li><code><a title="coinor.grumpy.BBTree.BBTree.AddProgressMeasures" href="#coinor.grumpy.BBTree.BBTree.AddProgressMeasures">AddProgressMeasures</a></code></li>
 <li><code><a title="coinor.grumpy.BBTree.BBTree.AdjustHistogramEndBins" href="#coinor.grumpy.BBTree.BBTree.AdjustHistogramEndBins">AdjustHistogramEndBins</a></code></li>
@@ -6570,6 +6810,7 @@ to visualize the branch and bound tree.</p></section>
 <li><code><a title="coinor.grumpy.BBTree.BBTree.set_logscaley" href="#coinor.grumpy.BBTree.BBTree.set_logscaley">set_logscaley</a></code></li>
 <li><code><a title="coinor.grumpy.BBTree.BBTree.set_sample_tree" href="#coinor.grumpy.BBTree.BBTree.set_sample_tree">set_sample_tree</a></code></li>
 <li><code><a title="coinor.grumpy.BBTree.BBTree.write_as_dynamic_gexf" href="#coinor.grumpy.BBTree.BBTree.write_as_dynamic_gexf">write_as_dynamic_gexf</a></code></li>
+<li><code><a title="coinor.grumpy.BBTree.BBTree.write_image" href="#coinor.grumpy.BBTree.BBTree.write_image">write_image</a></code></li>
 </ul>
 </li>
 </ul>
@@ -6578,9 +6819,7 @@ to visualize the branch and bound tree.</p></section>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.5.3</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
 </footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad()</script>
 </body>
 </html>

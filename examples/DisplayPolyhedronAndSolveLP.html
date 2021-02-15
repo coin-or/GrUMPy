@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.2" />
-<title>coinor.grumpy API documentation</title>
+<title>coinor.grumpy.examples.DisplayPolyhedronAndSolveLP API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,50 +19,154 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Package <code>coinor.grumpy</code></h1>
+<h1 class="title">Module <code>coinor.grumpy.examples.DisplayPolyhedronAndSolveLP</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from __future__ import absolute_import
-from .BBTree import *
-from .BranchAndBound import *
+<pre><code class="python">from __future__ import print_function
+from __future__ import absolute_import
+from builtins import str
 try:
-    from .polyhedron2D import *
+    from src.grumpy.polyhedron2D import Polyhedron2D, Figure
 except ImportError:
-    pass</code></pre>
+    from coinor.grumpy.polyhedron2D import Polyhedron2D, Figure
+
+CYLP_INSTALLED = True
+try:
+    import numpy as np
+    from cylp.cy import CyClpSimplex
+    from cylp.py.modeling import CyLPArray, CyLPModel
+except ImportError:
+    CYLP_INSTALLED = False
+    
+from . import LP9 as LP
+
+def disp_polyhedron(A = None, b = None, points = None, rays = None, c = None, obj_val = None,
+                    opt = None, loc = None):
+    if loc is None and opt is not None:
+        loc = opt
+    f = Figure()
+    f.add_polyhedron(p, label = &#39;Polyhedron $P$&#39;, color = &#39;red&#39;)
+    f.set_xlim([p.xlim[0], p.xlim[1]+1])
+    f.set_ylim([p.ylim[0], p.ylim[1]+2])
+    if c is not None and obj_val is not None:
+        f.add_line(c, obj_val, p.xlim + [0.2, 0.8], p.ylim + [0.2, 1.8], 
+                   linestyle = &#39;dashed&#39;, color = &#39;black&#39;, label = &#34;Objective Function&#34;)
+    if opt is not None:
+        f.add_point(opt, 0.04, &#39;red&#39;)
+        f.add_text(loc, r&#39;$x^* = %s$&#39; % str(opt))
+    f.show()
+    
+try:
+    p = Polyhedron2D(A = LP.A, b = LP.b)
+except AttributeError:
+    try:
+        p = Polyhedron2D(points = LP.points, rays = LP.rays)
+    except AttributeError:
+        print(&#39;Error: Must specify either A and b or points and rays&#39;)
+        p = None
+
+if p is not None:
+
+    if CYLP_INSTALLED:
+        lp = CyClpSimplex()
+        
+        A = np.matrix(p.hrep.A)
+        b = CyLPArray(p.hrep.b)
+        
+        print(A)
+        print(b)
+    
+        if LP.numVars == 2:
+            disp_polyhedron(A = A, b = b)
+    
+        x = lp.addVariable(&#39;x&#39;, LP.numVars)
+            
+        if LP.sense[0] == &#39;&gt;=&#39;:
+            lp += A * x &gt;= b
+        else:
+            lp += A * x &lt;= b
+        #lp += x &gt;= 0
+    
+        c = CyLPArray(LP.c)
+        # We are maximizing, so negate objective
+        if LP.sense[1] == &#39;Min&#39;:
+            lp.objective = c * x
+        else:
+            lp.objective = -c * x
+        lp.logLevel = 0
+        lp.primal(startFinishOptions = &#39;x&#39;)
+        np.set_printoptions(precision = 2, linewidth = 200)
+        print(&#39;Basic variables: &#39;, lp.basicVariables)
+        print(&#34;Current tableaux and reduced costs:&#34;)
+        print(lp.reducedCosts)
+        print(np.around(lp.tableau, decimals = 3))
+        print(&#39;Right-hand side of optimal tableaux:&#39;)
+        #There is a bug in CyLP and this is wrong
+        #print lp.rhs
+        if LP.sense[0] == &#39;&lt;=&#39;:
+            print(np.dot(lp.basisInverse, lp.constraintsUpper))
+        else:
+            print(np.dot(lp.basisInverse, lp.constraintsLower))
+        print(&#39;Inverse of optimal basis:&#39;)
+        print(np.around(lp.basisInverse, 3))
+        if LP.sense[1] == &#39;Min&#39;:
+            obj_val = lp.objectiveValue
+        else:
+            obj_val = -lp.objectiveValue
+            
+        psol = np.around(lp.primalVariableSolution[&#39;x&#39;], 2)
+        print(&#39;Optimal Value:&#39;, obj_val)
+        print(&#39;Primal solution:&#39;, psol)
+        print(&#39;Dual solution:&#39;, lp.dualConstraintSolution[&#39;R_1&#39;])
+    
+        if LP.numVars == 2:
+            disp_polyhedron(A = A, b = b, c = c, obj_val = obj_val,
+                            opt = psol.tolist(), loc = (psol[0]+0.1, psol[1]-0.1))
+    else:
+        print(LP.A)
+        print(LP.b)
+    
+        disp_polyhedron(A = p.hrep.A, b = p.hrep.b)</code></pre>
 </details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt><code class="name"><a title="coinor.grumpy.BBTree" href="BBTree.html">coinor.grumpy.BBTree</a></code></dt>
+<dt id="coinor.grumpy.examples.DisplayPolyhedronAndSolveLP.disp_polyhedron"><code class="name flex">
+<span>def <span class="ident">disp_polyhedron</span></span>(<span>A=None, b=None, points=None, rays=None, c=None, obj_val=None, opt=None, loc=None)</span>
+</code></dt>
 <dd>
 <div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="coinor.grumpy.BranchAndBound" href="BranchAndBound.html">coinor.grumpy.BranchAndBound</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="coinor.grumpy.examples" href="examples/index.html">coinor.grumpy.examples</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="coinor.grumpy.forecasting" href="forecasting.html">coinor.grumpy.forecasting</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="coinor.grumpy.polyhedron2D" href="polyhedron2D.html">coinor.grumpy.polyhedron2D</a></code></dt>
-<dd>
-<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def disp_polyhedron(A = None, b = None, points = None, rays = None, c = None, obj_val = None,
+                    opt = None, loc = None):
+    if loc is None and opt is not None:
+        loc = opt
+    f = Figure()
+    f.add_polyhedron(p, label = &#39;Polyhedron $P$&#39;, color = &#39;red&#39;)
+    f.set_xlim([p.xlim[0], p.xlim[1]+1])
+    f.set_ylim([p.ylim[0], p.ylim[1]+2])
+    if c is not None and obj_val is not None:
+        f.add_line(c, obj_val, p.xlim + [0.2, 0.8], p.ylim + [0.2, 1.8], 
+                   linestyle = &#39;dashed&#39;, color = &#39;black&#39;, label = &#34;Objective Function&#34;)
+    if opt is not None:
+        f.add_point(opt, 0.04, &#39;red&#39;)
+        f.add_text(loc, r&#39;$x^* = %s$&#39; % str(opt))
+    f.show()</code></pre>
+</details>
 </dd>
 </dl>
-</section>
-<section>
-</section>
-<section>
 </section>
 <section>
 </section>
@@ -73,13 +177,14 @@ except ImportError:
 <ul></ul>
 </div>
 <ul id="index">
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<li><h3>Super-module</h3>
 <ul>
-<li><code><a title="coinor.grumpy.BBTree" href="BBTree.html">coinor.grumpy.BBTree</a></code></li>
-<li><code><a title="coinor.grumpy.BranchAndBound" href="BranchAndBound.html">coinor.grumpy.BranchAndBound</a></code></li>
-<li><code><a title="coinor.grumpy.examples" href="examples/index.html">coinor.grumpy.examples</a></code></li>
-<li><code><a title="coinor.grumpy.forecasting" href="forecasting.html">coinor.grumpy.forecasting</a></code></li>
-<li><code><a title="coinor.grumpy.polyhedron2D" href="polyhedron2D.html">coinor.grumpy.polyhedron2D</a></code></li>
+<li><code><a title="coinor.grumpy.examples" href="index.html">coinor.grumpy.examples</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="coinor.grumpy.examples.DisplayPolyhedronAndSolveLP.disp_polyhedron" href="#coinor.grumpy.examples.DisplayPolyhedronAndSolveLP.disp_polyhedron">disp_polyhedron</a></code></li>
 </ul>
 </li>
 </ul>

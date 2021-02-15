@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.2" />
-<title>coinor.grumpy API documentation</title>
+<title>coinor.grumpy.examples.Dippy API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,50 +19,66 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Package <code>coinor.grumpy</code></h1>
+<h1 class="title">Module <code>coinor.grumpy.examples.Dippy</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from __future__ import absolute_import
-from .BBTree import *
-from .BranchAndBound import *
-try:
-    from .polyhedron2D import *
-except ImportError:
-    pass</code></pre>
+<pre><code class="python">from __future__ import print_function
+DEBUGGING = False
+
+import sys
+
+#sys.path.append(&#34;C:\\COIN\\GIMPy\\GrUMPy\\trunk&#34;)
+#sys.path.append(&#34;C:\\COIN\\GIMPy\\trunk&#34;)
+
+from pulp import *
+from coinor.dippy import DipProblem, Solve
+
+prob = DipProblem(&#34;Dippy Example&#34;, display_mode = &#39;matplotlib&#39;, 
+                  display_interval = 1)
+
+x1 = LpVariable(&#34;x_1&#34;, 0, None, LpInteger)
+x2 = LpVariable(&#34;x_2&#34;, 0, cat=LpInteger)
+
+prob += -x1 - x2, &#34;min&#34;
+
+prob += -2 * x1 +  2 * x2 &gt;= 1
+prob += -8 * x1 + 10 * x2 &lt;= 13
+
+Solve(prob, {
+    &#39;CutCGL&#39;: 0,
+})
+
+for var in prob.variables():
+    print(var.name, &#34;=&#34;, var.value())
+
+prob.Tree.display()</code></pre>
 </details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt><code class="name"><a title="coinor.grumpy.BBTree" href="BBTree.html">coinor.grumpy.BBTree</a></code></dt>
+<dt id="coinor.grumpy.examples.Dippy.maketrans"><code class="name flex">
+<span>def <span class="ident">maketrans</span></span>(<span>...)</span>
+</code></dt>
 <dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="coinor.grumpy.BranchAndBound" href="BranchAndBound.html">coinor.grumpy.BranchAndBound</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="coinor.grumpy.examples" href="examples/index.html">coinor.grumpy.examples</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="coinor.grumpy.forecasting" href="forecasting.html">coinor.grumpy.forecasting</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="coinor.grumpy.polyhedron2D" href="polyhedron2D.html">coinor.grumpy.polyhedron2D</a></code></dt>
-<dd>
-<div class="desc"></div>
+<div class="desc"><p>Return a translation table usable for str.translate().</p>
+<p>If there is only one argument, it must be a dictionary mapping Unicode
+ordinals (integers) or characters to Unicode ordinals, strings or None.
+Character keys will be then converted to ordinals.
+If there are two arguments, they must be strings of equal length, and
+in the resulting dictionary, each character in x will be mapped to the
+character at the same position in y. If there is a third argument, it
+must be a string, whose characters will be mapped to None in the result.</p></div>
 </dd>
 </dl>
-</section>
-<section>
-</section>
-<section>
 </section>
 <section>
 </section>
@@ -73,13 +89,14 @@ except ImportError:
 <ul></ul>
 </div>
 <ul id="index">
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<li><h3>Super-module</h3>
 <ul>
-<li><code><a title="coinor.grumpy.BBTree" href="BBTree.html">coinor.grumpy.BBTree</a></code></li>
-<li><code><a title="coinor.grumpy.BranchAndBound" href="BranchAndBound.html">coinor.grumpy.BranchAndBound</a></code></li>
-<li><code><a title="coinor.grumpy.examples" href="examples/index.html">coinor.grumpy.examples</a></code></li>
-<li><code><a title="coinor.grumpy.forecasting" href="forecasting.html">coinor.grumpy.forecasting</a></code></li>
-<li><code><a title="coinor.grumpy.polyhedron2D" href="polyhedron2D.html">coinor.grumpy.polyhedron2D</a></code></li>
+<li><code><a title="coinor.grumpy.examples" href="index.html">coinor.grumpy.examples</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="coinor.grumpy.examples.Dippy.maketrans" href="#coinor.grumpy.examples.Dippy.maketrans">maketrans</a></code></li>
 </ul>
 </li>
 </ul>
