@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
     #Lift and Project cut from infeasible basis 
     f.add_point((6.2,5.2), 0.02, 'red')
-    f.add_line([4, 1], 28, linestyle = 'dashed')
+    f.add_line([4, 1], 28, p.xlim, p.ylim, linestyle = 'dashed')
     f.add_line_segment([5.6666, 5.333], [6.2, 5.2], linestyle = 'dashed')
     f.add_line_segment([5.7, 4.7], [6.2, 5.2], linestyle = 'dashed')
     f.add_line([1, 3], 21, p.xlim, p.ylim,

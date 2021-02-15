@@ -1,36 +1,37 @@
 from future import standard_library
 standard_library.install_aliases()
 from builtins import str
+import coinor.grumpy.examples
 try:
     from coinor.grumpy import BBTree
 except ImportError:
     from src.grumpy import BBTree
+from inspect import getfile
+from os.path import join, dirname
 import sys
 import io
-from PIL import Image as PIL_Image
 
 bt = BBTree()
-bt.set_display_mode('pygame')
-line_number = 1
-file_ = open('p0201_GLPK.vbc', 'r')
+line_number = 0
 #for line in sys.stdin:
-for line in file_:
-    bt.ProcessLine(line)
-    #To print out snapshots of the tree
-    if line_number%100000 != 0:
-        continue
-    imagefile = open('tree-'+str(line_number)+'.png','w')
-    imagefile.write(bt.GenerateTreeImage())
-    imagefile.close()
+instance = join(dirname(getfile(coinor.grumpy.examples)),
+                'p0201_GLPK.vbc')
+with open(instance, 'r') as file_:
+    bt.set_display_mode('file')
+    for line in file_:
+        line_number += 1
+        bt.ProcessLine(line)
+        #To print out snapshots of the tree
+        if line_number%100 != 0:
+            continue
+        bt.display('tree', 'tree-'+str(line_number))
 
-#gnuplot_image = bt.GenerateHistogram()
-gnuplot_image = io.StringIO(bt.GenerateTreeImage())
-#gnuplot_image = bt.GenerateScatterplot()
-#gnuplot_image = bt.GenerateIncumbentPath()
-#gnuplot_image = bt.GenerateForecastImages()
-im = PIL_Image.open(gnuplot_image)
-im.show()
-#bt.display_all()
+#bt.write_image(bt.GenerateHistogram())
+bt.set_display_mode('matplotlib')
+bt.display('tree')
+#bt.write_image(bt.GenerateScatterplot())
+#bt.write_image(bt.GenerateIncumbentPath())
+#bt.write_image(bt.GenerateForecastImages())
 
 bt.set_display_mode('file')
-bt.display()
+bt.display('tree', 'tree-final')
