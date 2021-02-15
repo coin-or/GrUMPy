@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.2" />
-<title>coinor.grumpy API documentation</title>
+<title>coinor.grumpy.examples.LP1 API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,48 +19,77 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Package <code>coinor.grumpy</code></h1>
+<h1 class="title">Module <code>coinor.grumpy.examples.LP1</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from __future__ import absolute_import
-from .BBTree import *
-from .BranchAndBound import *
-try:
-    from .polyhedron2D import *
-except ImportError:
-    pass</code></pre>
+<pre><code class="python">numVars = 2
+&#39;&#39;&#39;
+A = [[-2, -3], 
+     [-4, -2], 
+     [-3, -4],
+     ]
+
+b = [-5, 
+     -15, 
+     -20,
+      ]
+
+x_u = [9,
+       6,
+       ]
+
+&#39;&#39;&#39;
+
+# For display, adding bounds explicitly is better
+A = [[-2, -3], 
+     [-4, -2], 
+     [-3, -4], 
+     [1, 0], 
+     [0, 1], 
+     [-1, 0], 
+     [0, -1]]
+
+b = [-5, 
+     -15, 
+     -20, 
+     9, 
+     6, 
+     0, 
+     0]
+
+c = [-20,
+     -15,
+     ]
+
+obj_val = 100
+
+sense = (&#39;&lt;=&#39;, &#39;Max&#39;)</code></pre>
 </details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
-<dl>
-<dt><code class="name"><a title="coinor.grumpy.BBTree" href="BBTree.html">coinor.grumpy.BBTree</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="coinor.grumpy.BranchAndBound" href="BranchAndBound.html">coinor.grumpy.BranchAndBound</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="coinor.grumpy.examples" href="examples/index.html">coinor.grumpy.examples</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="coinor.grumpy.forecasting" href="forecasting.html">coinor.grumpy.forecasting</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="coinor.grumpy.polyhedron2D" href="polyhedron2D.html">coinor.grumpy.polyhedron2D</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 </section>
 <section>
+<h2 class="section-title" id="header-variables">Global variables</h2>
+<dl>
+<dt id="coinor.grumpy.examples.LP1.numVars"><code class="name">var <span class="ident">numVars</span></code></dt>
+<dd>
+<div class="desc"><p>A = [[-2, -3],
+[-4, -2],
+[-3, -4],
+]</p>
+<p>b = [-5,
+-15,
+-20,
+]</p>
+<p>x_u = [9,
+6,
+]</p></div>
+</dd>
+</dl>
 </section>
 <section>
 </section>
@@ -73,13 +102,14 @@ except ImportError:
 <ul></ul>
 </div>
 <ul id="index">
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<li><h3>Super-module</h3>
 <ul>
-<li><code><a title="coinor.grumpy.BBTree" href="BBTree.html">coinor.grumpy.BBTree</a></code></li>
-<li><code><a title="coinor.grumpy.BranchAndBound" href="BranchAndBound.html">coinor.grumpy.BranchAndBound</a></code></li>
-<li><code><a title="coinor.grumpy.examples" href="examples/index.html">coinor.grumpy.examples</a></code></li>
-<li><code><a title="coinor.grumpy.forecasting" href="forecasting.html">coinor.grumpy.forecasting</a></code></li>
-<li><code><a title="coinor.grumpy.polyhedron2D" href="polyhedron2D.html">coinor.grumpy.polyhedron2D</a></code></li>
+<li><code><a title="coinor.grumpy.examples" href="index.html">coinor.grumpy.examples</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-variables">Global variables</a></h3>
+<ul class="">
+<li><code><a title="coinor.grumpy.examples.LP1.numVars" href="#coinor.grumpy.examples.LP1.numVars">numVars</a></code></li>
 </ul>
 </li>
 </ul>
