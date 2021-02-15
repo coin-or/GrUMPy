@@ -1,6 +1,4 @@
-# GrUMPy 0.9.2
-
-## Now with Python 3 support!
+# GrUMPy 0.95
 
 [![DOI](https://zenodo.org/badge/18217673.svg)](https://zenodo.org/badge/latestdoi/18217673)
 
@@ -30,38 +28,40 @@ pip install coinor.grumpy
 ```
 
 1. GrUMPy depends on [GiMPy](https://github.com/coin-or/GiMPy), which will be automatically installed as part of the setup. However, in order for GiMPy to visualize the branch-and-bound tree, it's necessary to install [GraphViz](http://www.graphviz.org) and choose one of these additional methods for display:
-  * Recommended: [xdot 0.6](https://pypi.python.org/pypi/xdot). 
-    * Install with `pip install xdot==0.6`
-    * Call `set_display_mode('xdot')`
-  Note that xdot 0.6 depends on [PyGtk](http://www.pygtk.org/) (see below for platform-specific installation instructions for installing). 
-  * [Python Imaging Library](http://www.pythonware.com/products/pil/) and call `set_display_mode('PIL')`
-  * [Pygame](pygame.org) and call `set_display_mode('pygame')`
-  * Call `set_display_mode('file')` to just write files to disk that have to then be opened manually. 
+  * Recommended: [matplotlib](https://pypi.org/project/matplotlib/) and call
+    `set_display_mode('matplotlib')
+  * [Python Imaging Library](http://www.pythonware.com/products/pil/) and 
+    call `set_display_mode('PIL')`
+  * Call `set_display_mode('file')` to just write files to disk that have to
+    then be opened manually. 
   
-  It is also possible to typeset labels in LaTex and to output the graph in LaTex format using `dot2tex` (**Warning**: recent versions of `dot2tex` have not perfectly, your mileage may vary). After installing `dot2tex`, this can be done by simply calling the method `write(basename='fileName', format='dot')`, and then doing `dot2tex --tmath fileName.dot` or by calling `set_display_mode('dot2tex')` and then `display()` as usual. At the moment, the latter only seems to work with version `2.9.0dev` available [here](https://github.com/Alwnikrotikz/dot2tex). For the former method, just using `easy_install dot2tex` should work fine.
+It is also possible to typeset labels in LaTex and to output the graph in
+LaTex format using `dot2tex` (**Warning**: recent versions of `dot2tex` have
+not perfectly, your mileage may vary). After installing `dot2tex`, this can be
+done by simply calling the method `write(basename='fileName', format='dot')`,
+and then doing `dot2tex --tmath fileName.dot` or by calling
+`set_display_mode('dot2tex')` and then `display()` as usual. At the moment,
+the latter only seems to work with version `2.9.0dev` available
+[here](https://github.com/Alwnikrotikz/dot2tex). For the former method, just
+using `easy_install dot2tex` should work fine.
+
 1. GrUMPy also creates some visualizations with [gnuplot](https://sourceforge.net/projects/gnuplot/). For tips on installing `gnuplot`, see below.
 1. GrUMPy can also visualize 2D polyhedra with the installation of [pypolyhedron](https://github.com/tkralphs/pypolyhedron), which can be install with `pip install pypolyhedron`
   
 # Additional Notes for Windows Installation
 
   * To install Graphviz, download the installer [here](http://www.graphviz.org/Download.php). **Important**: after installing, you must manually add the graphviz `bin` directory (usually `C:\Program Files (x86)\Graphviz2.38\bin`) to your `PATH` 
-  * If you want to use `xdot`, there are some more requirements: 
-     * Unfortunately, you must have a 32-bit version of Python 2.7
-     * You must install the [PyGtk version 2.22.6](http://ftp.gnome.org/pub/GNOME/binaries/win32/pygtk/2.22/pygtk-all-in-one-2.22.6.win32-py2.7.msi). Version 2.24 is buggy on Windows.
-     * To install `gnuplot`, download the installer [here](https://sourceforge.net/projects/gnuplot/). Note that the CYGWIN version of gnuplot may not work when called from Python.  
+  * To install `gnuplot`, download the installer [here](http://www.gnuplot.info/). Note that the CYGWIN version of gnuplot may not work when called from Python.  
 
 # Additional Notes for Linux Installation
 
   * Graphviz can be installed as a package on most Linux distros, e.g., `sudo apt-get install graphviz`
-  * To use `xdot`, you need to install PyGtk. On Debian/Ubuntu, do `sudo apt-get install python-gtk2` 
-  * Gnuplot should be available for installation with your favorite package manager.
+  * Gnuplot should also be available for installation with your favorite package manager.
   
 # Additional Notes for OS X Users
 
   * The situation with Python on OS X is a bit of a mess. It is recommended to install python using [homebrew](http://brew.sh) with `brew install python`).
-  * With homebbrew, one can also easily install graphviz (`brew install graphviz`), PyGtk (`brew install pygtk`), and gnuplot (`brew install gnuplot`) 
-
-There have been reports of incompatibilities with recent versions of PyGtk, but I have not attempted yet to track this down. If things break, you may try some variant of the instructions above for installing on Windows.
+  * With homebbrew, one can also easily install graphviz (`brew install graphviz`) and gnuplot (`brew install gnuplot`) 
 
 ## Examples of Visualizations
 
@@ -217,23 +217,12 @@ for line in file:
 To display the visualizations, do
 
 ```python
-import sys
-import StringIO
-from PIL import Image as PIL_Image
+# BAK style
+bt.set_display_mode('matplotlib')
+bt.display('tree')
 
-#BAK-style visualizations
-
-#gnuplot_image = StringIO.StringIO(bt.GenerateHistogram()
-gnuplot_image = StringIO.StringIO(bt.GenerateTreeImage())
-#gnuplot_image = StringIO.StringIO(bt.GenerateScatterplot()
-#gnuplot_image = StringIO.StringIO(bt.GenerateIncumbentPath()
-#gnuplot_image = StringIO.StringIO(bt.GenerateForecastImages()
-im = PIL_Image.open(gnuplot_image)
-im.show()
-
-#GiMPy visualization (GraphViz)
-
-bt.set_display_mode('xdot')
+# Graphviz style
+bt.set_layout('dot')
 bt.display()
 ```
 
