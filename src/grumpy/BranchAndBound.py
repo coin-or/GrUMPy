@@ -122,7 +122,7 @@ def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
         integer_solution = False
         (cur_index, parent, relax, branch_var, branch_var_value, sense,
         rhs) = Q.pop()
-        if cur_index is not 0:
+        if cur_index != 0:
             cur_depth = T.get_node_attr(parent, 'level') + 1
         else:
             cur_depth = 0
@@ -148,7 +148,7 @@ def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                          CONSTRAINTS[j])
         # Fix all prescribed variables
         branch_vars = []
-        if cur_index is not 0:
+        if cur_index != 0:
             sys.stdout.write("Branching variables: ")
             branch_vars.append(branch_var)
             if sense == '>=':
@@ -262,18 +262,18 @@ def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
             BBstatus = 'C'
             status = 'candidate'
             color = 'yellow'
-        if BBstatus is 'I':
+        if BBstatus == 'I':
             if T.get_layout() == 'dot2tex':
-                label = '\text{I}'
+                label = r'\text{I}'
             else:
                 label = 'I'
         else:
             label = "%.1f"%relax
         if iter_count == 0:
-            if status is not 'candidate':
+            if status != 'candidate':
                 integer_infeasibility_count = None
                 integer_infeasibility_sum = None
-            if status is 'fathomed':
+            if status == 'fathomed':
                 if T._incumbent_value is None:
                     print('WARNING: Encountered "fathom" line before '+\
                         'first incumbent.')
@@ -283,7 +283,7 @@ def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                              label = label,
                              obj = relax, color = color,
                              style = 'filled', fillcolor = color)
-            if status is 'integer':
+            if status == 'integer':
                 T._previous_incumbent_value = T._incumbent_value
                 T._incumbent_value = relax
                 T._incumbent_parent = -1
@@ -295,18 +295,18 @@ def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
 #                                 highlight = cur_index)
         else:
             _direction = {'<=':'L', '>=':'R'}
-            if status is 'infeasible':
+            if status == 'infeasible':
                 integer_infeasibility_count = T.get_node_attr(parent,
                                      'integer_infeasibility_count')
                 integer_infeasibility_sum = T.get_node_attr(parent,
                                      'integer_infeasibility_sum')
                 relax = T.get_node_attr(parent, 'lp_bound')
-            elif status is 'fathomed':
+            elif status == 'fathomed':
                 if T._incumbent_value is None:
                     print('WARNING: Encountered "fathom" line before'+\
                         ' first incumbent.')
                     print('  This may indicate an error in the input file.')
-            elif status is 'integer':
+            elif status == 'integer':
                 integer_infeasibility_count = None
                 integer_infeasibility_sum = None
             T.AddOrUpdateNode(cur_index, parent, _direction[sense],
@@ -318,7 +318,7 @@ def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                                  sense = sense, rhs = rhs, obj = relax,
                                  color = color, style = 'filled',
                                  label = label, fillcolor = color)
-            if status is 'integer':
+            if status == 'integer':
                 T._previous_incumbent_value = T._incumbent_value
                 T._incumbent_value = relax
                 T._incumbent_parent = parent
@@ -419,20 +419,23 @@ def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
     print("Objective function value")
     print(LB)
     print("===========================================")
-    if T.attr['display'] is not 'off':
+    if T.attr['display'] != 'off':
         T.display(count=iter_count)
     T._lp_count = lp_count
     return opt, LB
 
 if __name__ == '__main__':    
     T = BBTree()
+    T.set_layout('dot')
     #T.set_layout('dot2tex')
     #T.set_display_mode('file')
     #T.set_display_mode('xdot')
     T.set_display_mode('matplotlib')
-    CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = GenerateRandomMIP(rand_seed = 120)
+    CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = GenerateRandomMIP(numVars = 15,
+                                                              numCons = 5,
+                                                              rand_seed = 120)
     BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                    branch_strategy = MOST_FRACTIONAL,
                    search_strategy = BEST_FIRST,
-                   display_interval = 10000)
+                   display_interval = 1)
 

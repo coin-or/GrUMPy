@@ -93,55 +93,6 @@ BEST_FIRST = 'Best First'
 BEST_ESTIMATE = 'Best Estimate'
 INFINITY = sys.maxsize
 
-DOT2TEX_TEMPLATE = r'''
-\documentclass[landscape]{article}
-\usepackage[x11names, rgb]{xcolor}
-\usepackage[<<textencoding>>]{inputenc}
-\usepackage{tikz}
-\usetikzlibrary{snakes,arrows,shapes}
-\usepackage{amsmath}
-\usepackage[margin=2cm,nohead]{geometry}%
-<<startpreprocsection>>%
-\usepackage[active,auctex]{preview}
-<<endpreprocsection>>%
-<<gvcols>>%
-<<cropcode>>%
-<<docpreamble>>%
-
-\begin{document}
-\pagestyle{empty}
-%
-<<startpreprocsection>>%
-<<preproccode>>
-<<endpreprocsection>>%
-%
-<<startoutputsection>>
-\enlargethispage{100cm}
-% Start of code
-% \begin{tikzpicture}[anchor=mid,>=latex',join=bevel,<<graphstyle>>]
-\resizebox{\textwidth}{!}{
-\begin{tikzpicture}[>=latex',join=bevel,<<graphstyle>>]
-\pgfsetlinewidth{1bp}
-<<figpreamble>>%
-<<drawcommands>>
-<<figpostamble>>%
-\end{tikzpicture}
-% End of code
-}
-<<endoutputsection>>
-%
-\end{document}
-%
-<<startfigonlysection>>
-\begin{tikzpicture}[>=latex,join=bevel,<<graphstyle>>]
-\pgfsetlinewidth{1bp}
-<<figpreamble>>%
-<<drawcommands>>
-<<figpostamble>>%
-\end{tikzpicture}
-<<endfigonlysection>>
-'''
-
 class BBTree(BinaryTree):
     """
     Methods to process and visualize information about a b&b tree. It can
@@ -253,29 +204,29 @@ class BBTree(BinaryTree):
             raise Exception("Only Dot mode supported in write_as_dynamic_gexf")
 
     def set_display_mode(self, mode):
-        if mode is 'off':
+        if mode == 'off':
             self.attr['display'] = mode
-        elif mode is 'matplotlib':
+        elif mode == 'matplotlib':
             if MATPLOTLIB_INSTALLED:
                 self.attr['display'] = 'matplotlib'
             else:
                 print('Matplotlib is not installed. Display is set to off.')
                 self.attr['display'] = 'off'
-        elif mode is 'PIL':
+        elif mode == 'PIL':
             if PIL_INSTALLED:
                 self.attr['display'] = 'PIL'
             else:
                 print('PIL is not installed. Display is set to off.')
                 self.attr['display'] = 'off'
-        elif mode is 'xdot':
+        elif mode == 'xdot':
             if XDOT_INSTALLED:
                 self.attr['display'] = 'xdot'
             else:
                 print('Xdot is not installed. Display is set to off.')
                 self.attr['display'] = 'off'
-        elif mode is 'file':
+        elif mode == 'file':
             self.attr['display'] = 'file'
-        elif mode is 'matplotlib':
+        elif mode == 'matplotlib':
             self.attr['display'] = 'matplotlib'
         else:
             raise Exception('%s is not a valid display mode.' %mode)
@@ -306,9 +257,9 @@ class BBTree(BinaryTree):
                         n.attr['label'] = ' '
             BinaryTree.display(self, pause = pause, wait_for_click = wait_for_click)
             return
-        if self.attr['display'] is 'off':
+        if self.attr['display'] == 'off':
             return
-        if self.attr['display'] is 'matplotlib':
+        if self.attr['display'] == 'matplotlib':
             gnuplot_script = None
             if item=='all':
                 self.display_all()
@@ -349,7 +300,7 @@ class BBTree(BinaryTree):
                             t_infeasible_files + t_pregnant_files)
             for f in bak_filelist:
                 os.remove(f)
-        elif self.attr['display'] is 'xdot':
+        elif self.attr['display'] == 'xdot':
             if XDOT_INSTALLED:
                 window = xdot.DotWindow()
                 window.set_dotcode(self.to_string())
@@ -358,10 +309,10 @@ class BBTree(BinaryTree):
             else:
                 print('Error: xdot not installed. Display disabled.')
                 self.attr['display'] = 'off'
-        elif self.attr['display'] is 'file':
+        elif self.attr['display'] == 'file':
             if count is not None:
                 basename = basename + '_' + str(count)
-            if self.attr['layout'] is 'dot2tex':
+            if self.attr['layout'] == 'dot2tex':
                 if DOT2TEX_INSTALLED:
                     if format != 'pdf' or format != 'ps':
                         print("Dot2tex only supports pdf and ps formats,"+\
@@ -437,7 +388,7 @@ class BBTree(BinaryTree):
         '''
         Assumes all the images have the same size.
         '''
-        print ('This function is deprected and no longer functions')
+        print ('This function is deprecated and no longer functions')
         return
 
         # Old source, just in case
