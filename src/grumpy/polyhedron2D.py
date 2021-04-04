@@ -231,9 +231,9 @@ class Figure(object):
                             linewidth = linewidth)
         self.ax.add_line(line)
         if show_int_points:
-            for i in range(int(ceil(p.min_point[0])), 
+            for i in range(int(floor(p.min_point[0])), 
                            int(ceil(p.max_point[0]))+1):
-                for j in range(int(ceil(p.min_point[1])), 
+                for j in range(int(floor(p.min_point[1])), 
                                int(ceil(p.max_point[1]))+1):
                     if np.alltrue(np.dot(p.hrep.A, [i, j]) <= p.hrep.b):
                         self.add_point((i, j), radius = 0.02, color = 'black')
