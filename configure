@@ -446,7 +446,7 @@ PACKAGE_VERSION='0.6.1'
 PACKAGE_STRING='GrUMPy 0.6.1'
 PACKAGE_BUGREPORT='coin-bazaar@lists.coin-or.org'
 
-ac_unique_file="src/grumpy/BB.py"
+ac_unique_file="src/grumpy/BBTree.py"
 ac_default_prefix=`pwd`
 # Factoring default headers for most tests.
 ac_includes_default="\

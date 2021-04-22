@@ -1,6 +1,11 @@
 acinclude.m4
 aclocal.m4
 autom4te.cache
+# autotools generated files
+config.log
+config.status
+libtool
+
 *.py[cod]
 
 # C extensions
@@ -37,3 +42,10 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# Virtualenvs
+venv
+env
+
+# Makefile
+Makefile

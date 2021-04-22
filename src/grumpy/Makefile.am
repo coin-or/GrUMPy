@@ -22,4 +22,4 @@
 
 GRUMPYdir = $(pythondir)/grumpy
 
-GRUMPY_PYTHON = __init__.py __main__.py forecasting.py BB.py polyhedron2D.py
+GRUMPY_PYTHON = __init__.py __main__.py forecasting.py BBTree.py polyhedron2D.py

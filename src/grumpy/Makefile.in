@@ -14,8 +14,6 @@
 
 @SET_MAKE@
 
-#============================================================================#
-# This file is part of the GrUMPy library                                    #
 #                                                                            #
 # GrUMPy is distributed under the Eclipse Public License as part of the      #
 # COIN-OR repository (http://www.coin-or.org).                               #
@@ -229,7 +227,7 @@ sol_cc_compiler = @sol_cc_compiler@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 GRUMPYdir = $(pythondir)/grumpy
-GRUMPY_PYTHON = __init__.py forecasting.py BB.py polyhedron2D.py
+GRUMPY_PYTHON = __init__.py forecasting.py BBTree.py polyhedron2D.py
 all: all-am
 
 .SUFFIXES:
