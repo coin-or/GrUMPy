@@ -7,7 +7,7 @@ python setup.py install
 
 or the autotools:
 
-configure
+./configure
 make
 make install
 
