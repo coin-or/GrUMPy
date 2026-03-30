@@ -91,7 +91,7 @@ problem     | branching strategy   | search strategy   | num lp
 
 '''
 
-from coinor.grumpy import BBTree
+from coinor.grumpy import BBTree, GenerateRandomMIP, BranchAndBound
 # import branching strategies
 from coinor.grumpy import MOST_FRACTIONAL, FIXED_BRANCHING, PSEUDOCOST_BRANCHING
 # import searching strategies
@@ -129,39 +129,39 @@ num_lp = {}
 if __name__=='__main__':
     for p in problem:
         var, con, seed = p
-        bt = BBTree()
-        CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = bt.GenerateRandomMIP(numVars=var,
-                                                                     numCons=con,
-                                                                     rand_seed=seed)
+        T = BBTree()
+        CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = GenerateRandomMIP(numVars=var,
+                                                                  numCons=con,
+                                                                  rand_seed=seed)
         num_lp[p] = {}
         for b in branch_strategy:
             for s in search_strategy:
                 # create a new object before each branch and bound call
-                bt = BBTree()
+                T = BBTree()
                 # solve using BB
-                solution, bb_optimal = bt.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ,
-                                                         MAT, RHS,
-                                                         branch_strategy = b,
-                                                         search_strategy = s)
+                solution, bb_optimal = BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ,
+                                                      MAT, RHS,
+                                                      branch_strategy = b,
+                                                      search_strategy = s)
                 # keep number of LPs solved.
-                num_lp[p][(b,s)] = bt._lp_count
+                num_lp[p][(b,s)] = T._lp_count
     # print table
-    print 'problem     | branching strategy   | search strategy   | num lp'
-    print '---------------------------------------------------------------'
+    print('problem     | branching strategy   | search strategy   | num lp')
+    print('---------------------------------------------------------------')
     for p in problem:
         for b in branch_strategy:
             for s in search_strategy:
-                print str(p).ljust(10),
-                print '|',
-                print str(b).ljust(20),
-                print '|',
-                print str(s).ljust(17),
-                print '|',
-                print num_lp[p][(b,s)]
+                print(str(p).ljust(10))
+                print('|')
+                print(str(b).ljust(20))
+                print('|')
+                print(str(s).ljust(17))
+                print('|')
+                print(num_lp[p][(b,s)])
     for b in branch_strategy:
         for s in search_strategy:
             filename = bs_dict[b] + "_" + ss_dict[s]
-            print "writing output file ", filename, "..."
+            print("writing output file ", filename, "...")
             f = open(filename, "w")
             f.write("#problem".ljust(15))
             f.write("num lp".ljust(10))

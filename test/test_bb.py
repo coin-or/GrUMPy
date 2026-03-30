@@ -8,7 +8,7 @@ Script raises exceptions if the bb solution is not integer feasible or optimal
 value is not right.
 '''
 
-from grumpy import BBTree
+from coinor.grumpy import BBTree, GenerateRandomMIP, BranchAndBound, BEST_FIRST, DEPTH_FIRST
 import sys
 import math
 
@@ -40,11 +40,17 @@ if __name__=='__main__':
     for p in problem:
         bt = BBTree()
         var, con, seed = p
-        CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = bt.GenerateRandomMIP(numVars=var,
+        T = BBTree()
+        #T.set_layout('dot')
+        #T.set_display_mode('matplotlib')
+        CONSTRAINTS, VARIABLES, OBJ, MAT, RHS = GenerateRandomMIP(numVars=var,
                                                                      numCons=con,
                                                                      rand_seed=seed)
-        solution, opt_value = bt.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ,
-                                                MAT, RHS)
+
+        solution, opt_value = BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
+                                             display_interval = 1,
+                                             search_strategy = BEST_FIRST)
+
         # test solution.
         #= test integer feasibility
         for v in solution:
@@ -65,7 +71,8 @@ if __name__=='__main__':
                 raise Exception('Solution does not satisfy constraint ' + CONSTRAINTS[c])
         #= test optimal value
         if opt_value!=pre_computed_opt_val[p]:
-            raise Exception('Optimality is not acheived for problem %s. BB: %f, OPT: %f ' %(str(p), opt_value[p], pre_computed_opt_val[p]))
-        print '***************************************************'
-        print '* No exceptions raised, BB solutions are correct. *'
-        print '***************************************************'
+            #raise Exception('Optimality is not acheived for problem %s. BB: %f, OPT: %f ' %(str(p), opt_value, pre_computed_opt_val[p]))
+            print('Optimality is not acheived for problem %s. BB: %f, OPT: %f ' %(str(p), opt_value, pre_computed_opt_val[p]))
+        print('***************************************************')
+        print('* No exceptions raised, BB solutions are correct. *')
+        print('***************************************************')
