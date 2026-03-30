@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "coinor.grumpy"
+version = "0.95.2"
+description = "Graphics for Understanding Mathematical Programming in Python"
+readme = "README.md"
+license = { text = "Eclipse Public License" }
+authors = [
+    { name = "Ted Ralphs", email = "ted@lehigh.edu" },
+]
+requires-python = ">=3.6"
+dependencies = [
+    "coinor.gimpy",
+    "future",
+    "matplotlib",
+    "pulp",
+]
+
+[project.urls]
+Homepage = "http://projects.coin-or.org/GrUMPy"
+Repository = "https://github.com/coin-or/GrUMPy"
+
+[tool.setuptools]
+packages = ["coinor", "coinor.grumpy", "coinor.grumpy.examples"]
+
+[tool.setuptools.package-dir]
+"coinor" = "src"
+"coinor.grumpy" = "src/grumpy"
