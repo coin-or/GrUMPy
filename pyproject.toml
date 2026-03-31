@@ -14,9 +14,9 @@ authors = [
 requires-python = ">=3.6"
 dependencies = [
     "coinor.gimpy",
-    "future",
     "matplotlib",
     "pulp",
+    "pypolyhedron"
 ]
 
 [project.urls]
