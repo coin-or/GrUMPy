@@ -1,6 +1,3 @@
-from future import standard_library
-standard_library.install_aliases()
-from builtins import str
 import coinor.grumpy.examples
 try:
     from coinor.grumpy import BBTree

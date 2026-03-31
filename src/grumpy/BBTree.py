@@ -1,12 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from future import standard_library
-standard_library.install_aliases()
-from builtins import str
-from builtins import hex
-from builtins import range
-from past.utils import old_div
 # BBTree.py
 #
 #  Copyright 2009, 2010 Google Inc.
@@ -247,7 +238,7 @@ class BBTree(BinaryTree):
                     if 'init_log_cond' in n.attr:
                         log_begin = n.attr['init_log_cond']
                         log_end = n.attr['final_log_cond']
-                        normalized_cond = (1-old_div(log_begin,max_log_cond))
+                        normalized_cond = (1-log_begin/max_log_cond)
                         color = str(hex(int(normalized_cond*256))[2:]) if normalized_cond >= .0625 else '0' + str(hex(int(normalized_cond*256))[2:])
                         n.attr['label'] = '%.0f \n %.0f' % (log_begin, log_end)
                         n.attr['color'] = '#' + color*3
@@ -679,8 +670,7 @@ After installation, ensure that the PATH variable is properly set.''')
         # Start a new sequence if a new integer solution was just found
         if self._new_integer_solution:
             if new_integer_ssg >= 1e-6:
-                scale_factor = (old_div(float(sum_subtree_gaps),
-                                float(new_integer_ssg)))
+                scale_factor = float(sum_subtree_gaps)/float(new_integer_ssg)
             else:
                 scale_factor = 1.0
             self._sum_subtree_gaps_forecaster.StartNewSequence(scale_factor)
@@ -722,15 +712,14 @@ After installation, ensure that the PATH variable is properly set.''')
         """
         # TODO(bhunsaker): add checks for bin_width zero
         if self._incumbent_value is not None:
-            incumbent_bin = 1 + ((self._incumbent_value -
-                                  self._histogram_lower_bound) // bin_width)
-            incumbent_x_coord = 0.5 + (old_div((self._incumbent_value -
-                                        self._histogram_lower_bound),
-                                       bin_width))
-        lp_bound_bin = 1 + ((lp_bound - self._histogram_lower_bound) //
+            incumbent_bin = 1 + ((self._incumbent_value - self._histogram_lower_bound)/
+                                 bin_width)
+            incumbent_x_coord = 0.5 + ((self._incumbent_value -
+                                       self._histogram_lower_bound)/bin_width)
+        lp_bound_bin = 1 + ((lp_bound - self._histogram_lower_bound)/
                             bin_width)
-        lp_bound_x_coord = 0.5 + (old_div((lp_bound - self._histogram_lower_bound),
-                                  bin_width))
+        lp_bound_x_coord = 0.5 + ((lp_bound - self._histogram_lower_bound)/
+                                  bin_width)
         # TODO(bhunsaker): Ask Osman about adjust_xcoord option, which appears
         #    to put the vertical lines at the edge of bins rather than the
         #    true location.
@@ -833,27 +822,27 @@ After installation, ensure that the PATH variable is properly set.''')
                                     self._histogram_lower_bound) // bin_width)
         if (highest_nonempty_bin < num_bins and
             bin_counts[highest_nonempty_bin] > 0):
-            highest_x_coord = 0.5 + (old_div((upper_bound -
-                                      self._histogram_lower_bound), bin_width))
+            highest_x_coord = 0.5 + ((upper_bound - self._histogram_lower_bound)/ 
+                                     bin_width)
             highest_nonempty_bin_width, unused_int = math.modf(0.5 +
                                                                highest_x_coord)
             if highest_nonempty_bin_width == 0.0:
                 highest_nonempty_bin_width = 1.0
             bin_widths[highest_nonempty_bin] = highest_nonempty_bin_width
             bin_centers[highest_nonempty_bin] = highest_x_coord - (
-                old_div(highest_nonempty_bin_width, 2))
+                highest_nonempty_bin_width/ 2)
             # Scale the height appropriately
             bin_counts[highest_nonempty_bin] /= bin_widths[highest_nonempty_bin]
         lowest_nonempty_bin = int((lower_bound -
                                    self._histogram_lower_bound) // bin_width)
         if bin_counts[lowest_nonempty_bin] > 0:
-            lowest_x_coord = 0.5 + (old_div((lower_bound -
-                                     self._histogram_lower_bound), bin_width))
+            lowest_x_coord = 0.5 + ((lower_bound - self._histogram_lower_bound)/
+                                     bin_width)
             lowest_nonempty_bin_excess, unused_int = math.modf(0.5 +
                                                                lowest_x_coord)
             bin_widths[lowest_nonempty_bin] = 1.0 - lowest_nonempty_bin_excess
             bin_centers[lowest_nonempty_bin] = (
-                lowest_x_coord + old_div(bin_widths[lowest_nonempty_bin], 2))
+                lowest_x_coord + bin_widths[lowest_nonempty_bin]/2)
             # Scale the height appropriately
             bin_counts[lowest_nonempty_bin] /= bin_widths[lowest_nonempty_bin]
 
@@ -897,12 +886,12 @@ After installation, ensure that the PATH variable is properly set.''')
                     self._histogram_lower_bound = self._incumbent_value
                 else:
                     self._histogram_lower_bound = min(objective_list)
-        bin_width = old_div((self._histogram_upper_bound -
-                     self._histogram_lower_bound), float(num_bins))
+        bin_width = ((self._histogram_upper_bound -
+                     self._histogram_lower_bound)/float(num_bins))
         bin_counts = [0.0 for i in range(num_bins)]
         for value in objective_list:
-            bin = int(math.floor(old_div((value - self._histogram_lower_bound),
-                                 bin_width)))
+            bin = int(math.floor((value - self._histogram_lower_bound)/
+                                 bin_width))
             # Special case for the largest value.
             if (value >= self._histogram_upper_bound and
                 value < self._histogram_upper_bound + 1e-6):
@@ -1240,9 +1229,8 @@ After installation, ensure that the PATH variable is properly set.''')
                 print('Fixed-position tree images only support L and R ')
                 print('branching.')
                 sys.exit(1)
-            horizontal_positions[node_id] = old_div((
-                horizontal_upper_bound[node_id] +
-                horizontal_lower_bound[node_id]), 2)
+            horizontal_positions[node_id] = ((horizontal_upper_bound[node_id] +
+                                              horizontal_lower_bound[node_id])/2)
         return horizontal_positions
 
     def GetTreeHorizontalPositions(self):
@@ -1318,7 +1306,7 @@ After installation, ensure that the PATH variable is properly set.''')
             sorted_child_labels = sorted(children_list)
             # Determine where to place this node with respect to its children.
             # Put the node in the center, or have more children on the left.
-            before_index = int(math.ceil(old_div(number_of_children,2.0)))
+            before_index = int(math.ceil(number_of_children/2.0))
             # Exception with a single node that is 'L'
             if number_of_children == 1:
                 if direction != 'L':
@@ -1327,8 +1315,8 @@ After installation, ensure that the PATH variable is properly set.''')
             for i, label in enumerate(sorted_child_labels):
                 if before_index == i:
                     # Determine the relative position for the current node
-                    relative_position = old_div((cumulative_descendants + 0.5), (
-                        total_descendants))
+                    relative_position = ((cumulative_descendants + 0.5)/
+                                          total_descendants)
                     cumulative_descendants += 1
                 # Set bounds for this child
                 horizontal_lower_bound[quote(label)] = (
@@ -1343,8 +1331,8 @@ After installation, ensure that the PATH variable is properly set.''')
             # Catch the case that the node comes after all its children.
             # This must also work for the case that this is the only node.
             if before_index == len(sorted_child_labels):
-                relative_position = old_div((cumulative_descendants + 0.5), (
-                    total_descendants))
+                relative_position = ((cumulative_descendants + 0.5)/
+                                      total_descendants)
             # Finally set the position for the current node
             horizontal_positions[quote(node)] = (
                 horizontal_lower_bound[quote(node)] + relative_position * (
@@ -1887,7 +1875,7 @@ After installation, ensure that the PATH variable is properly set.''')
         data_file = open(ssg_data_filename, 'w')
         # We need to scale the SSG measures so that it will make sense to
         # look at them on the same plot with gap measures.
-        scale_factor=old_div(float(gap_measures[0].value),float(ssg_measures[0].value))
+        scale_factor=float(gap_measures[0].value)/float(ssg_measures[0].value)
         for measure in ssg_measures:
             data_file.write('%0.6f %0.6f\n' % (measure.time,
                                                measure.value * scale_factor))

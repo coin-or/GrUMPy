@@ -1,9 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-from builtins import str
-from builtins import range
-from past.utils import old_div
 __author__ = 'Ted Ralphs'
 __maintainer__ = 'Ted Ralphs (ted@lehigh.edu)'
 
@@ -189,15 +183,15 @@ def BranchAndBound(T, CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
             if branch_var != None:
                 if sense == '<=':
                     pseudo_d[branch_var] = (
-                    old_div((pseudo_d[branch_var][0]*pseudo_d[branch_var][1] +
-                    old_div((T.get_node_attr(parent, 'obj') - relax),
-                    (branch_var_value - rhs))),(pseudo_d[branch_var][1]+1)),
-                    pseudo_d[branch_var][1]+1)
+                        ((pseudo_d[branch_var][0]*pseudo_d[branch_var][1] +
+                          ((T.get_node_attr(parent, 'obj') - relax)/
+                           (branch_var_value - rhs)))/(pseudo_d[branch_var][1]+1)),
+                           pseudo_d[branch_var][1]+1)
                 else:
                     pseudo_u[branch_var] = (
-                    old_div((pseudo_u[branch_var][0]*pseudo_d[branch_var][1] +
-                     old_div((T.get_node_attr(parent, 'obj') - relax),
-                     (rhs - branch_var_value))),(pseudo_u[branch_var][1]+1)),
+                    ((pseudo_u[branch_var][0]*pseudo_d[branch_var][1] +
+                     ((T.get_node_attr(parent, 'obj') - relax)/
+                     (rhs - branch_var_value)))/(pseudo_u[branch_var][1]+1)),
                     pseudo_u[branch_var][1]+1)
             var_values = dict([(i, var[i].varValue) for i in VARIABLES])
             integer_solution = 1

@@ -1,7 +1,3 @@
-from __future__ import division
-from __future__ import print_function
-from past.utils import old_div
-from builtins import object
 # BAK_visual.py
 #
 #  Copyright 2009 Google Inc.
@@ -118,7 +114,7 @@ class DoubleExponentialSmoothingForecaster(object):
         previous_value = self._measures[-2].value * self._scale_factor
         time = self._measures[-1].time
         previous_time = self._measures[-2].time
-        delta = old_div(float((measure_value - previous_value)), float((time - previous_time)))
+        delta = float((measure_value - previous_value))/float((time - previous_time))
         if -delta < 0.00001 * measure_value:
             delta = 0
 
@@ -155,7 +151,7 @@ class DoubleExponentialSmoothingForecaster(object):
                              (1 - self._alpha) * self._S_t)
                 updated = True
 
-            forecast = (time + (old_div(float(-self._S_t), min(delta,self._b_t))))
+            forecast = (time + (float(-self._S_t)/min(delta,self._b_t)))
             print('A', time, previous_value, measure_value, end=' ')
             print(self._S_t, self._b_t, forecast)
             #cent = float(input("STOP"))
@@ -165,7 +161,7 @@ class DoubleExponentialSmoothingForecaster(object):
                 forecast = self._forecasts[-1].forecast
             else:
                 forecast = (time +
-                            (old_div(float(self._measures[-1].active_node_count),
+                            ((float(self._measures[-1].active_node_count)/
                              self._measures[-2].active_node_count)) *
                             (self._forecasts[-1].forecast -
                              self._forecasts[-1].time))
@@ -175,7 +171,7 @@ class DoubleExponentialSmoothingForecaster(object):
         else:
             # The measure didn't change and we have no previous forecast
             forecast = (time +
-                        old_div(float(self._measures[-1].active_node_count * time),
+                        (float(self._measures[-1].active_node_count * time)/
                         (self._measures[-1].node_count -
                          self._measures[-1].active_node_count)))
             print('C', time, previous_value, measure_value, forecast)

@@ -131,14 +131,14 @@ for iter in [1,2,3]:
     #plt.legend(handles=[red_patch])
     
     if (iter == 1):
-        plt.legend([p, a, C, D], ['$\mathrm{conv}(\mathcal{S}$)',
-                                  '$\mathcal{C}_1(x^0)$', 
-                                  '$c = d^0$', '$d^1$'],
+        plt.legend([p, a, C, D], [r'$\mathrm{conv}(\mathcal{S}$)',
+                                  r'$\mathcal{C}_1(x^0)$', 
+                                  r'$c = d^0$', r'$d^1$'],
                    handler_map={mpatches.FancyArrow : HandlerPatch(patch_func=make_legend_arrow)})
     else:
-        plt.legend([p, a, C, D], ['$\mathrm{conv}(\mathcal{S}$)',
-                                  '$\mathcal{C}_'+f'{iter}(x^0)$', 
-                                  '$c$', f'$d^{iter}$'],
+        plt.legend([p, a, C, D], [r'$\mathrm{conv}(\mathcal{S}$)',
+                                  r'$\mathcal{C}_'+f'{iter}(x^0)$', 
+                                  r'$c$', f'$d^{iter}$'],
                    handler_map={mpatches.FancyArrow : HandlerPatch(patch_func=make_legend_arrow)})
         
     plt.savefig(f'inv-iter{iter}-new.png')

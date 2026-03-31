@@ -36,8 +36,8 @@ if __name__=='__main__':
     bt.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                      branch_strategy = PSEUDOCOST_BRANCHING, search_strategy = BEST_FIRST,
                      display_interval = 4)
-    #======== pygame display mode, no layout specified, save in png format
-    bt = BBTree(display='pygame')
+    #======== matpotlib display mode, no layout specified, save in png format
+    bt = BBTree(display='matplotlib')
     bt.BranchAndBound(CONSTRAINTS, VARIABLES, OBJ, MAT, RHS,
                      branch_strategy = PSEUDOCOST_BRANCHING, search_strategy = BEST_FIRST,
                      display_interval = 4)

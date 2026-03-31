@@ -1,6 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from builtins import str
 try:
     from src.grumpy.polyhedron2D import Polyhedron2D, Figure
 except ImportError:
@@ -14,7 +11,7 @@ try:
 except ImportError:
     CYLP_INSTALLED = False
     
-from . import LP9 as LP
+from coinor.grumpy.examples import LP2 as LP
 
 def disp_polyhedron(A = None, b = None, points = None, rays = None, c = None, obj_val = None,
                     opt = None, loc = None):

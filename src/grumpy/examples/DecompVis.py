@@ -1,4 +1,3 @@
-from builtins import range
 try:
     from src.grumpy.polyhedron2D import Polyhedron2D, Figure
 except ImportError:
