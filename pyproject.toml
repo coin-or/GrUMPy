@@ -20,8 +20,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "http://projects.coin-or.org/GrUMPy"
+Homepage = "https://github.com/coin-or/GrUMPy"
 Repository = "https://github.com/coin-or/GrUMPy"
+Documentation = "https://coin-or.github.io/GrUMPy/"
 
 [tool.setuptools]
 packages = ["coinor", "coinor.grumpy", "coinor.grumpy.examples"]
