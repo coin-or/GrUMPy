@@ -30,3 +30,13 @@ packages = ["coinor", "coinor.grumpy", "coinor.grumpy.examples"]
 [tool.setuptools.package-dir]
 "coinor" = "src"
 "coinor.grumpy" = "src/grumpy"
+
+[dependency-groups]
+dev = [
+    "pytest >= 8.0.0",
+    "ruff >= 0.3.0",
+]
+
+[tool.pytest]
+testpaths = ["test"]
+addopts = ["--import-mode=importlib"]

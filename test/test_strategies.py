@@ -125,8 +125,9 @@ problem = [(10,10,0),
            ]
 # number of LPs solved for each problem
 num_lp = {}
+bb_opt = {}
 
-if __name__=='__main__':
+def test_strategies():
     for p in problem:
         var, con, seed = p
         T = BBTree()
@@ -134,6 +135,7 @@ if __name__=='__main__':
                                                                   numCons=con,
                                                                   rand_seed=seed)
         num_lp[p] = {}
+        bb_opt[p] = {}
         for b in branch_strategy:
             for s in search_strategy:
                 # create a new object before each branch and bound call
@@ -145,29 +147,28 @@ if __name__=='__main__':
                                                       search_strategy = s)
                 # keep number of LPs solved.
                 num_lp[p][(b,s)] = T._lp_count
+                bb_opt[p][(b,s)] = bb_optimal
     # print table
     print('problem     | branching strategy   | search strategy   | num lp')
     print('---------------------------------------------------------------')
     for p in problem:
+        opt = None
         for b in branch_strategy:
             for s in search_strategy:
-                print(str(p).ljust(10))
-                print('|')
-                print(str(b).ljust(20))
-                print('|')
-                print(str(s).ljust(17))
-                print('|')
-                print(num_lp[p][(b,s)])
-    for b in branch_strategy:
-        for s in search_strategy:
-            filename = bs_dict[b] + "_" + ss_dict[s]
-            print("writing output file ", filename, "...")
-            f = open(filename, "w")
-            f.write("#problem".ljust(15))
-            f.write("num lp".ljust(10))
-            f.write("\n")
-            for p in problem:
-                f.write(str(p).ljust(15))
-                f.write(str(num_lp[p][(b,s)]).ljust(10))
-                f.write("\n")
-            f.close()
+                print(str(p).ljust(10), '|', str(b).ljust(20), '|', str(s).ljust(17), '|', num_lp[p][(b,s)])
+                if opt == None:
+                    opt = bb_opt[p][(b,s)]
+                assert(opt == bb_opt[p][(b,s)])
+#     for b in branch_strategy:
+#         for s in search_strategy:
+#             filename = bs_dict[b] + "_" + ss_dict[s]
+#             print("writing output file ", filename, "...")
+#             f = open(filename, "w")
+#             f.write("#problem".ljust(15))
+#             f.write("num lp".ljust(10))
+#             f.write("\n")
+#             for p in problem:
+#                 f.write(str(p).ljust(15))
+#                 f.write(str(num_lp[p][(b,s)]).ljust(10))
+#                 f.write("\n")
+#             f.close()

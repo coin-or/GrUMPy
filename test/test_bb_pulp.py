@@ -47,7 +47,7 @@ pulp_optimal = {}
 # will keep branch and bound optimal objective value
 bb_optimal = {}
 
-if __name__=='__main__':
+def test_bb():
     for p in problem:
         T = BBTree()
         var, con, seed = p
@@ -103,8 +103,7 @@ if __name__=='__main__':
     print('Problem     | BB optimal   | PuLP optimal')
     print('-----------------------------------------')
     for p in problem:
-        print(str(p).ljust(10)),
-        print('|'),
-        print(str(bb_optimal[p]).ljust(12)),
-        print('|'),
-        print(str(pulp_optimal[p]))
+        print(str(p).ljust(10), '|', str(bb_optimal[p]).ljust(12), '|', str(pulp_optimal[p]).ljust(12))
+        assert(bb_optimal[p] == pulp_optimal[p])
+
+test_bb()
