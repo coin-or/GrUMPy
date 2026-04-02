@@ -21,7 +21,7 @@ bt = BBTree(display='pygame')
 bt = BBTree(display='file', layout = 'dot2tex')
 
 '''
-from grumpy import BBTree, PSEUDOCOST_BRANCHING, BEST_FIRST
+from coinor.grumpy import BBTree, PSEUDOCOST_BRANCHING, BEST_FIRST
 import sys
 
 if __name__=='__main__':
