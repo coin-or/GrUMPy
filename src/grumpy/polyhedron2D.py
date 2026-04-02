@@ -49,7 +49,7 @@ class Polyhedron2D(object):
                        int(ceil(round(self.max_point[0], 3)))+1):
             for j in range(int(ceil(round(self.min_point[1], 3))), 
                            int(ceil(round(self.max_point[1], 3)))+1):
-                if np.alltrue(np.dot(self.hrep.A, [i, j]) <= self.hrep.b):
+                if np.all(np.dot(self.hrep.A, [i, j]) <= self.hrep.b):
                     v.append([i, j])
         r = [self.hrep.generators[self.ray_indices[i]].tolist() 
              for i in range(len(self.ray_indices))]
@@ -230,7 +230,7 @@ class Figure(object):
                            int(ceil(p.max_point[0]))+1):
                 for j in range(int(floor(p.min_point[1])), 
                                int(ceil(p.max_point[1]))+1):
-                    if np.alltrue(np.dot(p.hrep.A, [i, j]) <= p.hrep.b):
+                    if np.all(np.dot(p.hrep.A, [i, j]) <= p.hrep.b):
                         self.add_point((i, j), radius = 0.02, color = 'black')
 
         if label is not None:
