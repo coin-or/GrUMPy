@@ -11,10 +11,9 @@ license = { text = "Eclipse Public License" }
 authors = [
     { name = "Ted Ralphs", email = "ted@lehigh.edu" },
 ]
-requires-python = ">=3.6"
+requires-python = ">=3.10"
 dependencies = [
     "coinor.gimpy",
-    "matplotlib",
     "pulp",
     "pypolyhedron"
 ]
