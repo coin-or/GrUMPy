@@ -1,0 +1,9 @@
+name: Pull Request CI
+
+on:
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  run-tests:
+    uses: ./.github/workflows/_tests.yml # Calls the reusable file
